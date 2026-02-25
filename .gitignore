@@ -1,0 +1,73 @@
+# ==========================================
+# JAVA & MAVEN (Compilación y Empaquetado)
+# ==========================================
+target/
+*.class
+*.log
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Maven específicos
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+
+# ==========================================
+# SPRING BOOT & BASE DE DATOS H2
+# ==========================================
+# ¡Crucial! No queremos subir la BD local de pruebas al repositorio
+*.h2.db
+*.mv.db
+*.trace.db
+
+# ==========================================
+# SONARQUBE & JACOCO (Métricas y Cobertura)
+# ==========================================
+.sonar/
+.scannerwork/
+jacoco.exec
+
+# ==========================================
+# ENTORNOS DE DESARROLLO (IDEs)
+# ==========================================
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+out/
+
+# Eclipse / Spring Tool Suite
+.apt_generated/
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache/
+bin/
+
+# Visual Studio Code
+.vscode/
+
+# ==========================================
+# SISTEMAS OPERATIVOS
+# ==========================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
