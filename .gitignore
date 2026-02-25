@@ -45,14 +45,14 @@ jacoco.exec
 *.iws
 out/
 
-# Eclipse / Spring Tool Suite
-*.apt_generated/
-*.classpath
-*.factorypath
-*.project
-*.settings/
-*.springBeans
-*.sts4-cache/
+# Eclipse / Spring Tool Suite (Busca en cualquier subcarpeta)
+.apt_generated/
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache/
 bin/
 
 # Visual Studio Code
