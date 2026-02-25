@@ -46,14 +46,13 @@ jacoco.exec
 out/
 
 # Eclipse / Spring Tool Suite
-.apt_generated/
-.classpath
-.factorypath
-.project
-.settings/
-.settings
-.springBeans
-.sts4-cache/
+*.apt_generated/
+*.classpath
+*.factorypath
+*.project
+*.settings/
+*.springBeans
+*.sts4-cache/
 bin/
 
 # Visual Studio Code
