@@ -51,6 +51,7 @@ out/
 .factorypath
 .project
 .settings/
+.settings
 .springBeans
 .sts4-cache/
 bin/
