@@ -16,6 +16,7 @@
     
     <spring-boot.version>3.2.5</spring-boot.version>
     <javafx.version>21.0.2</javafx.version>
+  <sonar.organization>carrillitoo</sonar.organization>
   </properties>
 
   <dependencyManagement>
@@ -167,6 +168,8 @@
           </execution>
         </executions>
       </plugin>
+      
+      
       
     </plugins>
   </build>
