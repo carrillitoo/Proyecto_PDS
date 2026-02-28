@@ -1,4 +1,4 @@
-package umu.pds.ProyectoPDS;
+package umu.pds.mainApp;
 
 /**
  * Hello world!
