@@ -1,9 +1,9 @@
-package umu.pds.mainApp;
+package umu.pds;
 
 /**
  * Hello world!
  */
-public class App {
+public class ApiApplication {
     public static void main(String[] args) {
         System.out.println("Hello World!");
     }
