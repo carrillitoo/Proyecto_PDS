@@ -1,7 +1,9 @@
 package umu.pds.api.domain.models;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import umu.pds.api.domain.exceptions.LimiteListaExcedidoException;
 
@@ -16,19 +18,24 @@ public class Tablero {
 	 * entonces se puede:
 	 * - añadir una nueva lista (que puede O NO tener un limite)
 	 * - añadir a una lista una tarjeta
+	 * - eliminar una tarjeta de una lista
 	 * - mover una tarjeta de una lista a otra y si tuviera limite se rebota a las origen
 	 * - congelar y descongelar los tableros (con lo que pueda implicar en la logica de añadir y mover)
 	 * 
 	 * ademas hay tres metodos privados para operaciones internas:
 	 * - checkea r que un tablerro este o no activo
 	 * - coger una lista nueva y limpia segun nombre (evita aliasin)
-	 * - buscar una lista segun nombre (sirve para checkear que existe la lista y si no devuelve null asiq se puede comprobar en un if) 
+	 * - buscar una lista segun nombre (sirve para checkear que existe la lista y si no devuelve null asiq se puede comprobar en un if)
+	 * - añadir las trazas en cada accion
 	 */
 	
 	private final TableroId id;				//id con tipo de tableroid para mantener el DDD puro 
 	private String nombre; 					//nombre, classic
 	private EstadoTablero estado; 			//estado como enum
 	private final List<ListaTareas> listas; //lista de listas de tareas (como si fuera una matriz 2D)
+	private final ListaTareas listaCompletadas;
+	private final List<TrazaAccion> historial;
+	
 	
 	// buildeer
 	public Tablero(TableroId id, String nombre) {
@@ -38,6 +45,9 @@ public class Tablero {
         this.nombre = nombre;
         this.estado = EstadoTablero.ACTIVO;
         this.listas = new ArrayList<>();
+        this.listaCompletadas = new ListaTareas("Completadas", ListaTareas.getLimPd());
+        this.listas.add(listaCompletadas);
+        this.historial = new ArrayList<>();
     }
 	
 	//getters
@@ -46,6 +56,8 @@ public class Tablero {
 	public String getNombre() {return nombre;}
 	//para que la lista no sea modificable y no haya adds (por si se necesita)
 	public List<ListaTareas> getListas() {return java.util.Collections.unmodifiableList(this.listas);}
+	public ListaTareas getListaCompletadas() {return listaCompletadas;}
+	public List<TrazaAccion> getHistorial() {return java.util.Collections.unmodifiableList(this.historial);}
 	
 	
 	//añadir lista al tablero
@@ -56,13 +68,36 @@ public class Tablero {
         this.listas.add(nuevaLista);
     }
 	
-	//añadir tarjeta a un tablero
+	//añadir tarjeta a una lista
 	public void addTarjeta(String nombreLista, Tarjeta tarjeta) throws LimiteListaExcedidoException {
-	    verificarTableroActivo(); 
+	    verificarTableroActivo();
 	    
 	    ListaTareas listaDestino = getListaSegura(nombreLista);
 	    
 	    listaDestino.addTarjeta(tarjeta); 
+	    registrarTraza(TipoAccion.ANADIR, tarjeta.getId(), null, nombreLista);
+	}
+	
+	//eliminar tarjeta de una lista
+	public void eliminarTarjeta(String nombreLista, Tarjeta tarjeta){
+	    verificarTableroActivo();
+	    
+	    ListaTareas listaDestino = getListaSegura(nombreLista);
+	    
+	    listaDestino.extraerTarjeta(tarjeta); 
+	    registrarTraza(TipoAccion.ELIMINAR, tarjeta.getId(), nombreLista, null);
+	}
+	
+	//marcar una tarea completada (y por tanto pasandola a la lista especial de completadas
+	public void checkTarjetaCompletada(Tarjeta tarjeta, String nomLista) {
+		verificarTableroActivo();
+		
+		ListaTareas origen = getListaSegura(nomLista);
+		Tarjeta completada = origen.extraerTarjeta(tarjeta);
+		
+		completada.checkCompletada();
+		this.listaCompletadas.addTarjeta(completada);
+		registrarTraza(TipoAccion.COMPLETAR, tarjeta.getId(), nomLista, listaCompletadas.getNombre());
 	}
 	
 	
@@ -76,13 +111,14 @@ public class Tablero {
         Tarjeta tarjetaAMover = listaOrigen.extraerTarjeta(tarjeta);
         try {
             listaDestino.addTarjeta(tarjetaAMover);
+            registrarTraza(TipoAccion.MOVER, tarjeta.getId(), nomListaOrigen, nomListaDestino);
         } catch (LimiteListaExcedidoException e) {
             listaOrigen.addTarjeta(tarjetaAMover); // por si esta llena la lista de destino por el limite
             throw e; 
-        }
-        
-        
+        }        
 	}
+	
+	
 	
 	
 	//funciones para mantener la logica de tableros activos o congelados
@@ -110,6 +146,11 @@ public class Tablero {
                 .filter(l -> l.getNombre().equalsIgnoreCase(nombreLista))
                 .findFirst()
                 .orElse(null);
+    }
+    
+    private void registrarTraza(TipoAccion accion, UUID tarjetaId, String origen, String destino) {
+        TrazaAccion nuevaTraza = new TrazaAccion(accion, tarjetaId, origen, destino, LocalDateTime.now());
+        this.historial.add(nuevaTraza);
     }
 	
 }

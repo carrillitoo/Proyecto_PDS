@@ -37,6 +37,14 @@ public class Tarjeta {
     public String getTitulo() {
 		return titulo;
 	}
-    
+    public boolean isCompletada() {
+		return completada;
+	}
+
+
+	public void checkCompletada() {
+		this.completada = true;
+		
+	}
 	
 }
