@@ -4,5 +4,6 @@ public enum TipoAccion {
     ANADIR,
     MOVER,
     COMPLETAR,
-    ELIMINAR
+    ELIMINAR,
+    ARCHIVAR
 }

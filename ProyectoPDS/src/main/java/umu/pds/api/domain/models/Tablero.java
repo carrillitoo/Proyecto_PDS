@@ -2,10 +2,12 @@ package umu.pds.api.domain.models;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
 import umu.pds.api.domain.exceptions.LimiteListaExcedidoException;
+import umu.pds.api.domain.exceptions.TransicionInvalidaException;
 
 public class Tablero {
 	
@@ -29,28 +31,39 @@ public class Tablero {
 	 * - añadir las trazas en cada accion
 	 */
 	
-	//---------------------------------ATRIBURTOSS---------------------------------
-	private final TableroId id;				//id con tipo de tableroid para mantener el DDD puro 
-	private String nombre; 					//nombre, classic
-	private EstadoTablero estado; 			//estado como enum
-	private final List<ListaTareas> listas; //lista de listas de tareas (como si fuera una matriz 2D)
-	private final ListaTareas listaCompletadas;
-	private final List<TrazaAccion> historial;
-	private final String emailCreador;
-	private final String url;
+	//---------------------------------VARIABLES GLOBALES---------------------------------
 	public static final String PREFIJO_URL = "https://copiatrello.com/";
+	
+	
+	//---------------------------------ATRIBURTOSS---------------------------------
+	private final TableroId id;							//id con tipo de tableroid para mantener el DDD puro 
+	private String nombre; 								//nombre, classic
+	private EstadoTablero estado; 						//estado como enum
+	private final List<ListaTareas> listas; 			//lista de listas de tareas (como si fuera una matriz 2D)
+	private final ListaTareas listaCompletadas; 		//lista especial de completadas
+	private final ListaTareas listaArchivadas;			//lista compactada de tareas archivadas
+	private final List<TrazaAccion> historial;			//historial de trazas de acciones
+	private final String emailCreador;					//email del usuario que crea el tablero (obligatorio)
+	private final String url;							//url para acceder al tablero y/O compartirla xra que accendasn
+	
 	
 	
 	//---------------------------------BUIDER---------------------------------
 	public Tablero(TableroId id, String nombre, String email) {
 		if (nombre == null || nombre.trim().isEmpty())
 			throw new IllegalArgumentException("El nombre del tablero no puede estar vacio");
+		if (email == null || email.trim().isEmpty())
+	        throw new IllegalArgumentException("El email del creador es obligatorio");
+		
+		
         this.id = id;
         this.nombre = nombre;
         this.estado = EstadoTablero.ACTIVO;
         this.listas = new ArrayList<>();
         this.listaCompletadas = new ListaTareas("Completadas", ListaTareas.getLimPd());
+        this.listaArchivadas = new ListaTareas("Archivadas", ListaTareas.getLimPd());
         this.listas.add(listaCompletadas);
+        this.listas.add(listaArchivadas);
         this.historial = new ArrayList<>();
         this.emailCreador = email;
         this.url = PREFIJO_URL + id.toString() ;
@@ -61,9 +74,9 @@ public class Tablero {
 	public TableroId getId() {return id;}
 	public String getNombre() {return nombre;}
 	//para que la lista no sea modificable y no haya adds (por si se necesita)
-	public List<ListaTareas> getListas() {return java.util.Collections.unmodifiableList(this.listas);}
+	public List<ListaTareas> getListas() {return Collections.unmodifiableList(this.listas);}
 	public ListaTareas getListaCompletadas() {return listaCompletadas;}
-	public List<TrazaAccion> getHistorial() {return java.util.Collections.unmodifiableList(this.historial);}
+	public List<TrazaAccion> getHistorial() {return Collections.unmodifiableList(this.historial);}
 	public String getEmailCreador() {return emailCreador;}
 	public String getUrl() {return url;}
 	public static String getPrefijoUrl() {return PREFIJO_URL;}
@@ -81,7 +94,7 @@ public class Tablero {
 	
 	//añadir tarjeta a una lista
 	public void addTarjeta(String nombreLista, Tarjeta tarjeta) throws LimiteListaExcedidoException {
-	    verificarTableroActivo();
+	    verificarTableroActivo();// por lo que pueden ser cambios en api inesperados
 	    
 	    ListaTareas listaDestino = getListaSegura(nombreLista);
 	    
@@ -99,25 +112,15 @@ public class Tablero {
 	    registrarTraza(TipoAccion.ELIMINAR, tarjeta.getId(), nombreLista, null);
 	}
 	
-	//marcar una tarea completada (y por tanto pasandola a la lista especial de completadas)
-	public void checkTarjetaCompletada(Tarjeta tarjeta, String nomLista) {
-		verificarTableroActivo();
-		
-		ListaTareas origen = getListaSegura(nomLista);
-		Tarjeta completada = origen.extraerTarjeta(tarjeta);
-		
-		completada.checkCompletada();
-		this.listaCompletadas.addTarjeta(completada);
-		registrarTraza(TipoAccion.COMPLETAR, tarjeta.getId(), nomLista, listaCompletadas.getNombre());
-	}
-	
-	
 	//funcion provisional para las tarjetas teniendo en cuenta que los tipos no son definitivos
 	public void moverTarjeta(Tarjeta tarjeta, String nomListaOrigen, String nomListaDestino) throws LimiteListaExcedidoException {
-		verificarTableroActivo(); // por lo que pueden ser cambios en api inesperados
+		//verificarTableroActivo(); // no se pone porque en el enunciado dice que se puede mover pero no añadir
 		
 		ListaTareas listaOrigen = getListaSegura(nomListaOrigen);
         ListaTareas listaDestino = getListaSegura(nomListaDestino);
+        
+        //vamos a aplicar la transicion y antes de mover hay que checkear las reglas
+        verificarReglasTransicion(tarjeta, listaDestino);
         
         Tarjeta tarjetaAMover = listaOrigen.extraerTarjeta(tarjeta);
         try {
@@ -128,8 +131,69 @@ public class Tablero {
             throw e; 
         }        
 	}
+
+	//marcar una tarea completada (y por tanto pasandola a la lista especial de completadas)
+	public void checkTarjetaCompletada(Tarjeta tarjeta, String nomLista) {
+		//verificarTableroActivo(); //aqui igual que mover, podemos considerar que el check es un movimiento a completada
+		
+		ListaTareas origen = getListaSegura(nomLista);
+		Tarjeta completada = origen.extraerTarjeta(tarjeta);
+		
+		completada.checkCompletada();
+		this.listaCompletadas.addTarjeta(completada);
+		registrarTraza(TipoAccion.COMPLETAR, tarjeta.getId(), nomLista, listaCompletadas.getNombre());
+	}
 	
+	//esto falta ver si vale asi o se hace un patron estrategia con mas criterios para la limpieza
+	public void compactarTablero(int diasInactividad) {
+		verificarTableroActivo(); //as always :) (super secure mode activated) (es la una y media de la mañana, estare perdiendo la cabeza?) (si lees esto hola :p)
+		
+		LocalDateTime fechaLimite = LocalDateTime.now().minusDays(diasInactividad);
+		
+		for (ListaTareas l : this.listas) {
+			//esto primero es para no coger las listas especiales
+			if (l.getNombre().equals(this.listaCompletadas.getNombre()) || l.getNombre().equals(this.listaArchivadas.getNombre())) continue; 
+			
+			//agrupamos las tarjetas que se van a ir al archivo porque cumplen el criterio
+			List<Tarjeta> going2Archive = l.getTarjetas().stream()
+														 .filter(t -> t.getFechaCreacion().isBefore(fechaLimite))
+														 .toList();
+			
+			//como hay que amnejar las trazas no se puede hacer un addAll :( --- asi que vamos una a una
+			for (Tarjeta t : going2Archive) {
+				Tarjeta extraida = l.extraerTarjeta(t);
+				this.listaArchivadas.addTarjeta(extraida);
+
+				//la razon de nuestro precioso bucle 
+				registrarTraza(TipoAccion.ARCHIVAR, t.getId(), l.getNombre(), listaArchivadas.getNombre());
+			}
+			
+			
+		}
+	}
 	
+	//accion para checkear las reglas de transicion --- se podria hacer booleano pero he decidido no hacerlo por lo siguiente
+	//si va bien no pasa nada xD, si va mal salta una excepcion :O y no sigue
+	private void verificarReglasTransicion(Tarjeta tarjeta, ListaTareas listaDestino) {
+		List<String> requeridas = listaDestino.getListasPreviasRequeridas(); //la lista de estados por los que tiene que pasar una tarjeta antes de ir al destino
+		
+		if (requeridas.isEmpty()) return; //si no hay ningun elemento se vuelve y se sigue
+
+		//recorremos los estados requeridos
+		for (String r : requeridas) {
+			//entonces segun el estado que estemos recorriendo mirando y el historial miramos si ha pasado por
+			//el estado que estamos viendo
+			boolean haPasadoPorLista = this.historial.stream()
+													 .filter(t -> t.tarjetaId().equals(tarjeta.getId())) //filtramos el historial por la tarjeta que tenemos 
+													 .anyMatch(t -> 
+														(t.listaDestino() != null && t.listaDestino().equalsIgnoreCase(r)) || 	//va al sitio correcto?  
+														(t.listaOrigen() != null && t.listaOrigen().equalsIgnoreCase(r)));		//viene del sitio correcto?
+			//si no ha pasado se lanza la excepcion
+			if (!haPasadoPorLista)
+				throw new TransicionInvalidaException(tarjeta.getTitulo(), listaDestino.getNombre(), r);
+		}
+	}
+
 	//---------------------------------LOGICA DE CONGELADOR---------------------------------
 	//funciones para mantener la logica de tableros activos o congelados
 	public void congelar() {this.estado = EstadoTablero.CONGELADO;}
