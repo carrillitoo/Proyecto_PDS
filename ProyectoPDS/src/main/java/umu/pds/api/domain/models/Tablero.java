@@ -76,6 +76,7 @@ public class Tablero {
 	//para que la lista no sea modificable y no haya adds (por si se necesita)
 	public List<ListaTareas> getListas() {return Collections.unmodifiableList(this.listas);}
 	public ListaTareas getListaCompletadas() {return listaCompletadas;}
+	public ListaTareas getListaArchivadas() {return listaArchivadas;}
 	public List<TrazaAccion> getHistorial() {return Collections.unmodifiableList(this.historial);}
 	public String getEmailCreador() {return emailCreador;}
 	public String getUrl() {return url;}
@@ -203,7 +204,7 @@ public class Tablero {
 	// metodos de soporte 
 	private void verificarTableroActivo() {
         if (this.estado == EstadoTablero.CONGELADO)
-            throw new IllegalStateException("El tablero " + this.nombre + " está congelado (No se permiten modificaciones)");
+            throw new IllegalStateException("El tablero " + this.nombre + " esta congelado (No se permiten modificaciones)");
     }
 	
 	//---------------------------------FUNCIONES AUXIALARES---------------------------------

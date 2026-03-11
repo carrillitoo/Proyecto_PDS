@@ -13,7 +13,7 @@ public class Tarjeta {
     
     public Tarjeta(UUID id, String titulo, String descripcion) {
         if (titulo == null || titulo.trim().isEmpty()) {
-            throw new IllegalArgumentException("El título no puede estar vacío");
+            throw new IllegalArgumentException("El título no puede estar vaco");
         }
         this.id = id != null ? id : UUID.randomUUID();
         this.titulo = titulo;

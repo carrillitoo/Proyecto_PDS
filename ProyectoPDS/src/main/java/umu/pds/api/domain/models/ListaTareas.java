@@ -43,7 +43,7 @@ public class ListaTareas {
 	//---------------------------------OPERACIONES DE TARJETAS---------------------------------
     public void addTarjeta(Tarjeta tarjeta) throws LimiteListaExcedidoException {
         if (tarjetas.size() >= limiteTarjetas)
-            throw new LimiteListaExcedidoException("La lista " + nombre + " ha alcanzado su límite.");
+            throw new LimiteListaExcedidoException("La lista " + nombre + " ha alcanzado su limite.");
         
         this.tarjetas.add(tarjeta);
     }
