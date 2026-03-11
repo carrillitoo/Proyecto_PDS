@@ -104,29 +104,30 @@ public class Tablero {
 	}
 	
 	//eliminar tarjeta de una lista
-	public void eliminarTarjeta(String nombreLista, Tarjeta tarjeta){
+	public void eliminarTarjeta(String nombreLista, UUID tarjetaId){
 	    verificarTableroActivo();
 	    
 	    ListaTareas listaDestino = getListaSegura(nombreLista);
 	    
-	    listaDestino.extraerTarjeta(tarjeta); 
-	    registrarTraza(TipoAccion.ELIMINAR, tarjeta.getId(), nombreLista, null);
+	    listaDestino.extraerTarjeta(tarjetaId); 
+	    registrarTraza(TipoAccion.ELIMINAR, tarjetaId, nombreLista, null);
 	}
 	
 	//funcion provisional para las tarjetas teniendo en cuenta que los tipos no son definitivos
-	public void moverTarjeta(Tarjeta tarjeta, String nomListaOrigen, String nomListaDestino) throws LimiteListaExcedidoException {
+	public void moverTarjeta(UUID tarjetaId, String nomListaOrigen, String nomListaDestino) throws LimiteListaExcedidoException {
 		//verificarTableroActivo(); // no se pone porque en el enunciado dice que se puede mover pero no añadir
 		
 		ListaTareas listaOrigen = getListaSegura(nomListaOrigen);
         ListaTareas listaDestino = getListaSegura(nomListaDestino);
         
-        //vamos a aplicar la transicion y antes de mover hay que checkear las reglas
-        verificarReglasTransicion(tarjeta, listaDestino);
+        Tarjeta tarjetaAMover = listaOrigen.extraerTarjeta(tarjetaId);
         
-        Tarjeta tarjetaAMover = listaOrigen.extraerTarjeta(tarjeta);
         try {
+        	//vamos a aplicar la transicion y antes de mover hay que checkear las reglas
+            verificarReglasTransicion(tarjetaAMover, listaDestino);
+            
             listaDestino.addTarjeta(tarjetaAMover);
-            registrarTraza(TipoAccion.MOVER, tarjeta.getId(), nomListaOrigen, nomListaDestino);
+            registrarTraza(TipoAccion.MOVER, tarjetaId, nomListaOrigen, nomListaDestino);
         } catch (LimiteListaExcedidoException e) {
             listaOrigen.addTarjeta(tarjetaAMover); // por si esta llena la lista de destino por el limite
             throw e; 
@@ -134,7 +135,7 @@ public class Tablero {
 	}
 
 	//marcar una tarea completada (y por tanto pasandola a la lista especial de completadas)
-	public void checkTarjetaCompletada(Tarjeta tarjeta, String nomLista) {
+	public void checkTarjetaCompletada(UUID tarjeta, String nomLista) {
 		//verificarTableroActivo(); //aqui igual que mover, podemos considerar que el check es un movimiento a completada
 		
 		ListaTareas origen = getListaSegura(nomLista);
@@ -142,7 +143,7 @@ public class Tablero {
 		
 		completada.checkCompletada();
 		this.listaCompletadas.addTarjeta(completada);
-		registrarTraza(TipoAccion.COMPLETAR, tarjeta.getId(), nomLista, listaCompletadas.getNombre());
+		registrarTraza(TipoAccion.COMPLETAR, tarjeta, nomLista, listaCompletadas.getNombre());
 	}
 	
 	//esto falta ver si vale asi o se hace un patron estrategia con mas criterios para la limpieza
@@ -162,7 +163,7 @@ public class Tablero {
 			
 			//como hay que amnejar las trazas no se puede hacer un addAll :( --- asi que vamos una a una
 			for (Tarjeta t : going2Archive) {
-				Tarjeta extraida = l.extraerTarjeta(t);
+				Tarjeta extraida = l.extraerTarjeta(t.getId());
 				this.listaArchivadas.addTarjeta(extraida);
 
 				//la razon de nuestro precioso bucle 

@@ -1,0 +1,37 @@
+package umu.pds.api.application.usecases;
+
+import java.util.UUID;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import umu.pds.api.domain.exceptions.LimiteListaExcedidoException;
+import umu.pds.api.domain.exceptions.TableroNoEncontradoException;
+import umu.pds.api.domain.models.Tablero;
+import umu.pds.api.domain.models.TableroId;
+import umu.pds.api.domain.models.Tarjeta;
+import umu.pds.api.domain.ports.out.TableroRepositoryPort;
+
+@Service
+@Transactional
+public class AddTarjetaListaUseCase {
+	private final TableroRepositoryPort tableroRepository;
+	
+	public AddTarjetaListaUseCase(TableroRepositoryPort tableroRepository) {
+		this.tableroRepository = tableroRepository;
+	}
+	
+	//comando de orquestacion que añade una tarjeta a una lsta en un tablero
+	public Tarjeta ejecutar(String tableroIdStr, String nombreLista, String titulo, String descripcion) throws LimiteListaExcedidoException{
+        
+		TableroId id = TableroId.stringToTableroId(tableroIdStr);
+        Tablero tablero = tableroRepository.buscarPorId(id)
+    									   .orElseThrow(() -> new TableroNoEncontradoException(tableroIdStr));
+
+        Tarjeta nuevaTarjeta = new Tarjeta(UUID.randomUUID(), titulo, descripcion);
+        tablero.addTarjeta(nombreLista, nuevaTarjeta);
+
+        tableroRepository.guardar(tablero);
+        return nuevaTarjeta;
+    }
+}

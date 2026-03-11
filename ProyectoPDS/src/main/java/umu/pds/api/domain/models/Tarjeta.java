@@ -44,5 +44,15 @@ public class Tarjeta {
 		this.completada = true;
 		
 	}
+
+	public static UUID stringToUUID(String idStr) {
+	    if (idStr == null || idStr.isBlank())
+	        throw new IllegalArgumentException("El id de la tarjeta no puede estar vacio");
+	    try {
+	        return UUID.fromString(idStr);
+	    } catch (IllegalArgumentException e) {
+	        throw new IllegalArgumentException("El formato del id de la tarjeta no es valido.", e);
+	    }
+	}
 	
 }

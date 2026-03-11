@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import umu.pds.api.domain.exceptions.LimiteListaExcedidoException;
 
@@ -48,16 +49,16 @@ public class ListaTareas {
         this.tarjetas.add(tarjeta);
     }
     
-    public Tarjeta extraerTarjeta(Tarjeta tarjeta) {
-        Tarjeta tarjetaExtraida = buscarTarjeta(tarjeta)
+    public Tarjeta extraerTarjeta(UUID tarjetaId) {
+        Tarjeta tarjetaExtraida = buscarTarjeta(tarjetaId)
         						  .orElseThrow(() -> new IllegalArgumentException("La tarjeta no esta en la lista " + nombre ));
         
         this.tarjetas.remove(tarjetaExtraida);
         return tarjetaExtraida;
     }
 
-    public boolean containsTarjeta(Tarjeta tarjeta) {
-        return buscarTarjeta(tarjeta).isPresent();
+    public boolean containsTarjeta(UUID tarjetaId) {
+        return buscarTarjeta(tarjetaId).isPresent();
     }
     
 	//---------------------------------MEJORA D LOS PÀSOS PREVIOS---------------------------------
@@ -70,9 +71,9 @@ public class ListaTareas {
     }
     
 	//---------------------------------METODO AUX---------------------------------
-    private Optional<Tarjeta> buscarTarjeta(Tarjeta tarjeta) {
+    private Optional<Tarjeta> buscarTarjeta(UUID tarjetaId) {
         return this.tarjetas.stream()
-			                .filter(t -> t.getId().equals(tarjeta.getId())) 
+			                .filter(t -> t.getId().equals(tarjetaId)) 
 			                .findFirst();
     }
     
