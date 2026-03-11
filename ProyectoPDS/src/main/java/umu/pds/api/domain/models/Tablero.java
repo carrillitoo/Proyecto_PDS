@@ -29,16 +29,20 @@ public class Tablero {
 	 * - añadir las trazas en cada accion
 	 */
 	
+	//---------------------------------ATRIBURTOSS---------------------------------
 	private final TableroId id;				//id con tipo de tableroid para mantener el DDD puro 
 	private String nombre; 					//nombre, classic
 	private EstadoTablero estado; 			//estado como enum
 	private final List<ListaTareas> listas; //lista de listas de tareas (como si fuera una matriz 2D)
 	private final ListaTareas listaCompletadas;
 	private final List<TrazaAccion> historial;
+	private final String emailCreador;
+	private final String url;
+	public static final String PREFIJO_URL = "https://copiatrello.com/";
 	
 	
-	// buildeer
-	public Tablero(TableroId id, String nombre) {
+	//---------------------------------BUIDER---------------------------------
+	public Tablero(TableroId id, String nombre, String email) {
 		if (nombre == null || nombre.trim().isEmpty())
 			throw new IllegalArgumentException("El nombre del tablero no puede estar vacio");
         this.id = id;
@@ -48,9 +52,11 @@ public class Tablero {
         this.listaCompletadas = new ListaTareas("Completadas", ListaTareas.getLimPd());
         this.listas.add(listaCompletadas);
         this.historial = new ArrayList<>();
+        this.emailCreador = email;
+        this.url = PREFIJO_URL + id.toString() ;
     }
 	
-	//getters
+	//---------------------------------GETTERS---------------------------------
 	public EstadoTablero getEstado() {return estado;}
 	public TableroId getId() {return id;}
 	public String getNombre() {return nombre;}
@@ -58,7 +64,12 @@ public class Tablero {
 	public List<ListaTareas> getListas() {return java.util.Collections.unmodifiableList(this.listas);}
 	public ListaTareas getListaCompletadas() {return listaCompletadas;}
 	public List<TrazaAccion> getHistorial() {return java.util.Collections.unmodifiableList(this.historial);}
+	public String getEmailCreador() {return emailCreador;}
+	public String getUrl() {return url;}
+	public static String getPrefijoUrl() {return PREFIJO_URL;}
 	
+	
+	//---------------------------------OPERACIONES DEL TABLERO---------------------------------
 	
 	//añadir lista al tablero
 	public void addLista(ListaTareas nuevaLista) {
@@ -88,7 +99,7 @@ public class Tablero {
 	    registrarTraza(TipoAccion.ELIMINAR, tarjeta.getId(), nombreLista, null);
 	}
 	
-	//marcar una tarea completada (y por tanto pasandola a la lista especial de completadas
+	//marcar una tarea completada (y por tanto pasandola a la lista especial de completadas)
 	public void checkTarjetaCompletada(Tarjeta tarjeta, String nomLista) {
 		verificarTableroActivo();
 		
@@ -119,8 +130,7 @@ public class Tablero {
 	}
 	
 	
-	
-	
+	//---------------------------------LOGICA DE CONGELADOR---------------------------------
 	//funciones para mantener la logica de tableros activos o congelados
 	public void congelar() {this.estado = EstadoTablero.CONGELADO;}
 	
@@ -131,7 +141,8 @@ public class Tablero {
         if (this.estado == EstadoTablero.CONGELADO)
             throw new IllegalStateException("El tablero " + this.nombre + " está congelado (No se permiten modificaciones)");
     }
-
+	
+	//---------------------------------FUNCIONES AUXIALARES---------------------------------
 	//por si en un futuro tenemos cosas que puedan producir aliasing 
     private ListaTareas getListaSegura(String nombreLista) {
         ListaTareas lista = buscarLista(nombreLista);
@@ -148,6 +159,7 @@ public class Tablero {
                 .orElse(null);
     }
     
+    //para mantener la trazabilidad del historial
     private void registrarTraza(TipoAccion accion, UUID tarjetaId, String origen, String destino) {
         TrazaAccion nuevaTraza = new TrazaAccion(accion, tarjetaId, origen, destino, LocalDateTime.now());
         this.historial.add(nuevaTraza);
