@@ -1,4 +1,4 @@
-package umu.pds.ProyectoPDS.domain.models;
+package umu.pds.api.domain.models;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -58,12 +58,12 @@ public class ListaTareasTest {
         Tarjeta tarjeta = new Tarjeta(UUID.randomUUID(), "T1", "Desc");
         
         lista.addTarjeta(tarjeta);
-        assertTrue(lista.containsTarjeta(tarjeta));
+        assertTrue(lista.containsTarjeta(tarjeta.getId())); // <-- CAMBIADO
 
-        Tarjeta extraida = lista.extraerTarjeta(tarjeta);
+        Tarjeta extraida = lista.extraerTarjeta(tarjeta.getId()); // <-- CAMBIADO
         
         assertEquals(tarjeta.getId(), extraida.getId());
-        assertFalse(lista.containsTarjeta(tarjeta)); // Ya no esta em lista
+        assertFalse(lista.containsTarjeta(tarjeta.getId())); // <-- CAMBIADO
     }
 
     @Test
@@ -72,7 +72,7 @@ public class ListaTareasTest {
         Tarjeta tarjetaFantasma = new Tarjeta(UUID.randomUUID(), "No existo", "Desc");
 
         IllegalArgumentException excepcion = assertThrows(IllegalArgumentException.class, () -> {
-            lista.extraerTarjeta(tarjetaFantasma);
+            lista.extraerTarjeta(tarjetaFantasma.getId()); // <-- CAMBIADO
         });
         
         assertTrue(excepcion.getMessage().contains("no esta en la lista"));
@@ -94,7 +94,4 @@ public class ListaTareasTest {
         assertThrows(IllegalArgumentException.class, () -> lista.requerirPasoPrevioPor(null));
         assertThrows(IllegalArgumentException.class, () -> lista.requerirPasoPrevioPor("  "));
     }
-    
-    
-    
 }

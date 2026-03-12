@@ -48,7 +48,7 @@ public class ListaTareasController {
 	
 	 // -------------------------------ENDPOINT Add una lista a un tablero (POST)-------------------------------
 	 @PostMapping
-	 public ResponseEntity<Void> addLista(@PathVariable String idTablero, 
+	 public ResponseEntity<Void> addLista(@PathVariable("idTablero") String idTablero, 
 		 								  @Valid @RequestBody CrearListaRequestDTO request) { 
 	     // Llamamos a nuestro cocinero (Caso de Uso) pasándole el ID y los datos del DTO
 	     crearListaTareasUseCase.ejecutar(idTablero, request.nombreLista(), request.reglas());
@@ -59,8 +59,8 @@ public class ListaTareasController {
 	 
 	//-------------------------------ENDPOINT Add una tarjeta a una lista (POST)-------------------------------
 	@PostMapping("/{nombreLista}/tarjetas")
-	public ResponseEntity<TarjetaResponseDTO> añadirTarjeta(@PathVariable String idTablero,
-													        @PathVariable String nombreLista,
+	public ResponseEntity<TarjetaResponseDTO> añadirTarjeta(@PathVariable("idTablero") String idTablero,
+															@PathVariable("nombreLista") String nombreLista,
 													        @Valid @RequestBody AddTarjetaRequestDTO request) {
 	
 	    Tarjeta nuevaTarjeta = addTarjetaListaUseCase.ejecutar(idTablero, nombreLista, request.titulo(), request.descripcion());
@@ -71,9 +71,9 @@ public class ListaTareasController {
 	
 	//-------------------------------ENDPOINT Eliminar una tarjeta (DELETE)-------------------------------
 	@DeleteMapping("/{nombreLista}/tarjetas/{idTarjeta}")
-	public ResponseEntity<Void> eliminarTarjeta(@PathVariable String idTablero,
-										        @PathVariable String nombreLista,
-										        @PathVariable String idTarjeta) {
+	public ResponseEntity<Void> eliminarTarjeta(@PathVariable("idTablero") String idTablero,
+												@PathVariable("nombreLista") String nombreLista,		
+												@PathVariable("idTarjeta") String idTarjeta) {
 	
 	    eliminarTarjetaUseCase.ejecutar(idTablero, nombreLista, idTarjeta);
 	
@@ -81,8 +81,8 @@ public class ListaTareasController {
 	}
 	//-------------------------------ENDPOINT Mover una tarjeta (PUT)-------------------------------	
 	@PutMapping("/tarjetas/{idTarjeta}/mover")
-	public ResponseEntity<Void> moverTarjeta(@PathVariable String idTablero,
-									         @PathVariable String idTarjeta,
+	public ResponseEntity<Void> moverTarjeta(@PathVariable("idTablero") String idTablero,
+											 @PathVariable("idTarjeta") String idTarjeta,
 									         @Valid @RequestBody MoverTarjetaRequestDTO request) {
 	
 	    moverTarjetaUseCase.ejecutar(idTablero, idTarjeta, request.listaOrigen(), request.listaDestino());
@@ -92,9 +92,9 @@ public class ListaTareasController {
 	
 	//-------------------------------ENDPOINT Completar una tarjeta (PUT)-------------------------------
 	@PutMapping("/{nombreLista}/tarjetas/{idTarjeta}/completar")
-    public ResponseEntity<Void> completarTarjeta(@PathVariable String idTablero,
-										         @PathVariable String nombreLista,
-										         @PathVariable String idTarjeta) {
+    public ResponseEntity<Void> completarTarjeta(@PathVariable("idTablero") String idTablero,
+									    		 @PathVariable("nombreLista") String nombreLista,		
+												 @PathVariable("idTarjeta") String idTarjeta) {
 
         checkTarjetaCompletadaUseCase.ejecutar(idTablero, nombreLista, idTarjeta);
 

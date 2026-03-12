@@ -57,7 +57,7 @@ public class TableroController {
 
     // -------------------------------ENDPOINT Congelar Tablero (PUT)-------------------------------
     @PutMapping("/{idTablero}/congelar")
-    public ResponseEntity<Void> congelarTablero(@PathVariable String idTablero) { 
+    public ResponseEntity<Void> congelarTablero(@PathVariable("idTablero") String idTablero) { 
         
         // llamamos al executor
         cogelarTableroUseCase.ejecutar(idTablero);
@@ -68,7 +68,7 @@ public class TableroController {
 
     // -------------------------------ENDPOINT Desongelar Tablero (PUT)-------------------------------
     @PutMapping("/{idTablero}/descongelar")
-    public ResponseEntity<Void> descongelarTablero(@PathVariable String idTablero) { 
+    public ResponseEntity<Void> descongelarTablero(@PathVariable("idTablero") String idTablero) { 
         
         // llamamos al executor
         descogelarTableroUseCase.ejecutar(idTablero);
@@ -79,7 +79,7 @@ public class TableroController {
     
     // -------------------------------ENDPOINT Get Tablero (GET)-------------------------------
     @GetMapping("/{idTablero}")
-    public ResponseEntity<TableroResponseDTO> getTablero(@PathVariable String idTablero) { 
+    public ResponseEntity<TableroResponseDTO> getTablero(@PathVariable("idTablero") String idTablero) { 
         Tablero tablero = getTableroUseCase.ejecutar(idTablero); //execute usecase
         TableroResponseDTO responseDTO = mapearATableroDTO(tablero); // lo pasamos a un dto
 
@@ -88,7 +88,7 @@ public class TableroController {
     
     // -------------------------------ENDPOINT Compactar Tablero (POST)-------------------------------
     @PostMapping("/{idTablero}/compactar")
-    public ResponseEntity<Void> compactarTablero(@PathVariable String idTablero, @Valid @RequestBody CompactarTableroRequestDTO request) { //sacamos los datos del json
+    public ResponseEntity<Void> compactarTablero(@PathVariable("idTablero") String idTablero, @Valid @RequestBody CompactarTableroRequestDTO request) { //sacamos los datos del json
         
         //call al usecase
         compactarTableroUseCase.ejecutar(idTablero, request.diasInactividad());

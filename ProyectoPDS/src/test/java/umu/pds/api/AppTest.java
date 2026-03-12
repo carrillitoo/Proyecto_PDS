@@ -1,4 +1,4 @@
-package umu.pds.ProyectoPDS;
+package umu.pds.api;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

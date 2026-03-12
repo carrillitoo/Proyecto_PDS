@@ -1,4 +1,4 @@
-package umu.pds.ProyectoPDS.domain.models;
+package umu.pds.api.domain.models;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -101,13 +101,13 @@ public class TableroTest {
         assertTrue(excepcion.getMessage().contains("esta congelado"));
 
         //se checkea que se puede mover
-        tablero.moverTarjeta(tarjeta, "To Do", "Doing");
+        tablero.moverTarjeta(tarjeta.getId(), "To Do", "Doing"); // <-- CAMBIADO
 
         ListaTareas listaDoing = tablero.getListas().stream()
-									                .filter(l -> l.getNombre().equals("Doing"))
-									                .findFirst()
-									                .get();
-        assertTrue(listaDoing.containsTarjeta(tarjeta));
+                                                .filter(l -> l.getNombre().equals("Doing"))
+                                                .findFirst()
+                                                .get();
+        assertTrue(listaDoing.containsTarjeta(tarjeta.getId())); // <-- CAMBIADO
     }
     
     @Test
@@ -120,11 +120,11 @@ public class TableroTest {
         tablero.addTarjeta("To Do", tarjeta);
         
         ListaTareas listaToDo = tablero.getListas().stream()
-    											   .filter(l -> l.getNombre().equals("To Do"))
-								                   .findFirst()
-								                   .get();
+                                                   .filter(l -> l.getNombre().equals("To Do"))
+                                                   .findFirst()
+                                                   .get();
         
-        assertTrue(listaToDo.containsTarjeta(tarjeta));
+        assertTrue(listaToDo.containsTarjeta(tarjeta.getId())); // <-- CAMBIADO
     }
     
     @Test
@@ -140,15 +140,15 @@ public class TableroTest {
         tablero.compactarTablero(-1);
         
         ListaTareas listaToDo = tablero.getListas().stream()
-        										   .filter(l -> l.getNombre().equals("To Do"))
-        										   .findFirst()
-        										   .get();
+                                                   .filter(l -> l.getNombre().equals("To Do"))
+                                                   .findFirst()
+                                                   .get();
                 
         //deberia no estar en to do
-        assertFalse(listaToDo.containsTarjeta(tarjeta));
+        assertFalse(listaToDo.containsTarjeta(tarjeta.getId())); // <-- CAMBIADO
         
         //peeero deberia esta en archivadas
-        assertTrue(tablero.getListaArchivadas().containsTarjeta(tarjeta));
+        assertTrue(tablero.getListaArchivadas().containsTarjeta(tarjeta.getId())); // <-- CAMBIADO
         
         //checkeamos ya que estamos la traza
         TrazaAccion ultimaTraza = tablero.getHistorial().get(tablero.getHistorial().size() - 1);
@@ -180,17 +180,16 @@ public class TableroTest {
 
         //movlmos la tarea a la que no se puede y checkeamos que salte el limite
         assertThrows(LimiteListaExcedidoException.class, () -> {
-            tablero.moverTarjeta(tarjetaAMover, "To Do", "Doing");
+            tablero.moverTarjeta(tarjetaAMover.getId(), "To Do", "Doing"); // <-- CAMBIADO
         });
 
         ListaTareas listaToDo = tablero.getListas().stream().filter(l -> l.getNombre().equals("To Do")).findFirst().get();
         ListaTareas listaDoing = tablero.getListas().stream().filter(l -> l.getNombre().equals("Doing")).findFirst().get();
 
-        assertTrue(listaToDo.containsTarjeta(tarjetaAMover), "La tarjeta deberia haber vuelto a To Do");
-        assertFalse(listaDoing.containsTarjeta(tarjetaAMover), "La tarjeta NO debería haber entrado en Doing");
+        assertTrue(listaToDo.containsTarjeta(tarjetaAMover.getId()), "La tarjeta deberia haber vuelto a To Do"); // <-- CAMBIADO
+        assertFalse(listaDoing.containsTarjeta(tarjetaAMover.getId()), "La tarjeta NO debería haber entrado en Doing"); // <-- CAMBIADO
     }
     
-
 
     //--------------------------------------TESTS TRAZAS-------------------------------------
     @Test //checkear que cuando metemos una tarjeta, la traza se registra en el historial
@@ -202,11 +201,11 @@ public class TableroTest {
         tablero.addTarjeta("To Do", tarjeta);
 
         ListaTareas listaToDo = tablero.getListas().stream()
-        										   .filter(l -> l.getNombre().equals("To Do"))
-        										   .findFirst()
-        										   .get();
+                                                   .filter(l -> l.getNombre().equals("To Do"))
+                                                   .findFirst()
+                                                   .get();
 
-        assertTrue(listaToDo.containsTarjeta(tarjeta)); //check basico inicial
+        assertTrue(listaToDo.containsTarjeta(tarjeta.getId())); // <-- CAMBIADO
         
         //check del historial
         assertEquals(1, tablero.getHistorial().size());
@@ -224,7 +223,7 @@ public class TableroTest {
         Tarjeta tarjeta = new Tarjeta(UUID.randomUUID(), "Hacer tests", "Test");
         tablero.addTarjeta("To Do", tarjeta); // Traza 1 add
 
-        tablero.moverTarjeta(tarjeta, "To Do", "Doing"); // Traza 2 move
+        tablero.moverTarjeta(tarjeta.getId(), "To Do", "Doing"); // <-- CAMBIADO
 
         assertEquals(2, tablero.getHistorial().size(), "Deberia haber 2 trazas (Añadir y Mover)");
         
@@ -242,7 +241,7 @@ public class TableroTest {
         Tarjeta tarjeta = new Tarjeta(UUID.randomUUID(), "Tarea casi lista", "Test");
         tablero.addTarjeta("Doing", tarjeta); // Traza 1 add
 
-        tablero.checkTarjetaCompletada(tarjeta, "Doing"); // Traza 2 complete
+        tablero.checkTarjetaCompletada(tarjeta.getId(), "Doing"); // <-- CAMBIADO
 
         assertEquals(2, tablero.getHistorial().size());
         
@@ -259,7 +258,7 @@ public class TableroTest {
         Tarjeta tarjeta = new Tarjeta(UUID.randomUUID(), "Tarea equivocada", "Test");
         tablero.addTarjeta("To Do", tarjeta); // Traza 1 add
 
-        tablero.eliminarTarjeta("To Do", tarjeta); // Traza 2 rm
+        tablero.eliminarTarjeta("To Do", tarjeta.getId()); // <-- CAMBIADO
 
         assertEquals(2, tablero.getHistorial().size());
         
@@ -285,7 +284,7 @@ public class TableroTest {
 
         //se intenta mover directamente a done peeeeero no se puede y ademas checkeamos que salta la excepcion que hemos creado para esto :)
         TransicionInvalidaException excepcion = assertThrows(TransicionInvalidaException.class, () -> {
-            tablero.moverTarjeta(tarjeta, "To Do", "Done");
+            tablero.moverTarjeta(tarjeta.getId(), "To Do", "Done"); // <-- CAMBIADO
         });
 
         assertTrue(excepcion.getMessage().contains("debe haber pasado antes por In Review"));
@@ -304,13 +303,13 @@ public class TableroTest {
         tablero.addTarjeta("To Do", tarjeta);
 
         // Accion: Hacemos el camino correcto
-        tablero.moverTarjeta(tarjeta, "To Do", "In Review"); // mov 1 (cumple tregla)
-        tablero.moverTarjeta(tarjeta, "In Review", "Done");  // mov 2 (pasa el check
+        tablero.moverTarjeta(tarjeta.getId(), "To Do", "In Review"); // <-- CAMBIADO
+        tablero.moverTarjeta(tarjeta.getId(), "In Review", "Done");  // <-- CAMBIADO
 
         //no exceptions (debe)
         ListaTareas listaFinal = tablero.getListas().stream()
                 .filter(l -> l.getNombre().equals("Done")).findFirst().get();
-        assertTrue(listaFinal.containsTarjeta(tarjeta));
+        assertTrue(listaFinal.containsTarjeta(tarjeta.getId())); // <-- CAMBIADO
     }
     
     @Test //movimiento compuesto entre lista para verificar las ñññññññññ
@@ -328,11 +327,11 @@ public class TableroTest {
         tablero.addTarjeta("To Do", tarjeta);
 
         // primero movemos bien
-        tablero.moverTarjeta(tarjeta, "To Do", "Dev");
+        tablero.moverTarjeta(tarjeta.getId(), "To Do", "Dev"); // <-- CAMBIADO
         
         //intentamos saltar a done directamente
         TransicionInvalidaException excepcion = assertThrows(TransicionInvalidaException.class, () -> {
-            tablero.moverTarjeta(tarjeta, "Dev", "Done");
+            tablero.moverTarjeta(tarjeta.getId(), "Dev", "Done"); // <-- CAMBIADO
         });
 
         assertTrue(excepcion.getMessage().contains("debe haber pasado antes por QA"));
