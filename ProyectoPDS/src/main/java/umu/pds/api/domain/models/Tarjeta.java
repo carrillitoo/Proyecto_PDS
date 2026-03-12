@@ -9,7 +9,7 @@ public class Tarjeta {
     private String titulo;
     private String descripcion;
     private boolean completada;
-    private final LocalDateTime fechaCreacion;
+    private LocalDateTime fechaCreacion;
     
     public Tarjeta(UUID id, String titulo, String descripcion) {
         if (titulo == null || titulo.trim().isEmpty()) {
@@ -20,6 +20,16 @@ public class Tarjeta {
         this.descripcion = descripcion;
         this.completada = false;
         this.fechaCreacion = LocalDateTime.now();
+    }
+    
+    //para cuando se recupere en bd se pueda crear una entera fuera de la experiencia de usuario
+    //REPITO, PARA LA LOGICA DE RECUPERAR JPA
+ // Método para saltarse la lógica de negocio al leer de la Base de Datos
+    public static Tarjeta reconstituir(UUID id, String titulo, String descripcion, boolean completada, LocalDateTime fechaCreacion) {
+        Tarjeta tarjeta = new Tarjeta(id, titulo, descripcion);
+        tarjeta.completada = completada;
+        tarjeta.fechaCreacion = fechaCreacion;
+        return tarjeta;
     }
     
     
@@ -42,7 +52,6 @@ public class Tarjeta {
 
 	public void checkCompletada() {
 		this.completada = true;
-		
 	}
 
 	public static UUID stringToUUID(String idStr) {

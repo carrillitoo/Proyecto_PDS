@@ -32,6 +32,20 @@ public class ListaTareas {
     
     public ListaTareas(String nom) {this(nom, LIM_PD);}
     
+    //esto es para reconstruir un objeto y en la persistencia fuera de la experiencia de usuario 
+    public static ListaTareas reconstituir(String nombre, int limiteTarjetas, List<Tarjeta> tarjetas, List<String> reglas) {
+        ListaTareas lista = new ListaTareas(nombre, limiteTarjetas);
+        
+        lista.getTarjetas().clear();
+        lista.getTarjetas().addAll(tarjetas);
+        
+        lista.getListasPreviasRequeridas().clear();
+        lista.getListasPreviasRequeridas().addAll(reglas);
+        
+        return lista;
+    }
+    
+    
     //---------------------------------GETTERS---------------------------------
     public int getLimiteTarjetas() {return limiteTarjetas;}
     public String getNombre() {return nombre;}

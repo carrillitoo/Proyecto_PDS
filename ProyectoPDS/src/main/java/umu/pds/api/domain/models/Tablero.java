@@ -44,7 +44,7 @@ public class Tablero {
 	private final ListaTareas listaArchivadas;			//lista compactada de tareas archivadas
 	private final List<TrazaAccion> historial;			//historial de trazas de acciones
 	private final String emailCreador;					//email del usuario que crea el tablero (obligatorio)
-	private final String url;							//url para acceder al tablero y/O compartirla xra que accendasn
+	private String url;									//url para acceder al tablero y/O compartirla xra que accendasn
 	
 	
 	
@@ -67,6 +67,22 @@ public class Tablero {
         this.historial = new ArrayList<>();
         this.emailCreador = email;
         this.url = PREFIJO_URL + id.toString() ;
+    }
+	
+	// para la capa JPA como el resto
+    public static Tablero reconstituir(TableroId id, String nombre, String emailCreador, EstadoTablero estado, String url, List<ListaTareas> listas, List<TrazaAccion> historial) {
+        Tablero tablero = new Tablero(id, nombre, emailCreador);
+        
+        tablero.estado = estado;
+        tablero.url = url;
+        
+        tablero.listas.clear();
+        tablero.listas.addAll(listas);
+        
+        tablero.historial.clear();
+        tablero.historial.addAll(historial);
+        
+        return tablero;
     }
 	
 	//---------------------------------GETTERS---------------------------------
