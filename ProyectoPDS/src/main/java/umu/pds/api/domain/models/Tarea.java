@@ -1,8 +1,8 @@
 package umu.pds.api.domain.models;
 
-/**
- * Value Object que representa los datos específicos de una Tarea simple.
- */
+
+// V.O que representa los datos de una tarea
+
 public record Tarea(String contenido) {
     public Tarea {
         if (contenido == null || contenido.trim().isEmpty()) {

@@ -9,9 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-/**
- * Aggregate Root del Bounded Context de Tarjetas (Sealed).
- */
+//Solo permite la herencia a TarjetaTarea y a tarjetaCheckList
 public abstract sealed class Tarjeta permits TarjetaTarea, TarjetaChecklist {
 
     private final UUID id;
@@ -33,11 +31,11 @@ public abstract sealed class Tarjeta permits TarjetaTarea, TarjetaChecklist {
         this.fechaCreacion = LocalDateTime.now();
     }
 
-    // --- REGLAS DE NEGOCIO ---
+    // REGLAS DE NEGOCIO 
 
     public void marcarComoCompletada() {
         if (this.completada) {
-            throw new OperacionInvalidaTarjetaException("La tarjeta ya está completada.");
+            throw new OperacionInvalidaTarjetaException("La tarjeta ya está completada");
         }
         this.completada = true;
     }
@@ -46,7 +44,7 @@ public abstract sealed class Tarjeta permits TarjetaTarea, TarjetaChecklist {
         if (nuevaEtiqueta == null) {
             throw new IllegalArgumentException("La etiqueta es nula");
         }
-        // Regla: No repetir color
+        // No se puede repetir color
         boolean colorDuplicado = etiquetas.stream()
                 .anyMatch(e -> e.color().equals(nuevaEtiqueta.color()));
                 
@@ -63,7 +61,7 @@ public abstract sealed class Tarjeta permits TarjetaTarea, TarjetaChecklist {
         }
     }
 
-    // --- GETTERS (Encapsulados e Inmutables hacia el exterior) ---
+    // GETTERS
     
     public UUID getId() { return id; }
     

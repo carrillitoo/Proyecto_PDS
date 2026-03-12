@@ -7,9 +7,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Entidad concreta para tarjetas que contienen un Checklist.
- */
+// Entidad para tarjetas que contienen una Checklist
+ 
 public final class TarjetaChecklist extends Tarjeta {
 
     private final List<Checklist> items;
@@ -30,21 +29,20 @@ public final class TarjetaChecklist extends Tarjeta {
         this.items.removeIf(item -> item.getId().equals(itemId));
     }
 
-    /**
-     * Regla de negocio polimórfica: 
-     * Solo se puede completar esta tarjeta si TODOS sus items están completados.
-     */
+    
+     // Solo se puede completar la tarjeta si todos sus items están ya completados
+     
     @Override
     public void marcarComoCompletada() {
         boolean todosCompletados = items.stream().allMatch(Checklist::isCompletado);
         
         if (!todosCompletados) {
             throw new OperacionInvalidaTarjetaException(
-                "No se puede completar la tarjeta. Hay items del checklist sin terminar."
+                "No se puede completar la tarjeta, hay items de la checklist sin terminar"
             );
         }
         
-        // Si todo está bien, llamamos a la lógica base para marcarla
+        // Si todo está bien, llamamos a la lógica para marcarla
         super.marcarComoCompletada();
     }
 

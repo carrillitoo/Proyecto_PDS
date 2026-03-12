@@ -2,10 +2,8 @@ package umu.pds.api.domain.models;
 
 import java.util.UUID;
 
-/**
- * Entidad concreta para tarjetas de tipo Tarea.
- * Es 'final' para cerrar la jerarquía permitida por la clase sellada Tarjeta.
- */
+ // Entidad  para tarjetas de tipo Tarea.
+
 public final class TarjetaTarea extends Tarjeta {
     
     private Tarea tarea;

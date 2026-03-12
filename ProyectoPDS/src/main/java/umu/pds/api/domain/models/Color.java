@@ -3,9 +3,8 @@ package umu.pds.api.domain.models;
 import umu.pds.api.domain.exceptions.DomainException;
 import java.io.Serial;
 
-/**
- * Value Object inmutable que representa un color.
- */
+// V.O que representa un color
+
 public record Color(String hexCode) {
 
     public Color {
@@ -22,7 +21,7 @@ public record Color(String hexCode) {
     }
 
     //PREGUNTAR AL PROFESOR SI DEJARLO AQUI O PASARLO A EXCEPCIONES
-     // Excepción específica para los colores inválidos.
+     // Excepción concreta para los colores inválidos
      
     public static class ColorInvalidoException extends DomainException {
         
