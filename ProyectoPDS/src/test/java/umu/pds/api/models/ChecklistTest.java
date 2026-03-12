@@ -1,7 +1,9 @@
-package umu.pds.api.domain.models;
+package umu.pds.api.models;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import umu.pds.api.domain.models.Checklist;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,8 +29,7 @@ class ChecklistTest {
         assertFalse(item.isCompletado()); // Vuelve a false
     }
 
-    @Test
-    @DisplayName("Debe lanzar excepción si la descripción es nula o vacía")
+    @Test // Lanza excepción si la descripción es nula o vacía
     void lanzarExcepcionSiDescripcionInvalida() {
         assertThrows(IllegalArgumentException.class, () -> new Checklist(null));
         assertThrows(IllegalArgumentException.class, () -> new Checklist("   "));

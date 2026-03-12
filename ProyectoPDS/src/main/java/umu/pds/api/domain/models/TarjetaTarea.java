@@ -29,7 +29,7 @@ public final class TarjetaTarea extends Tarjeta {
     }
 
 	@Override
-	protected void marcarComoCompletada() {
+	public void marcarComoCompletada() {
 		if (this.isCompletada()) {
             throw new OperacionInvalidaTarjetaException("La tarjeta de tipo tarea ya está completada");
         }

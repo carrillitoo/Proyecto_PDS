@@ -34,7 +34,7 @@ public abstract class Tarjeta{
 
     protected abstract void marcarComoCompletada();
 
-    public void añadirEtiqueta(Etiqueta nuevaEtiqueta) {
+    public void anadirEtiqueta(Etiqueta nuevaEtiqueta) {
         if (nuevaEtiqueta == null) {
             throw new IllegalArgumentException("La etiqueta es nula");
         }
