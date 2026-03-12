@@ -26,13 +26,11 @@ public class CrearTarjetaUseCase implements CrearTarjetaPort {
     public Tarjeta ejecutar(CrearTarjetaCommand command) {
         Tarjeta nuevaTarjeta = switch (command.tipo()) {
             case TAREA -> new TarjetaTarea(
-                    null, // El ID se genera dentro del constructor del domain
                     command.titulo(),
                     command.descripcion(),
                     new Tarea("Nueva tarea sin contenido") // Estado de inicio predeterminado
             );
             case CHECKLIST -> new TarjetaChecklist(
-                    null,
                     command.titulo(),
                     command.descripcion()
             );

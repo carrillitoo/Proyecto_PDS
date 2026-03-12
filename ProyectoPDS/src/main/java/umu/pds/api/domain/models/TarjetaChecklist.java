@@ -13,8 +13,8 @@ public final class TarjetaChecklist extends Tarjeta {
 
     private final List<Checklist> items;
 
-    public TarjetaChecklist(UUID id, String titulo, String descripcion) {
-        super(id, titulo, descripcion);
+    public TarjetaChecklist(String titulo, String descripcion) {
+        super(titulo, descripcion);
         this.items = new ArrayList<>();
     }
 
@@ -43,7 +43,7 @@ public final class TarjetaChecklist extends Tarjeta {
         }
         
         // Si todo está bien, llamamos a la lógica para marcarla
-        super.marcarComoCompletada();
+        this.completada = true;
     }
 
     public List<Checklist> getItems() {

@@ -1,7 +1,6 @@
 package umu.pds.api.domain.models;
 
 import umu.pds.api.domain.exceptions.EtiquetaInvalidaException;
-import umu.pds.api.domain.exceptions.OperacionInvalidaTarjetaException;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -9,21 +8,21 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-//Solo permite la herencia a TarjetaTarea y a tarjetaCheckList
-public abstract sealed class Tarjeta permits TarjetaTarea, TarjetaChecklist {
+//Para herencia a TarjetaTarea y a tarjetaCheckList
+public abstract class Tarjeta{
 
     private final UUID id;
     private String titulo;
     private String descripcion;
-    private boolean completada;
+    protected boolean completada;
     private final Set<Etiqueta> etiquetas;
     private final LocalDateTime fechaCreacion;
 
-    protected Tarjeta(UUID id, String titulo, String descripcion) {
+    protected Tarjeta(String titulo, String descripcion) {
         if (titulo == null || titulo.trim().isEmpty()) {
             throw new IllegalArgumentException("El título no puede estar vacío");
         }
-        this.id = id != null ? id : UUID.randomUUID();
+        this.id = UUID.randomUUID();
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.completada = false;
@@ -33,12 +32,7 @@ public abstract sealed class Tarjeta permits TarjetaTarea, TarjetaChecklist {
 
     // REGLAS DE NEGOCIO 
 
-    public void marcarComoCompletada() {
-        if (this.completada) {
-            throw new OperacionInvalidaTarjetaException("La tarjeta ya está completada");
-        }
-        this.completada = true;
-    }
+    protected abstract void marcarComoCompletada();
 
     public void añadirEtiqueta(Etiqueta nuevaEtiqueta) {
         if (nuevaEtiqueta == null) {
@@ -49,13 +43,13 @@ public abstract sealed class Tarjeta permits TarjetaTarea, TarjetaChecklist {
                 .anyMatch(e -> e.color().equals(nuevaEtiqueta.color()));
                 
         if (colorDuplicado) {
-            throw new EtiquetaInvalidaException("La tarjeta ya tiene una etiqueta con ese color.");
+            throw new EtiquetaInvalidaException("La tarjeta ya tiene una etiqueta con ese color");
         }
 
         this.etiquetas.add(nuevaEtiqueta);
     }
 
-    public void removerEtiqueta(Etiqueta etiqueta) {
+    public void eliminarEtiqueta(Etiqueta etiqueta) {
         if (etiqueta != null) {
             this.etiquetas.remove(etiqueta);
         }
