@@ -36,11 +36,11 @@ public class ListaTareas {
     public static ListaTareas reconstituir(String nombre, int limiteTarjetas, List<Tarjeta> tarjetas, List<String> reglas) {
         ListaTareas lista = new ListaTareas(nombre, limiteTarjetas);
         
-        lista.getTarjetas().clear();
-        lista.getTarjetas().addAll(tarjetas);
+        lista.tarjetas.clear();
+        lista.tarjetas.addAll(tarjetas);
         
-        lista.getListasPreviasRequeridas().clear();
-        lista.getListasPreviasRequeridas().addAll(reglas);
+        lista.listasPreviasRequeridas.clear();
+        lista.listasPreviasRequeridas.addAll(reglas);
         
         return lista;
     }

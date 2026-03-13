@@ -66,4 +66,16 @@ public class GlobalExceptionHandler {
         
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
+    
+  //-------------------------------ERROR 400 - ARGS NO VALIDOS EN ENTIDAD-------------------------------
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponseDTO> handleIllegalArgument(IllegalArgumentException ex) {
+        ErrorResponseDTO error = new ErrorResponseDTO(
+                "Bad Request",
+                ex.getMessage(),
+                LocalDateTime.now()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+    
 }
