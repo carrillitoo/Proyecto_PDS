@@ -1,6 +1,9 @@
 package umu.pds.api.domain.models;
 
 
+import java.time.LocalDateTime;
+import java.util.UUID;
+
 import umu.pds.api.domain.exceptions.OperacionInvalidaTarjetaException;
 
  // Entidad  para tarjetas de tipo Tarea.
@@ -17,6 +20,13 @@ public final class TarjetaTarea extends Tarjeta {
         this.tarea = tarea;
     }
 
+    // Constructor para la BD
+    public TarjetaTarea(UUID id, String titulo, String descripcion, boolean completada, LocalDateTime fechaCreacion, Tarea tarea) {
+        super(id, titulo, descripcion, completada, fechaCreacion);
+        if (tarea == null) throw new IllegalArgumentException("La tarea no puede ser nula");
+        this.tarea = tarea;
+    }
+    
     public Tarea getTarea() {
         return tarea;
     }

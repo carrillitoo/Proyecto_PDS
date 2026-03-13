@@ -30,6 +30,15 @@ public abstract class Tarjeta{
         this.fechaCreacion = LocalDateTime.now();
     }
 
+    // Constructor para la BD
+    protected Tarjeta(UUID id, String titulo, String descripcion, boolean completada, LocalDateTime fechaCreacion) {
+        this.id = id;
+        this.titulo = titulo;
+        this.descripcion = descripcion;
+        this.completada = completada;
+        this.etiquetas = new HashSet<>();
+        this.fechaCreacion = fechaCreacion;
+    }
     // REGLAS DE NEGOCIO 
 
     protected abstract void marcarComoCompletada();

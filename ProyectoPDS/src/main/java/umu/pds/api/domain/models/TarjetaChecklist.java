@@ -2,6 +2,7 @@ package umu.pds.api.domain.models;
 
 import umu.pds.api.domain.exceptions.OperacionInvalidaTarjetaException;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -17,7 +18,14 @@ public final class TarjetaChecklist extends Tarjeta {
         super(titulo, descripcion);
         this.items = new ArrayList<>();
     }
-
+    
+    // Constructor para la BD
+    public TarjetaChecklist(UUID id, String titulo, String descripcion, boolean completada, LocalDateTime fechaCreacion) {
+        super(id, titulo, descripcion, completada, fechaCreacion);
+        this.items = new ArrayList<>();
+    }
+    
+    
     public void anadirItem(Checklist item) {
         if (item == null) {
             throw new IllegalArgumentException("El item no puede ser nulo");
