@@ -14,9 +14,12 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.release>21</maven.compiler.release>
     
+    <sonar.coverage.jacoco.xmlReportPaths>target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+    <sonar.coverage.exclusions>**/javafx/**, **/*Application.java</sonar.coverage.exclusions>
+    
     <spring-boot.version>3.2.5</spring-boot.version>
     <javafx.version>21.0.2</javafx.version>
-  <sonar.organization>carrillitoo</sonar.organization>
+    <sonar.organization>carrillitoo</sonar.organization>
   </properties>
 
   <dependencyManagement>
@@ -168,8 +171,6 @@
           </execution>
         </executions>
       </plugin>
-      
-      
       
     </plugins>
   </build>
