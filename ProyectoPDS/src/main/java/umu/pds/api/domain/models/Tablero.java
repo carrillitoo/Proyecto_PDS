@@ -157,7 +157,7 @@ public class Tablero {
 		ListaTareas origen = getListaSegura(nomLista);
 		Tarjeta completada = origen.extraerTarjeta(tarjeta);
 		
-		completada.checkCompletada();
+		completada.isCompletada();
 		this.listaCompletadas.addTarjeta(completada);
 		registrarTraza(TipoAccion.COMPLETAR, tarjeta, nomLista, listaCompletadas.getNombre());
 	}
