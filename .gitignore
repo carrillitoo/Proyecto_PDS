@@ -43,8 +43,6 @@ jacoco.exec
 .idea/
 *.iml
 *.iws
-out/
-
 # Eclipse / Spring Tool Suite (Busca en cualquier subcarpeta)
 .apt_generated/
 .classpath
