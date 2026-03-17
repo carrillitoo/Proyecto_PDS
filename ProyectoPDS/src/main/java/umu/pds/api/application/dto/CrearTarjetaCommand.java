@@ -8,7 +8,6 @@ public record CrearTarjetaCommand(
         String descripcion,
         TipoTarjeta tipo
 ) {
-	// AQUI NO SE SI DEJAR EL ENUM O SACARLO A OTRA CLASE
     public enum TipoTarjeta {
         TAREA,
         CHECKLIST
