@@ -24,7 +24,7 @@ public class TarjetaController {
         this.anadirEtiquetaPort = anadirEtiquetaPort;
     }
 
-    // ENDPOINT: Creación una tarjeta
+    // ENDPOINT -> Creación una tarjeta
     // POST http://localhost:8080/api/tarjetas
     @PostMapping
     public ResponseEntity<Tarjeta> crearTarjeta(@RequestBody CrearTarjetaCommand command) {
@@ -35,14 +35,14 @@ public class TarjetaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(tarjetaCreada);
     }
 
-    // ENDPOINT: Añadimos una etiqueta a una tarjeta existente
+    // ENDPOINT -> Añadimos una etiqueta a una tarjeta existente
     // POST http://localhost:8080/api/tarjetas/{id}/etiquetas
     @PostMapping("/{id}/etiquetas")
     public ResponseEntity<Tarjeta> anadirEtiqueta(
-            @PathVariable UUID id, 
+            @PathVariable("id") UUID id, 
             @RequestBody AnadirEtiquetaWebRequest request) {
         
-        // Unimos el ID de la URL con los datos del JSON en nuestro Command de Aplicación
+        // Unimos el ID de la URL con los datos del JSON en nuestro Command de aplicación
         AnadirEtiquetaCommand command = new AnadirEtiquetaCommand(id, request.nombreEtiqueta(), request.colorHex());
         
         // Llamamos al caso de uso
