@@ -1,37 +1,46 @@
 package umu.pds.api.domain.models;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Usuario {
-    private final String id; // ID interno (UUID) para persistencia
-    private final Email email; // Identificador natural y para la API
+    private final Email email;
     private String codigoAcceso;
-    private final List<Invitacion> invitaciones; //no lo tengo claro
+    
+    // Relación directa Tablero -> Rol (Simplificado sin clase Invitacion)
+    private final Map<String, Rol> accesosTableros;
 
     public Usuario(Email email) {
-        this.id = UUID.randomUUID().toString();
         this.email = email;
-        this.invitaciones = new ArrayList<>();
+        this.accesosTableros = new HashMap<>();
     }
 
-    public void generarCodigoAcceso(String codigo) {
-        this.codigoAcceso = codigo;
+    // Lógica de Negocio: Gestión de Accesos
+    public void concederAccesoATablero(String tableroId, Rol rol) {
+        this.accesosTableros.put(tableroId, rol);
+    }
+
+    public void revocarAcceso(String tableroId) {
+        this.accesosTableros.remove(tableroId);
+    }
+
+    // Lógica de Negocio: Autenticación
+    public void generarCodigoAcceso(String nuevoCodigo) {
+        this.codigoAcceso = nuevoCodigo;
     }
 
     public boolean esCodigoValido(String intento) {
         return this.codigoAcceso != null && this.codigoAcceso.equals(intento);
     }
 
-    public void recibirInvitacion(Invitacion invitacion) {
-        this.invitaciones.add(invitacion);
+    // Getters protegidos para Clean Code
+    public Email getEmail() {
+        return email;
     }
 
-    // Getters
-    public String getId() { return id; }
-    public Email getEmail() { return email; }
-    public String getCodigoAcceso() { return codigoAcceso; }
-    public List<Invitacion> getInvitaciones() { return Collections.unmodifiableList(invitaciones); }
+    public Map<String, Rol> getAccesosTableros() {
+        // Devolvemos una vista no modificable para proteger el estado interno
+        return Collections.unmodifiableMap(accesosTableros);
+    }
 }
