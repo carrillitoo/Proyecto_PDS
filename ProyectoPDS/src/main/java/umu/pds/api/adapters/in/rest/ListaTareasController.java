@@ -63,7 +63,7 @@ public class ListaTareasController {
 															@PathVariable("nombreLista") String nombreLista,
 													        @Valid @RequestBody AddTarjetaRequestDTO request) {
 	
-	    Tarjeta nuevaTarjeta = addTarjetaListaUseCase.ejecutar(idTablero, nombreLista, request.titulo(), request.descripcion());
+	    Tarjeta nuevaTarjeta = addTarjetaListaUseCase.ejecutar(idTablero, nombreLista, request.titulo(), request.descripcion(), request.tipo(), request.contenidoTarea());
 	
 	    TarjetaResponseDTO responseDTO = mapearATarjetaDTO(nuevaTarjeta);
 	    return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);

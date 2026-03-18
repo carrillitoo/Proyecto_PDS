@@ -3,9 +3,15 @@ package umu.pds.api.application.dto;
 import jakarta.validation.constraints.NotBlank;
 
 public record AddTarjetaRequestDTO(
-		@NotBlank(message = "El titulo de la tarjeta es obligatoria")
-	    String titulo,
+		@NotBlank(message = "El titulo de la tarjeta es obligatoria") 
+		String titulo,
 
-	    @NotBlank(message = "la descripción de la tarjeta es obligatoria")
-	    String descripcion
-		) {}
+		@NotBlank(message = "la descripción de la tarjeta es obligatoria") 
+		String descripcion,
+
+		String tipo,
+		String contenidoTarea) {
+	public AddTarjetaRequestDTO(String titulo, String descripcion) { // tests
+		this(titulo, descripcion, "TAREA", "Contenido general");
+	}
+}

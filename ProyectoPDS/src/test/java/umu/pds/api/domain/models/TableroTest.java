@@ -13,6 +13,7 @@ import umu.pds.api.domain.models.ListaTareas;
 import umu.pds.api.domain.models.Tablero;
 import umu.pds.api.domain.models.TableroId;
 import umu.pds.api.domain.models.Tarjeta;
+import umu.pds.api.domain.models.TarjetaChecklist;
 import umu.pds.api.domain.models.TipoAccion;
 import umu.pds.api.domain.models.TrazaAccion;
 
@@ -87,7 +88,7 @@ public class TableroTest {
     void deberiaPermitirMoverPeroNoAddCuandoEstaCongelado() throws LimiteListaExcedidoException {
         tablero.addLista(new ListaTareas("To Do"));
         tablero.addLista(new ListaTareas("Doing"));
-        Tarjeta tarjeta = new Tarjeta(UUID.randomUUID(), "Tarea bloqueada", "Test");
+        Tarjeta tarjeta = new TarjetaChecklist(UUID.randomUUID(), "Tarea bloqueada", "Test");
         tablero.addTarjeta("To Do", tarjeta);
 
         // CONGELAMOS
@@ -95,7 +96,7 @@ public class TableroTest {
 
         //checkeamos que sea la excepcion concretra, al añadir ya k no se puede
         IllegalStateException excepcion = assertThrows(IllegalStateException.class, () -> {
-            tablero.addTarjeta("To Do", new Tarjeta(UUID.randomUUID(), "Nueva Tarea", "No deberia entrar"));
+            tablero.addTarjeta("To Do", new TarjetaChecklist(UUID.randomUUID(), "Nueva Tarea", "No deberia entrar"));
 
         });
         assertTrue(excepcion.getMessage().contains("esta congelado"));
@@ -116,7 +117,7 @@ public class TableroTest {
         tablero.congelar();
         tablero.descongelar(); // volvemos a descongelar
         
-        Tarjeta tarjeta = new Tarjeta(UUID.randomUUID(), "Nueva", "Test");
+        Tarjeta tarjeta = new TarjetaChecklist(UUID.randomUUID(), "Nueva", "Test");
         tablero.addTarjeta("To Do", tarjeta);
         
         ListaTareas listaToDo = tablero.getListas().stream()
@@ -130,7 +131,7 @@ public class TableroTest {
     @Test
     void deberiaCompactarTarjetasYEnviarlasAArchivadas() throws LimiteListaExcedidoException {
         tablero.addLista(new ListaTareas("To Do"));
-        Tarjeta tarjeta = new Tarjeta(UUID.randomUUID(), "Tarea Vieja", "Test");
+        Tarjeta tarjeta = new TarjetaChecklist(UUID.randomUUID(), "Tarea Vieja", "Test");
         tablero.addTarjeta("To Do", tarjeta);
 
         
@@ -157,7 +158,7 @@ public class TableroTest {
     
     @Test
     void deberiaLanzarExcepcionAlInteractuarConListaInexistente() {
-        Tarjeta tarjeta = new Tarjeta(UUID.randomUUID(), "Test", "Test");
+        Tarjeta tarjeta = new TarjetaChecklist(UUID.randomUUID(), "Test", "Test");
         
         //se intenta añadir uan tarjeta a uina lista inexistente
         IllegalArgumentException excepcion = assertThrows(IllegalArgumentException.class, () -> {
@@ -172,10 +173,10 @@ public class TableroTest {
         tablero.addLista(new ListaTareas("To Do")); 
         tablero.addLista(new ListaTareas("Doing", 1)); // LIMITE de 1 tarj
         
-        Tarjeta tarjetaEnDoing = new Tarjeta(UUID.randomUUID(), "Ya estoy haciendo esto", "Test");
+        Tarjeta tarjetaEnDoing = new TarjetaChecklist(UUID.randomUUID(), "Ya estoy haciendo esto", "Test");
         tablero.addTarjeta("Doing", tarjetaEnDoing); // AQUI LLENAMOS
         
-        Tarjeta tarjetaAMover = new Tarjeta(UUID.randomUUID(), "Quiero entrar en Doing", "Test");
+        Tarjeta tarjetaAMover = new TarjetaChecklist(UUID.randomUUID(), "Quiero entrar en Doing", "Test");
         tablero.addTarjeta("To Do", tarjetaAMover); // Esta em la base
 
         //movlmos la tarea a la que no se puede y checkeamos que salte el limite
@@ -196,7 +197,7 @@ public class TableroTest {
     void deberiaAñadirTarjetaYRegistrarTraza() throws LimiteListaExcedidoException {
 
         tablero.addLista(new ListaTareas("To Do"));
-        Tarjeta tarjeta = new Tarjeta(UUID.randomUUID(), "Comprar cafe", "Urgente");
+        Tarjeta tarjeta = new TarjetaChecklist(UUID.randomUUID(), "Comprar cafe", "Urgente");
 
         tablero.addTarjeta("To Do", tarjeta);
 
@@ -220,7 +221,7 @@ public class TableroTest {
     	
         tablero.addLista(new ListaTareas("To Do"));
         tablero.addLista(new ListaTareas("Doing"));
-        Tarjeta tarjeta = new Tarjeta(UUID.randomUUID(), "Hacer tests", "Test");
+        Tarjeta tarjeta = new TarjetaChecklist(UUID.randomUUID(), "Hacer tests", "Test");
         tablero.addTarjeta("To Do", tarjeta); // Traza 1 add
 
         tablero.moverTarjeta(tarjeta.getId(), "To Do", "Doing"); // <-- CAMBIADO
@@ -238,7 +239,7 @@ public class TableroTest {
     void deberiaRegistrarTrazaAlCompletarTarjeta() throws LimiteListaExcedidoException {
 
         tablero.addLista(new ListaTareas("Doing"));
-        Tarjeta tarjeta = new Tarjeta(UUID.randomUUID(), "Tarea casi lista", "Test");
+        Tarjeta tarjeta = new TarjetaChecklist(UUID.randomUUID(), "Tarea casi lista", "Test");
         tablero.addTarjeta("Doing", tarjeta); // Traza 1 add
 
         tablero.checkTarjetaCompletada(tarjeta.getId(), "Doing"); // <-- CAMBIADO
@@ -255,7 +256,7 @@ public class TableroTest {
     @Test //check que al eliminar se registra
     void deberiaRegistrarTrazaAlEliminarTarjeta() throws LimiteListaExcedidoException {
         tablero.addLista(new ListaTareas("To Do"));
-        Tarjeta tarjeta = new Tarjeta(UUID.randomUUID(), "Tarea equivocada", "Test");
+        Tarjeta tarjeta = new TarjetaChecklist(UUID.randomUUID(), "Tarea equivocada", "Test");
         tablero.addTarjeta("To Do", tarjeta); // Traza 1 add
 
         tablero.eliminarTarjeta("To Do", tarjeta.getId()); // <-- CAMBIADO
@@ -279,7 +280,7 @@ public class TableroTest {
         listaDone.requerirPasoPrevioPor("In Review"); // la rela que metemos es que tieen que pasar pro review antes
         tablero.addLista(listaDone);
 
-        Tarjeta tarjeta = new Tarjeta(UUID.randomUUID(), "Tarea Rapida", "Test");
+        Tarjeta tarjeta = new TarjetaChecklist(UUID.randomUUID(), "Tarea Rapida", "Test");
         tablero.addTarjeta("To Do", tarjeta);
 
         //se intenta mover directamente a done peeeeero no se puede y ademas checkeamos que salta la excepcion que hemos creado para esto :)
@@ -299,7 +300,7 @@ public class TableroTest {
         listaDone.requerirPasoPrevioPor("In Review"); // misma regla de antes
         tablero.addLista(listaDone);
 
-        Tarjeta tarjeta = new Tarjeta(UUID.randomUUID(), "Tarea Legal", "Test");
+        Tarjeta tarjeta = new TarjetaChecklist(UUID.randomUUID(), "Tarea Legal", "Test");
         tablero.addTarjeta("To Do", tarjeta);
 
         // Accion: Hacemos el camino correcto
@@ -323,7 +324,7 @@ public class TableroTest {
         listaDone.requerirPasoPrevioPor("QA"); 
         tablero.addLista(listaDone);
 
-        Tarjeta tarjeta = new Tarjeta(UUID.randomUUID(), "Tarea Compleja", "Test");
+        Tarjeta tarjeta = new TarjetaChecklist(UUID.randomUUID(), "Tarea Compleja", "Test");
         tablero.addTarjeta("To Do", tarjeta);
 
         // primero movemos bien

@@ -17,6 +17,12 @@ public class Checklist {
         this.completado = false;
     }
 
+    public Checklist(UUID id, String descripcion, boolean completado) {
+        this.id = id;
+        this.descripcion = descripcion;
+        this.completado = completado;
+    }
+
     public void alternarEstado() {
         this.completado = !this.completado;
     }

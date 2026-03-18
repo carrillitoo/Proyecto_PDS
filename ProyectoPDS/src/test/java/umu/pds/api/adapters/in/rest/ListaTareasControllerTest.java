@@ -75,7 +75,7 @@ class ListaTareasControllerTest {
     @Test //add tarjeta a una lista correctamente devuelve created
     void addTarjeta_Return201Created() throws Exception {
         AddTarjetaRequestDTO request = new AddTarjetaRequestDTO("Comprar pan", "Urgente");
-        when(addTarjetaListaUseCase.ejecutar(ID_TABLERO, NOMBRE_LISTA, "Comprar pan", "Urgente"))
+        when(addTarjetaListaUseCase.ejecutar(ID_TABLERO, NOMBRE_LISTA, "Comprar pan", "Urgente", "TAREA", "Contenido general"))
                 .thenReturn(tarjetaMock);
 
         mockMvc.perform(post("/api/tableros/" + ID_TABLERO + "/listas/" + NOMBRE_LISTA + "/tarjetas")
@@ -102,7 +102,7 @@ class ListaTareasControllerTest {
         AddTarjetaRequestDTO request = new AddTarjetaRequestDTO("Comprar pan", "Urgente");
         
         // Simulamos la violación de la regla de negocio
-        when(addTarjetaListaUseCase.ejecutar(anyString(), anyString(), anyString(), anyString()))
+        when(addTarjetaListaUseCase.ejecutar(anyString(), anyString(), anyString(), anyString(), org.mockito.ArgumentMatchers.nullable(String.class), org.mockito.ArgumentMatchers.nullable(String.class)))
                 .thenThrow(new LimiteListaExcedidoException(NOMBRE_LISTA));
 
         mockMvc.perform(post("/api/tableros/" + ID_TABLERO + "/listas/" + NOMBRE_LISTA + "/tarjetas")

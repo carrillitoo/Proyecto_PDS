@@ -8,6 +8,7 @@ import java.util.UUID;
 import umu.pds.api.domain.exceptions.LimiteListaExcedidoException;
 import umu.pds.api.domain.models.ListaTareas;
 import umu.pds.api.domain.models.Tarjeta;
+import umu.pds.api.domain.models.TarjetaChecklist;
 
 public class ListaTareasTest {
 	
@@ -37,9 +38,9 @@ public class ListaTareasTest {
     @Test
     void deberiaAñadirTarjetaYRespetarLimite() throws LimiteListaExcedidoException {
         ListaTareas lista = new ListaTareas("Doing", 2); // limite 2
-        Tarjeta t1 = new Tarjeta(UUID.randomUUID(), "T1", "Desc");
-        Tarjeta t2 = new Tarjeta(UUID.randomUUID(), "T2", "Desc");
-        Tarjeta t3 = new Tarjeta(UUID.randomUUID(), "T3", "Desc"); //la que sobra
+        Tarjeta t1 = new TarjetaChecklist(UUID.randomUUID(), "T1", "Desc");
+        Tarjeta t2 = new TarjetaChecklist(UUID.randomUUID(), "T2", "Desc");
+        Tarjeta t3 = new TarjetaChecklist(UUID.randomUUID(), "T3", "Desc"); //la que sobra
 
         lista.addTarjeta(t1);
         lista.addTarjeta(t2);
@@ -55,7 +56,7 @@ public class ListaTareasTest {
     @Test
     void deberiaExtraerTarjetaCorrectamente() throws LimiteListaExcedidoException {
         ListaTareas lista = new ListaTareas("To Do");
-        Tarjeta tarjeta = new Tarjeta(UUID.randomUUID(), "T1", "Desc");
+        Tarjeta tarjeta = new TarjetaChecklist(UUID.randomUUID(), "T1", "Desc");
         
         lista.addTarjeta(tarjeta);
         assertTrue(lista.containsTarjeta(tarjeta.getId())); // <-- CAMBIADO
@@ -69,7 +70,7 @@ public class ListaTareasTest {
     @Test
     void deberiaLanzarExcepcionAlExtraerTarjetaInexistente() {
         ListaTareas lista = new ListaTareas("To Do");
-        Tarjeta tarjetaFantasma = new Tarjeta(UUID.randomUUID(), "No existo", "Desc");
+        Tarjeta tarjetaFantasma = new TarjetaChecklist(UUID.randomUUID(), "No existo", "Desc");
 
         IllegalArgumentException excepcion = assertThrows(IllegalArgumentException.class, () -> {
             lista.extraerTarjeta(tarjetaFantasma.getId()); // <-- CAMBIADO
