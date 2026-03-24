@@ -20,7 +20,7 @@ public class UsuarioRepositoryAdapter implements UsuarioRepositoryPort {
 
     @Override
     public void guardar(Usuario usuario) {
-        // Convertimos el objeto inteligente de Dominio a una Entidad plana de BD
+        // convertimos el objeto en entidad de db
         UsuarioEntity entity = new UsuarioEntity(
             usuario.getEmail().getDireccion(),
             usuario.getCodigoAcceso(),
@@ -31,7 +31,7 @@ public class UsuarioRepositoryAdapter implements UsuarioRepositoryPort {
 
     @Override
     public Optional<Usuario> buscarPorEmail(Email email) {
-        // Buscamos en la BD y si existe, lo transformamos a objeto de Dominio
+    	//buscamos en la bd y encaso de que exista se pasa a dominio
         return jpaRepository.findById(email.getDireccion())
                 .map(this::mapToDomain);
     }
@@ -41,15 +41,11 @@ public class UsuarioRepositoryAdapter implements UsuarioRepositoryPort {
         return jpaRepository.existsById(email.getDireccion());
     }
 
-    /**
-     * Método privado para convertir de Entity (Infraestructura) a Usuario (Dominio).
-     * Reconstruye el estado del mapa de accesos.
-     */
+    //metodo para convertit de entidad a dominio
     private Usuario mapToDomain(UsuarioEntity entity) {
         Usuario usuario = new Usuario(new Email(entity.getEmail()));
         usuario.generarCodigoAcceso(entity.getCodigoAcceso());
         
-        // Cargamos los permisos del mapa desde la base de datos al objeto de negocio
         if (entity.getAccesosTableros() != null) {
             entity.getAccesosTableros().forEach(usuario::concederAccesoATablero);
         }
