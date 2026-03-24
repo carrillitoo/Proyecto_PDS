@@ -38,6 +38,10 @@ public class Usuario {
     public Email getEmail() {
         return email;
     }
+    
+    public String getCodigoAcceso() {
+        return codigoAcceso;
+    }
 
     public Map<String, Rol> getAccesosTableros() {
         // Devolvemos una vista no modificable para proteger el estado interno
