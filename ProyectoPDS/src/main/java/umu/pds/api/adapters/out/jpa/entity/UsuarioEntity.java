@@ -32,9 +32,13 @@ public class UsuarioEntity {
     @MapKeyColumn(name = "tablero_id")
     @Column(name = "rol")
     @Enumerated(EnumType.STRING)
-    private Map<String, Rol> accesosTableros = new HashMap<>();
+    private Map<String, Rol> accesosTableros = new HashMap<>();    
     
-//constructor
+//constructores
+    
+    public UsuarioEntity() {
+    }
+    
     public UsuarioEntity(String email, String codigoAcceso, Map<String, Rol> accesos) {
         this.email = email;
         this.codigoAcceso = codigoAcceso;
