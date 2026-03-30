@@ -5,30 +5,37 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 
 public class App extends Application {
+    private static Scene scene;
 
     @Override
     public void start(Stage stage) throws IOException {
-        // 1. Buscamos el archivo de diseño en la carpeta de recursos
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/umu/pds/gui/views/login.fxml"));
+        // Cargamos la primera vista (Login)
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("/umu/pds/gui/views/login.fxml"));
+        Parent root = loader.load();
         
-        // 2. Lo cargamos en un objeto "Parent"
-        Parent root = fxmlLoader.load();
-        
-        // 3. Creamos la escena (400 ancho x 500 alto)
-        Scene scene = new Scene(root, 400, 500);
-        
-        // 4. Configuramos la ventana
+        scene = new Scene(root, 400, 500);
         stage.setTitle("Trello PDS - Login");
         stage.setScene(scene);
-        stage.setResizable(false); // Para que el diseño no se rompa al estirar
+        stage.setResizable(false);
         stage.show();
     }
 
+    // Para cuando ya tienes el Parent cargado
+    public static void setRoot(Parent root) {
+        scene.setRoot(root);
+    }
+
+    // Para cargar pasando solo el nombre del archivo
+    public static void setRoot(String fxml) throws Exception {
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("/umu/pds/gui/views/" + fxml + ".fxml"));
+        scene.setRoot(loader.load());
+    }
+
+    // ESTE ES EL MÉTODO QUE FALTABA:
     public static void main(String[] args) {
-        launch();
+        launch(args);
     }
 }

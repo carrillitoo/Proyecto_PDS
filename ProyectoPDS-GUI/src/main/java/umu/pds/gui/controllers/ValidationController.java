@@ -14,34 +14,38 @@ public class ValidationController {
     private final AuthService authService = new AuthService();
     private String userEmail;
 
-    // Método para recibir el email desde el controlador anterior
     public void setSessionData(String email) {
         this.userEmail = email;
     }
 
     @FXML
     private void handleVerify() {
-        String codigo = codeField.getText();
+        String codigo = codeField.getText().trim();
         
         try {
             boolean esValido = authService.validarCodigo(userEmail, codigo);
             
             if (esValido) {
-                statusLabel.setStyle("-fx-text-fill: green;");
+                statusLabel.setStyle("-fx-text-fill: #27ae60;");
                 statusLabel.setText("¡Acceso concedido! Entrando...");
-                // Aquí iríamos a la pantalla principal del Trello (próximamente)
+                // Aquí podrías cargar la vista principal más adelante
             } else {
-                statusLabel.setStyle("-fx-text-fill: red;");
+                statusLabel.setStyle("-fx-text-fill: #e74c3c;");
                 statusLabel.setText("Código incorrecto. Inténtalo de nuevo.");
             }
         } catch (Exception e) {
-            statusLabel.setText("Error de conexión.");
+            statusLabel.setStyle("-fx-text-fill: #e74c3c;");
+            statusLabel.setText("Error de conexión con el servidor.");
             e.printStackTrace();
         }
     }
 
     @FXML
-    private void handleBack() throws Exception {
-        App.setRoot("login");
+    private void handleBack() {
+        try {
+            App.setRoot("login");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
