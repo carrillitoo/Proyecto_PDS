@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+
+<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.scene.com/javafx/8.0.171" 
+      xmlns:fx="http://javafx.com/fxml/1" 
+      fx:controller="umu.pds.gui.controllers.LoginController"
+      style="-fx-background-color: #f4f4f4;">
+    
+    <children>
+        <Text text="Trello PDS" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-fill: #2c3e50;" />
+        
+        <VBox spacing="10.0" alignment="CENTER_LEFT" maxWidth="300">
+            <Label text="Email del usuario:" style="-fx-font-weight: bold;" />
+            <TextField fx:id="emailField" promptText="ejemplo@pds.com" prefHeight="35.0" />
+        </VBox>
+        
+        <Button fx:id="loginButton" text="Solicitar Código" 
+                onAction="#handleLogin" 
+                prefHeight="40.0" prefWidth="200.0" 
+                style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;" />
+        
+        <Label fx:id="statusLabel" text="" style="-fx-text-fill: #e74c3c;" />
+    </children>
+    
+    <padding>
+        <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+    </padding>
+</VBox>
