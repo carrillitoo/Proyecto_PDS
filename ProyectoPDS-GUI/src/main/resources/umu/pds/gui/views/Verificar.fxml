@@ -1,0 +1,23 @@
+<StackPane prefHeight="600.0" prefWidth="800.0" stylesheets="@Styles.css" xmlns="http://javafx.scene.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="umu.pds.gui.controllers.ValidationController">
+   <children>
+      <VBox alignment="CENTER" maxWidth="440.0" spacing="25.0">
+         <children>
+            <VBox spacing="25.0" styleClass="login-card" alignment="CENTER">
+               <padding><Insets bottom="40.0" left="35.0" right="35.0" top="35.0" /></padding>
+               <children>
+                  <Circle radius="30.0" styleClass="icon-circle-bg" />
+                  <VBox alignment="CENTER" spacing="8.0">
+                     <children>
+                        <Label style="-fx-font-size: 24px; -fx-font-weight: 800;" text="Verifica tu identidad" />
+                        <Label style="-fx-text-fill: #404751;" text="Hemos enviado un codigo a tu email" />
+                     </children>
+                  </VBox>
+                  <TextField fx:id="codeField" alignment="CENTER" prefHeight="55.0" promptText="******" styleClass="text-field" />
+                  <Button fx:id="verifyButton" maxWidth="500.0" onAction="#handleVerify" prefHeight="48.0" styleClass="btn-success-green" text="Entrar" />
+               </children>
+            </VBox>
+            <Hyperlink onAction="#handleBack" styleClass="footer-link" text="Volver al login" />
+         </children>
+      </VBox>
+   </children>
+</StackPane>

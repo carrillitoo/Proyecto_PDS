@@ -1,0 +1,37 @@
+<StackPane prefHeight="600.0" prefWidth="800.0" stylesheets="@Styles.css" xmlns="http://javafx.scene.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="umu.pds.gui.controllers.LoginController">
+   <children>
+      <VBox alignment="CENTER" maxWidth="440.0" spacing="30.0">
+         <children>
+            <VBox alignment="CENTER" spacing="5.0">
+               <children>
+                  <Text styleClass="brand-title" text="Trello PDS" />
+                  <Rectangle height="6.0" styleClass="brand-underline" width="48.0" />
+               </children>
+            </VBox>
+            <VBox spacing="25.0" styleClass="login-card">
+               <padding><Insets bottom="40.0" left="35.0" right="35.0" top="35.0" /></padding>
+               <children>
+                  <VBox spacing="5.0">
+                     <children>
+                        <Label style="-fx-font-size: 22px; -fx-font-weight: bold;" text="Bienvenido a Trello PDS" />
+                        <Label style="-fx-text-fill: #404751;" text="Introduce tu email para continuar" />
+                     </children>
+                  </VBox>
+                  <VBox spacing="8.0">
+                     <children>
+                        <Label styleClass="input-label" text="EMAIL" />
+                        <TextField fx:id="emailField" prefHeight="45.0" promptText="nombre@empresa.com" />
+                     </children>
+                  </VBox>
+                  <Button fx:id="loginButton" maxWidth="500.0" onAction="#handleLogin" prefHeight="48.0" styleClass="primary-button" text="Solicitar Codigo" />
+                  <HBox spacing="10.0" styleClass="info-box">
+                     <children>
+                        <Label styleClass="info-text" text="Recibiras un codigo de 6 digitos en tu bandeja de entrada para verificar tu identidad." wrapText="true" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+   </children>
+</StackPane>
