@@ -8,7 +8,7 @@ public class Usuario {
     private final Email email;
     private String codigoAcceso;
     
-    // Relación directa Tablero -> Rol (Simplificado sin clase Invitacion)
+    // Relación directa Tablero -> Rol 
     private final Map<String, Rol> accesosTableros;
 
     public Usuario(Email email) {
@@ -16,7 +16,7 @@ public class Usuario {
         this.accesosTableros = new HashMap<>();
     }
 
-    // Lógica de Negocio: Gestión de Accesos
+    // Lógica de Negocio: Gestion de Accesos
     public void concederAccesoATablero(String tableroId, Rol rol) {
         this.accesosTableros.put(tableroId, rol);
     }
@@ -25,7 +25,7 @@ public class Usuario {
         this.accesosTableros.remove(tableroId);
     }
 
-    // Lógica de Negocio: Autenticación
+    // Lógica de Negocio: Autenticacion
     public void generarCodigoAcceso(String nuevoCodigo) {
         this.codigoAcceso = nuevoCodigo;
     }
@@ -34,7 +34,7 @@ public class Usuario {
         return this.codigoAcceso != null && this.codigoAcceso.equals(intento);
     }
 
-    // Getters protegidos para Clean Code
+    // Getters
     public Email getEmail() {
         return email;
     }
@@ -44,7 +44,6 @@ public class Usuario {
     }
 
     public Map<String, Rol> getAccesosTableros() {
-        // Devolvemos una vista no modificable para proteger el estado interno
         return Collections.unmodifiableMap(accesosTableros);
     }
 }

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane prefHeight="750.0" prefWidth="1100.0" stylesheets="@Styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="umu.pds.gui.controllers.CompactionController">
+   
+   <top>
+      <HBox alignment="CENTER_LEFT" spacing="20.0" styleClass="top-nav">
+         <children>
+            <Text style="-fx-font-weight: 900; -fx-font-size: 18px; -fx-fill: #0079bf;" text="Trello PDS" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button styleClass="create-button" text="Crear Tablero" />
+            <Circle fill="#e0e3e6" radius="16.0" stroke="#c0c7d2" />
+         </children>
+      </HBox>
+   </top>
+
+   <left>
+      <VBox prefWidth="240.0" spacing="15" styleClass="sidebar">
+         <children>
+            <HBox alignment="CENTER_LEFT" spacing="12">
+               <children>
+                  <Rectangle arcHeight="8" arcWidth="8" fill="#005f98" height="35.0" width="35.0" />
+                  <VBox>
+                     <children>
+                        <Label style="-fx-font-weight: bold; -fx-font-size: 14px;" text="Project Alpha" />
+                        <Label style="-fx-font-size: 10px; -fx-text-fill: #707882;" text="Marketing Workflow" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            
+            <Separator />
+            
+            <Button maxWidth="Infinity" styleClass="nav-link" text="General" />
+            <Button maxWidth="Infinity" styleClass="nav-link, nav-link-active" text="Compactacion" />
+            <Button maxWidth="Infinity" styleClass="nav-link" text="Miembros" />
+            <Button maxWidth="Infinity" styleClass="nav-link" text="Integraciones" />
+            
+            <Region VBox.vgrow="ALWAYS" />
+            <Button maxWidth="Infinity" styleClass="nav-link" text="Archivo" />
+            <Button maxWidth="Infinity" style="-fx-text-fill: #ba1a1a;" styleClass="nav-link" text="Eliminar Tablero" />
+         </children>
+      </VBox>
+   </left>
+   <right>
+      <ScrollPane fitToWidth="true" styleClass="scroll-pane" BorderPane.alignment="CENTER">
+         <content>
+            <VBox spacing="40.0" style="-fx-padding: 50 80;">
+               <children>
+                  
+                  <VBox spacing="10.0">
+                     <children>
+                        <Text style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-fill: #0079bf;" text="AUTOMATIZACION" />
+                        <Text style="-fx-font-size: 36px; -fx-font-weight: 800; -fx-font-family: 'Manrope';" text="Compactacion Automatica" />
+                        <Text style="-fx-font-size: 16px; -fx-fill: #707882;" text="Define estrategias para archivar tarjetas automaticamente y mantener el orden." />
+                     </children>
+                  </VBox>
+
+                  <HBox spacing="25.0" styleClass="compaction-strategy-card">
+                     <children>
+                        <VBox styleClass="strategy-icon-bg">
+                           <children>
+                              <Label style="-fx-font-weight: bold; -fx-text-fill: #475a7e; -fx-font-size: 18px;" text="H" />
+                           </children>
+                        </VBox>
+                        <VBox spacing="15.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label styleClass="strategy-title" text="Archivado por Inactividad" />
+                              <Label styleClass="strategy-description" text="Archiva tarjetas que no han tenido actualizaciones, comentarios o movimientos en un periodo de tiempo determinado." wrapText="true" />
+                              <HBox alignment="CENTER_LEFT" spacing="15.0">
+                                 <children>
+                                    <Label style="-fx-font-weight: bold; -fx-font-size: 13px;" text="Tiempo de inactividad:" />
+                                    <ComboBox prefWidth="150.0" promptText="1 mes" styleClass="filter-select" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+
+                  <HBox spacing="25.0" styleClass="compaction-strategy-card">
+                     <children>
+                        <VBox style="-fx-background-color: #a1f885;" styleClass="strategy-icon-bg">
+                           <children>
+                              <Label style="-fx-font-weight: bold; -fx-text-fill: #0c5300; -fx-font-size: 18px;" text="V" />
+                           </children>
+                        </VBox>
+                        <VBox spacing="15.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label styleClass="strategy-title" text="Limpieza de Lista Completada" />
+                              <HBox alignment="CENTER_LEFT" spacing="15.0">
+                                 <children>
+                                    <Label style="-fx-font-weight: bold; -fx-font-size: 13px;" text="Archivar despues de:" />
+                                    <ComboBox prefWidth="150.0" promptText="3 dias" styleClass="filter-select" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+
+                  <VBox spacing="20.0" style="-fx-padding: 20 0 0 0; -fx-border-color: #e0e3e6 transparent transparent transparent;">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" spacing="20.0">
+                           <children>
+                              <Button styleClass="btn-activate-compaction" text="Activar Compactacion" />
+                              <Button style="-fx-background-color: transparent; -fx-text-fill: #0079bf; -fx-font-weight: bold;" text="Guardar Configuracion" />
+                              <Region HBox.hgrow="ALWAYS" />
+                              <HBox alignment="CENTER" spacing="8.0" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </right>
+</BorderPane>

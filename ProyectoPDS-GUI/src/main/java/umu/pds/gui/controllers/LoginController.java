@@ -6,8 +6,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 import umu.pds.gui.App;
-import umu.pds.gui.services.api.AuthService;
-
 import java.io.IOException;
 
 public class LoginController {
@@ -15,49 +13,46 @@ public class LoginController {
     @FXML private TextField emailField;
     @FXML private Label statusLabel;
     
-    private final AuthService authService = new AuthService();
+    // MODO PROTOTIPO: No instanciamos el AuthService real aún
 
-    @FXML
+    /*@FXML
     private void handleLogin() {
         String email = emailField.getText().trim();
         
+        // Si quieres, pon una pequeña validación visual
         if (email.isEmpty()) {
-            statusLabel.setStyle("-fx-text-fill: #e74c3c;");
-            statusLabel.setText("Por favor, introduce un email.");
-            return;
+            System.out.println("El email está vacío, pero pasamos igual por ser prototipo.");
+            email = "demo@pdsarchitect.com"; // Email por defecto para el prototipo
         }
 
         try {
-            // 1. Llamamos al Backend para solicitar el código
-            boolean exito = authService.solicitarCodigo(email);
+            System.out.println("Login puenteado. Pasando a Verificar...");
             
-            if (exito) {
-                // 2. Si hay éxito, cargamos la siguiente pantalla (verificar.fxml)
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/umu/pds/gui/views/verificar.fxml"));
-                Parent root = loader.load();
+            // 1. Cargamos la pantalla de verificación
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/umu/pds/gui/views/Verificar.fxml"));
+            Parent root = loader.load();
 
-                // 3. Obtenemos el controlador de la pantalla de verificación
-                ValidationController valController = loader.getController();
-                
-                // 4. LE PASAMOS EL EMAIL (importante para que sepa a quién validar luego)
-                valController.setSessionData(email);
+            // 2. Le pasamos el email al controlador de verificación
+            ValidationController valController = loader.getController();
+            valController.setSessionData(email);
 
-                // 5. Cambiamos la vista principal
-                App.setRoot(root);
-                
-            } else {
-                statusLabel.setStyle("-fx-text-fill: #e74c3c;");
-                statusLabel.setText("El servidor rechazó el email.");
-            }
+            // 3. Cambiamos la vista
+            App.setRoot(root);
             
         } catch (IOException e) {
-            statusLabel.setStyle("-fx-text-fill: #e74c3c;");
-            statusLabel.setText("Error al cargar la siguiente pantalla.");
             e.printStackTrace();
+        }
+    }*/
+    
+    @FXML
+    private void handleLogin() {
+        try {
+            System.out.println("Login puenteado...");
+            App.setRoot("Verificar"); // Salta a la pantalla de código
         } catch (Exception e) {
-            statusLabel.setStyle("-fx-text-fill: #e74c3c;");
-            statusLabel.setText("No se pudo conectar con el servidor.");
             e.printStackTrace();
         }
     }
+    
+    
 }

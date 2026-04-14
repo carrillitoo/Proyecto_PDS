@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+
+<BorderPane prefHeight="800.0" prefWidth="1150.0" stylesheets="@Styles.css" xmlns="http://javafx.scene.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="umu.pds.gui.controllers.PermissionsController">
+
+
+   <center>
+      <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+         <content>
+            <VBox spacing="30.0" style="-fx-padding: 40;">
+               <children>
+                  
+                  <VBox spacing="10">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" spacing="8">
+                           <children>
+                              <Label style="-fx-text-fill: #707882; -fx-font-size: 12px;" text="Marketing Team" />
+                              <Label style="-fx-text-fill: #707882; -fx-font-size: 12px;" text=">" />
