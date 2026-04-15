@@ -23,7 +23,7 @@
          <children>
             <Text style="-fx-font-size: 20px; -fx-font-weight: 800; -fx-font-family: 'Manrope';" text="Crear Nueva Lista" />
             <Region HBox.hgrow="ALWAYS" />
-            <Button styleClass="btn-close-modal" text="X" />
+            <Button onAction="#handleClose" styleClass="btn-close-modal" text="X" />
          </children>
       </HBox>
 
@@ -76,8 +76,8 @@
 
             <HBox alignment="CENTER_RIGHT" spacing="15.0" style="-fx-padding: 15 0 0 0;">
                <children>
-                  <Button styleClass="btn-discard" text="Cancelar" />
-                  <Button styleClass="primary-button" text="Crear Lista" />
+                  <Button onAction="#handleClose" styleClass="btn-discard" text="Cancelar" />
+                  <Button onAction="#handleCreateList" styleClass="primary-button" text="Crear Lista" />
                </children>
             </HBox>
 

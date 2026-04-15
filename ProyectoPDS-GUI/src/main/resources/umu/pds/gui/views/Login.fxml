@@ -39,13 +39,6 @@
                      </children>
                   </VBox>
 
-                  <VBox spacing="8.0">
-                     <children>
-                        <Label styleClass="input-label" text="CONTRASEÑA" />
-                        <PasswordField fx:id="passwordField" prefHeight="45.0" promptText="••••••••" styleClass="text-field" />
-                     </children>
-                  </VBox>
-
                   <Button fx:id="loginButton" onAction="#handleLogin" maxWidth="Infinity" prefHeight="50.0" styleClass="primary-button" text="Entrar a mis Tableros" />
                   
                   <Separator style="-fx-padding: 10 0;" />

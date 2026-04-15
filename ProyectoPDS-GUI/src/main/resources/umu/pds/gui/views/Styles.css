@@ -315,6 +315,7 @@
     -fx-background-color: white;
     -fx-background-radius: 5;
     -fx-padding: 10;
+    -fx-cursor: hand;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 1);
 }
 
@@ -322,6 +323,24 @@
     -fx-border-color: #0079bf;
     -fx-border-width: 1;
     -fx-border-radius: 5;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 4);
+    -fx-translate-y: -2;
+}
+
+/* --- Drag & Drop styles --- */
+.dragging-card {
+    -fx-opacity: 0.5;
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,121,191,0.4), 15, 0, 0, 5);
+}
+
+.drag-target {
+    -fx-background-color: #e2e4e9;
+    -fx-border-color: #0079bf;
+    -fx-border-width: 2;
+    -fx-border-style: dashed;
+    -fx-border-radius: 8;
 }
 
 /* etiquetas de prioridad */

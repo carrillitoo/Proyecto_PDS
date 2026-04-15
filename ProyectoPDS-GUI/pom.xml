@@ -56,7 +56,7 @@
         <artifactId>javafx-maven-plugin</artifactId>
         <version>0.0.8</version>
         <configuration>
-          <mainClass>umu.pds.gui.MainLauncher</mainClass>
+          <mainClass>umu.pds.gui.Main</mainClass>
         </configuration>
       </plugin>
     </plugins>

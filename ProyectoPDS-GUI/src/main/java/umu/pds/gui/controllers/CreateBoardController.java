@@ -13,7 +13,15 @@ public class CreateBoardController {
     @FXML
     private void handleCreate(ActionEvent event) {
         String boardName = boardNameField.getText();
-        System.out.println("Guardando en BD el nuevo tablero: " + boardName);
-        // Lógica de BD aquí y luego cerrar el modal
+        System.out.println("Tablero creado: " + boardName);
+        // TODO: Conectar con backend - LLamar a BoardService.createBoard(boardName, email)
+        // Tras crear, volver al Dashboard
+        MainLayoutController.getInstance().loadCenterView("Dashboard");
+    }
+
+    @FXML
+    private void handleClose() {
+        System.out.println("Cerrando formulario de creación de tablero...");
+        MainLayoutController.getInstance().loadCenterView("Dashboard");
     }
 }

@@ -16,7 +16,7 @@
          <children>
             <Text style="-fx-font-size: 20px; -fx-font-weight: 800; -fx-font-family: 'Manrope';" text="Crear tablero" />
             <Region HBox.hgrow="ALWAYS" />
-            <Button styleClass="btn-close-modal" text="X" />
+            <Button onAction="#handleClose" styleClass="btn-close-modal" text="X" />
          </children>
       </HBox>
 

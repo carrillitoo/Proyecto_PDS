@@ -16,6 +16,15 @@ public class CreateListController {
     
     @FXML
     private void handleCreateList() {
-        System.out.println("Creando lista: " + listNameField.getText() + " con límite " + capacitySlider.getValue());
+        System.out.println("Creando lista: " + listNameField.getText() + " con límite " + (int) capacitySlider.getValue());
+        // TODO: Conectar con backend - LLamar a la API para crear una nueva lista en el tablero actual
+        // Tras crear, volver al tablero
+        MainLayoutController.getInstance().loadCenterView("BoardWorkspace");
+    }
+
+    @FXML
+    private void handleClose() {
+        System.out.println("Cerrando formulario de creación de lista...");
+        MainLayoutController.getInstance().loadCenterView("BoardWorkspace");
     }
 }

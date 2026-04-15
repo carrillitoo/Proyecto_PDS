@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.geometry.Insets?>
+
+<VBox alignment="CENTER" style="-fx-background-color: rgba(0,0,0,0.4);" stylesheets="@Styles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="umu.pds.gui.controllers.CreateCardController">
+
+   <VBox maxWidth="560.0" spacing="20.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-padding: 40; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 20, 0, 0, 5);">
+      <children>
+
+         <!-- Header -->
+         <HBox alignment="CENTER_LEFT">
+            <children>
+               <Text style="-fx-font-size: 20px; -fx-font-weight: 800; -fx-font-family: 'Manrope';" text="Crear Tarjeta" />
+               <Region HBox.hgrow="ALWAYS" />
+               <Button onAction="#handleClose" styleClass="btn-close-modal" text="X" />
+            </children>
+         </HBox>
+
+         <Separator />
+
+         <!-- Tipo de Tarjeta -->
+         <VBox spacing="8.0">
+            <children>
+               <Label styleClass="input-label" text="TIPO DE TARJETA" />
+               <ComboBox fx:id="tipoCombo" maxWidth="Infinity" promptText="Seleccionar tipo..." styleClass="filter-select" />
+            </children>
+         </VBox>
+
+         <!-- Título -->
+         <VBox spacing="8.0">
+            <children>
+               <Label styleClass="input-label" text="TITULO" />
+               <TextField fx:id="tituloField" prefHeight="42.0" promptText="Ej: Diseñar nueva landing page" styleClass="text-field" />
+            </children>
+         </VBox>
+
+         <!-- Descripción -->
+         <VBox spacing="8.0">
+            <children>
+               <Label styleClass="input-label" text="DESCRIPCION" />
+               <TextArea fx:id="descripcionArea" prefHeight="80.0" promptText="Descripcion opcional de la tarjeta..." styleClass="text-field" />
+            </children>
+         </VBox>
+
+         <!-- Contenido Tarea (visible cuando tipo = Tarea) -->
+         <VBox fx:id="tareaSection" spacing="8.0" managed="true" visible="true">
+            <children>
+               <Label styleClass="input-label" text="CONTENIDO DE LA TAREA" />
+               <TextArea fx:id="contenidoTareaArea" prefHeight="60.0" promptText="Describe la tarea a realizar..." styleClass="text-field" />
+            </children>
+         </VBox>
+
+         <!-- Checklist items (visible cuando tipo = Checklist) -->
+         <VBox fx:id="checklistSection" spacing="8.0" managed="false" visible="false">
+            <children>
+               <Label styleClass="input-label" text="ITEMS DEL CHECKLIST" />
+               <VBox fx:id="checklistItemsContainer" spacing="5.0" />
+               <Button onAction="#handleAddChecklistItem" style="-fx-background-color: transparent; -fx-text-fill: #0079bf; -fx-font-weight: bold;" text="+ Añadir item" />
+            </children>
+         </VBox>
+
+         <Separator />
+
+         <!-- Acciones -->
+         <HBox alignment="CENTER_RIGHT" spacing="15.0">
+            <children>
+               <Button onAction="#handleClose" styleClass="btn-discard" text="Cancelar" />
+               <Button onAction="#handleCreateCard" styleClass="primary-button" text="Crear Tarjeta" />
+            </children>
+         </HBox>
+      </children>
+   </VBox>
+</VBox>

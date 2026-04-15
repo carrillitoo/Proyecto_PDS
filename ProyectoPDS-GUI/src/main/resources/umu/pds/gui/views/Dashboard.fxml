@@ -15,38 +15,14 @@
             <VBox spacing="20.0" maxWidth="900">
                <children>
                   <Text style="-fx-font-size: 28px; -fx-font-weight: 800;" text="Mis Tableros" />
-                  <FlowPane fx:id="boardsContainer" hgap="20.0" vgap="20.0">
-                     <children>
-                        <VBox style="-fx-background-color: #0079bf;" styleClass="board-card" onMouseClicked="#abrirTableroWorkspace">
-                           <children>
-                              <Label styleClass="board-card-title" text="Lanzamiento Q4" />
-                           </children>
-                        </VBox>
-                        <VBox style="-fx-background-color: #5aac44;" styleClass="board-card" onMouseClicked="#abrirTableroWorkspace">
-                           <children>
-                              <Label styleClass="board-card-title" text="Rediseño UI" />
-                           </children>
-                        </VBox>
-                        <VBox alignment="CENTER" prefHeight="120" prefWidth="200" styleClass="new-board-placeholder" onMouseClicked="#handleNewBoard">
-                           <children>
-                              <Label style="-fx-font-size: 30px; -fx-text-fill: #707882;" text="+" />
-                              <Label style="-fx-font-size: 12px; -fx-text-fill: #707882; -fx-font-weight: bold;" text="Nuevo Tablero" />
-                           </children>
-                        </VBox>
-                     </children>
-                  </FlowPane>
+                  <FlowPane fx:id="boardsContainer" hgap="20.0" vgap="20.0" />
                </children>
             </VBox>
 
             <VBox spacing="15.0" maxWidth="900">
                <children>
                   <Text style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Actividad Reciente" />
-                  <VBox spacing="10" styleClass="activity-card">
-                     <children>
-                        <Label style="-fx-font-weight: bold;" text="Actualizaste la tarjeta 'Moodboard Visual'" />
-                        <Label style="-fx-text-fill: #707882; -fx-font-size: 11px;" text="En Rediseño UI • Hace 2 horas" />
-                     </children>
-                  </VBox>
+                  <VBox fx:id="activityContainer" spacing="10" styleClass="activity-card" />
                </children>
             </VBox>
             
@@ -56,7 +32,7 @@
                <children>
                   <Text style="-fx-font-size: 22px; -fx-font-weight: 800;" text="Automatización Avanzada" />
                   <Text style="-fx-fill: #404751; -fx-text-alignment: center;" text="Crea tableros complejos cargando archivos YAML preconfigurados o gestiona tus plantillas." />
-                  <Button styleClass="primary-button" text="Ir a Plantillas YAML" onAction="#abrirPlantillasYAML" />
+                  <Button styleClass="primary-button" text="Ir a Plantillas YAML" onAction="#abrirPlantillas" />
                </children>
             </VBox>
 
