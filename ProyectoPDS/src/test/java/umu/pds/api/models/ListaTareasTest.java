@@ -1,4 +1,4 @@
-package umu.pds.api.domain.models;
+package umu.pds.api.models;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

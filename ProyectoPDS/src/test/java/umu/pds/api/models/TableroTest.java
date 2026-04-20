@@ -1,4 +1,4 @@
-package umu.pds.api.domain.models;
+package umu.pds.api.models;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -38,7 +38,7 @@ class AnadirEtiquetaUseCaseTest {
         Tarjeta tarjetaEnBd = new TarjetaTarea("Titulo", "Desc", new Tarea("Hacer algo"));
         
         // Simulamos que el repositorio encuentra la tarjeta
-        when(tarjetaRepositoryMock.buscarPorId(id)).thenReturn(Optional.of(tarjetaEnBd));
+        when(tarjetaRepositoryMock.buscarPorId(any())).thenReturn(Optional.of(tarjetaEnBd));
         // Simulamos el guardado devolviendo la misma tarjeta
         when(tarjetaRepositoryMock.guardar(any(Tarjeta.class))).thenAnswer(i -> i.getArgument(0));
 
@@ -48,7 +48,7 @@ class AnadirEtiquetaUseCaseTest {
         assertTrue(tarjetaActualizada.getEtiquetas().stream().anyMatch(e -> e.nombre().equals("Urgente")));
         
         // Se verifica que se llama a buscar y luego a guardar
-        verify(tarjetaRepositoryMock, times(1)).buscarPorId(id);
+        verify(tarjetaRepositoryMock, times(1)).buscarPorId(any());
         verify(tarjetaRepositoryMock, times(1)).guardar(tarjetaEnBd);
     }
 
@@ -59,7 +59,7 @@ class AnadirEtiquetaUseCaseTest {
         AnadirEtiquetaCommandDTO command = new AnadirEtiquetaCommandDTO(id, "Urgente", "#FF0000");
         
         // Simulamos que el repositorio no encuentra nada
-        when(tarjetaRepositoryMock.buscarPorId(id)).thenReturn(Optional.empty());
+        when(tarjetaRepositoryMock.buscarPorId(any())).thenReturn(Optional.empty());
 
         assertThrows(TarjetaNoEncontradaException.class, () -> anadirEtiquetaUseCase.ejecutar(command));
         
