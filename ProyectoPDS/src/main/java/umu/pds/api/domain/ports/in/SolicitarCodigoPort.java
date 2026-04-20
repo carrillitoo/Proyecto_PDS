@@ -1,7 +1,7 @@
 package umu.pds.api.domain.ports.in;
 
-import umu.pds.dto.SolicitarCodigoCommand;
+import umu.pds.dto.SolicitarCodigoCommandDTO;
 
 public interface SolicitarCodigoPort {
-	void ejecutar(SolicitarCodigoCommand comando);
+	void ejecutar(SolicitarCodigoCommandDTO comando);
 }

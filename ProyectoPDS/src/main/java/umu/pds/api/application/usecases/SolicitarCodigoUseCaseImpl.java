@@ -2,7 +2,7 @@ package umu.pds.api.application.usecases;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import umu.pds.dto.SolicitarCodigoCommand;
+import umu.pds.dto.SolicitarCodigoCommandDTO;
 import umu.pds.api.domain.models.Email;
 import umu.pds.api.domain.models.Usuario;
 import umu.pds.api.domain.ports.in.SolicitarCodigoPort;
@@ -12,19 +12,19 @@ import java.util.Random;
 
 @Service
 @Transactional
-public class SolicitarCodigoUseCase implements SolicitarCodigoPort {
+public class SolicitarCodigoUseCaseImpl implements SolicitarCodigoPort {
 
     private final UsuarioRepositoryPort usuarioRepository;
     private final EmailPort emailPort;
     private final Random random = new Random();
 
-    public SolicitarCodigoUseCase(UsuarioRepositoryPort usuarioRepository, EmailPort emailPort) {
+    public SolicitarCodigoUseCaseImpl(UsuarioRepositoryPort usuarioRepository, EmailPort emailPort) {
         this.usuarioRepository = usuarioRepository;
         this.emailPort = emailPort;
     }
 
     @Override
-    public void ejecutar(SolicitarCodigoCommand comando) {
+    public void ejecutar(SolicitarCodigoCommandDTO comando) {
         Email emailVO = new Email(comando.email());
 
         // se busca el usuario y si no existe se crea

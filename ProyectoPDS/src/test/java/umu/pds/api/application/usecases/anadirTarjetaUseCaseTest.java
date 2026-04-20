@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import umu.pds.dto.AnadirEtiquetaCommand;
+import umu.pds.dto.AnadirEtiquetaCommandDTO;
 import umu.pds.api.domain.exceptions.TarjetaNoEncontradaException;
 import umu.pds.api.domain.models.Tarea;
 import umu.pds.api.domain.models.Tarjeta;
@@ -21,12 +21,12 @@ import static org.mockito.Mockito.*;
 class AnadirEtiquetaUseCaseTest {
 
     private TarjetaRepositoryPort tarjetaRepositoryMock;
-    private AnadirEtiquetaUseCase anadirEtiquetaUseCase;
+    private AnadirEtiquetaUseCaseImpl anadirEtiquetaUseCase;
 
     @BeforeEach
     void setUp() {
         tarjetaRepositoryMock = Mockito.mock(TarjetaRepositoryPort.class);
-        anadirEtiquetaUseCase = new AnadirEtiquetaUseCase(tarjetaRepositoryMock);
+        anadirEtiquetaUseCase = new AnadirEtiquetaUseCaseImpl(tarjetaRepositoryMock);
     }
 
     @Test // Añade una etiqueta a una tarjeta ya existente y guardarla
@@ -34,7 +34,7 @@ class AnadirEtiquetaUseCaseTest {
     	
         UUID id = UUID.randomUUID();
  
-        AnadirEtiquetaCommand command = new AnadirEtiquetaCommand(id, "Urgente", "#FF0000");
+        AnadirEtiquetaCommandDTO command = new AnadirEtiquetaCommandDTO(id, "Urgente", "#FF0000");
         Tarjeta tarjetaEnBd = new TarjetaTarea("Titulo", "Desc", new Tarea("Hacer algo"));
         
         // Simulamos que el repositorio encuentra la tarjeta
@@ -56,7 +56,7 @@ class AnadirEtiquetaUseCaseTest {
     void lanzarExcepcionSiTarjetaNoExiste() {
 
         UUID id = UUID.randomUUID();
-        AnadirEtiquetaCommand command = new AnadirEtiquetaCommand(id, "Urgente", "#FF0000");
+        AnadirEtiquetaCommandDTO command = new AnadirEtiquetaCommandDTO(id, "Urgente", "#FF0000");
         
         // Simulamos que el repositorio no encuentra nada
         when(tarjetaRepositoryMock.buscarPorId(id)).thenReturn(Optional.empty());

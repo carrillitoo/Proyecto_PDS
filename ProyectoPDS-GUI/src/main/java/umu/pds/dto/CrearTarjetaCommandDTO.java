@@ -3,7 +3,7 @@ package umu.pds.dto;
 
 // Recoge los datos necesarios para crear una tarjeta.
  
-public record CrearTarjetaCommand(
+public record CrearTarjetaCommandDTO(
         String titulo,
         String descripcion,
         TipoTarjeta tipo
@@ -13,7 +13,7 @@ public record CrearTarjetaCommand(
         CHECKLIST
     }
 
-    public CrearTarjetaCommand {
+    public CrearTarjetaCommandDTO {
         if (titulo == null || titulo.trim().isEmpty()) {
             throw new IllegalArgumentException("El título es obligatorio para crear una tarjeta");
         }

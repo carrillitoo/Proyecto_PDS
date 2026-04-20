@@ -1,7 +1,7 @@
 package umu.pds.api.application.usecases;
 
 import org.springframework.stereotype.Service;
-import umu.pds.dto.CrearTarjetaCommand;
+import umu.pds.dto.CrearTarjetaCommandDTO;
 import umu.pds.api.domain.models.Tarea;
 import umu.pds.api.domain.models.Tarjeta;
 import umu.pds.api.domain.models.TarjetaChecklist;
@@ -13,17 +13,17 @@ import umu.pds.api.domain.ports.out.TarjetaRepositoryPort;
 // Orquestador de la creación de Tarjetas
 
 @Service
-public class CrearTarjetaUseCase implements CrearTarjetaPort {
+public class CrearTarjetaUseCaseImpl implements CrearTarjetaPort {
 
     private final TarjetaRepositoryPort tarjetaRepositoryPort;
 
     // Aplicamos inyección de dependencias por el constructor 
-    public CrearTarjetaUseCase(final TarjetaRepositoryPort tarjetaRepositoryPort) {
+    public CrearTarjetaUseCaseImpl(final TarjetaRepositoryPort tarjetaRepositoryPort) {
         this.tarjetaRepositoryPort = tarjetaRepositoryPort;
     }
 
     @Override
-    public Tarjeta ejecutar(CrearTarjetaCommand command) {
+    public Tarjeta ejecutar(CrearTarjetaCommandDTO command) {
         Tarjeta nuevaTarjeta = switch (command.tipo()) {
             case TAREA -> new TarjetaTarea(
                     command.titulo(),

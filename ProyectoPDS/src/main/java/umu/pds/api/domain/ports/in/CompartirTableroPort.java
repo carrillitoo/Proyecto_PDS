@@ -1,8 +1,8 @@
 package umu.pds.api.domain.ports.in;
 
-import umu.pds.dto.CompartirTableroCommand;
+import umu.pds.dto.CompartirTableroCommandDTO;
 
 //Puerto de entrada para compartir tableros
 public interface CompartirTableroPort {
-	void ejecutar(CompartirTableroCommand comando);
+	void ejecutar(CompartirTableroCommandDTO comando);
 }

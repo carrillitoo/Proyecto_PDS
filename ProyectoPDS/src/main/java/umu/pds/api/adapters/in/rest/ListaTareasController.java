@@ -15,7 +15,7 @@ import umu.pds.dto.AddTarjetaRequestDTO;
 import umu.pds.dto.CrearListaRequestDTO;
 import umu.pds.dto.MoverTarjetaRequestDTO;
 import umu.pds.dto.TarjetaResponseDTO;
-import umu.pds.api.application.usecases.AddTarjetaListaUseCase;
+import umu.pds.api.application.usecases.AddTarjetaListaUseCaseImpl;
 import umu.pds.api.application.usecases.CheckTarjetaCompletadaUseCase;
 import umu.pds.api.application.usecases.CrearListaTareasUseCase;
 import umu.pds.api.application.usecases.EliminarTarjetaUseCase;
@@ -28,14 +28,14 @@ import umu.pds.api.domain.models.Tarjeta;
 public class ListaTareasController {
 
 	private final CrearListaTareasUseCase crearListaTareasUseCase;
-	private final AddTarjetaListaUseCase addTarjetaListaUseCase;
+	private final AddTarjetaListaUseCaseImpl addTarjetaListaUseCase;
 	private final EliminarTarjetaUseCase eliminarTarjetaUseCase;
 	private final MoverTarjetaUseCase moverTarjetaUseCase;
 	private final CheckTarjetaCompletadaUseCase checkTarjetaCompletadaUseCase;
 	
 	
 	public ListaTareasController(CrearListaTareasUseCase crearListaTareasUseCase,
-								AddTarjetaListaUseCase addTarjetaListaUseCase,
+								AddTarjetaListaUseCaseImpl addTarjetaListaUseCase,
 								EliminarTarjetaUseCase eliminarTarjetaUseCase,
 								MoverTarjetaUseCase moverTarjetaUseCase,
 								CheckTarjetaCompletadaUseCase checkTarjetaCompletadaUseCase) {

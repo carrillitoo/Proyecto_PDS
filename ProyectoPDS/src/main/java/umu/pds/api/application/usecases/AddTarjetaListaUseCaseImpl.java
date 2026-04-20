@@ -17,10 +17,10 @@ import umu.pds.api.domain.ports.out.TableroRepositoryPort;
 
 @Service
 @Transactional
-public class AddTarjetaListaUseCase {
+public class AddTarjetaListaUseCaseImpl {
     private final TableroRepositoryPort tableroRepository;
 
-    public AddTarjetaListaUseCase(TableroRepositoryPort tableroRepository) {
+    public AddTarjetaListaUseCaseImpl(TableroRepositoryPort tableroRepository) {
         this.tableroRepository = tableroRepository;
     }
 

@@ -2,12 +2,12 @@ package umu.pds.dto;
 
 import java.util.UUID;
 
-public record AnadirEtiquetaCommand(
+public record AnadirEtiquetaCommandDTO(
         UUID tarjetaId,
         String nombreEtiqueta,
         String colorHex
 ) {
-    public AnadirEtiquetaCommand {
+    public AnadirEtiquetaCommandDTO {
         if (tarjetaId == null) {
             throw new IllegalArgumentException("El ID de la tarjeta es obligatorio");
         }

@@ -10,11 +10,11 @@ import umu.pds.api.adapters.out.jpa.repository.UsuarioJpaRepository;
 import java.util.Optional;
 
 @Component
-public class UsuarioRepositoryAdapter implements UsuarioRepositoryPort {
+public class UsuarioRepositoryAdapterImpl implements UsuarioRepositoryPort {
 
     private final UsuarioJpaRepository jpaRepository;
 
-    public UsuarioRepositoryAdapter(UsuarioJpaRepository jpaRepository) {
+    public UsuarioRepositoryAdapterImpl(UsuarioJpaRepository jpaRepository) {
         this.jpaRepository = jpaRepository;
     }
 

@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import umu.pds.dto.SolicitarCodigoCommand;
-import umu.pds.dto.ValidarCodigoCommand;
+import umu.pds.dto.SolicitarCodigoCommandDTO;
+import umu.pds.dto.ValidarCodigoCommandDTO;
 import umu.pds.api.domain.ports.in.SolicitarCodigoPort;
 import umu.pds.api.domain.ports.in.ValidarCodigoPort;
 
@@ -26,7 +26,7 @@ public class UsuarioController {
  // ENDPOINT -> Solicitud de un código de acceso temporal vía email
     // POST http://localhost:8080/api/usuarios/login/solicitar
     @PostMapping("/login/solicitar")
-    public ResponseEntity<Void> solicitarCodigo(@RequestBody SolicitarCodigoCommand command) {
+    public ResponseEntity<Void> solicitarCodigo(@RequestBody SolicitarCodigoCommandDTO command) {
         solicitarCodigoPort.ejecutar(command);
         return ResponseEntity.ok().build();
     }
@@ -34,7 +34,7 @@ public class UsuarioController {
  // ENDPOINT -> Validación del código de acceso para iniciar sesión
     // POST http://localhost:8080/api/usuarios/login/validar
     @PostMapping("/login/validar")
-    public ResponseEntity<Boolean> validarCodigo(@RequestBody ValidarCodigoCommand command) {
+    public ResponseEntity<Boolean> validarCodigo(@RequestBody ValidarCodigoCommandDTO command) {
         boolean esValido = validarCodigoPort.ejecutar(command);
         
         if (esValido) {

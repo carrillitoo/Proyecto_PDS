@@ -1,7 +1,7 @@
 package umu.pds.api.application.usecases;
 
 import org.springframework.stereotype.Service;
-import umu.pds.dto.AnadirEtiquetaCommand;
+import umu.pds.dto.AnadirEtiquetaCommandDTO;
 import umu.pds.api.domain.exceptions.TarjetaNoEncontradaException;
 import umu.pds.api.domain.models.Color;
 import umu.pds.api.domain.models.Etiqueta;
@@ -10,16 +10,16 @@ import umu.pds.api.domain.ports.in.AnadirEtiquetaPort;
 import umu.pds.api.domain.ports.out.TarjetaRepositoryPort;
 
 @Service
-public class AnadirEtiquetaUseCase implements AnadirEtiquetaPort {
+public class AnadirEtiquetaUseCaseImpl implements AnadirEtiquetaPort {
 
     private final TarjetaRepositoryPort tarjetaRepositoryPort;
 
-    public AnadirEtiquetaUseCase(final TarjetaRepositoryPort tarjetaRepositoryPort) {
+    public AnadirEtiquetaUseCaseImpl(final TarjetaRepositoryPort tarjetaRepositoryPort) {
         this.tarjetaRepositoryPort = tarjetaRepositoryPort;
     }
 
     @Override
-    public Tarjeta ejecutar(AnadirEtiquetaCommand command) {
+    public Tarjeta ejecutar(AnadirEtiquetaCommandDTO command) {
         // Recupera la tarjeta de la BD, y si no existe lanzamos nuestra excepción
         Tarjeta tarjeta = tarjetaRepositoryPort.buscarPorId(command.tarjetaId())
                 .orElseThrow(() -> new TarjetaNoEncontradaException(command.tarjetaId()));

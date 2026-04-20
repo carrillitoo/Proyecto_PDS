@@ -17,11 +17,11 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
-public class TarjetaPersistenceAdapter implements TarjetaRepositoryPort {
+public class TarjetaPersistenceAdapterImpl implements TarjetaRepositoryPort {
 
     private final TarjetaJpaRepository tarjetaRepository;
 
-    public TarjetaPersistenceAdapter(TarjetaJpaRepository tarjetaRepository) {
+    public TarjetaPersistenceAdapterImpl(TarjetaJpaRepository tarjetaRepository) {
         this.tarjetaRepository = tarjetaRepository;
     }
 

@@ -11,13 +11,13 @@ import umu.pds.api.domain.ports.out.TableroRepositoryPort;
 import java.util.Optional;
 
 @Component // para que pueda meter spring los usecases
-public class TableroRepositoryAdapter implements TableroRepositoryPort {
+public class TableroRepositoryAdapterImpl implements TableroRepositoryPort {
 
     private final TableroJpaRepository jpaRepository;
     private final TableroMapper mapper;
 
     // para tener el mapper y el repositorio
-    public TableroRepositoryAdapter(TableroJpaRepository jpaRepository, TableroMapper mapper) {
+    public TableroRepositoryAdapterImpl(TableroJpaRepository jpaRepository, TableroMapper mapper) {
         this.jpaRepository = jpaRepository;
         this.mapper = mapper;
     }

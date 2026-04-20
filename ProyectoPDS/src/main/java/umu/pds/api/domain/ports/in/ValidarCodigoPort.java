@@ -1,7 +1,7 @@
 package umu.pds.api.domain.ports.in;
 
-import umu.pds.dto.ValidarCodigoCommand;
+import umu.pds.dto.ValidarCodigoCommandDTO;
 
 public interface ValidarCodigoPort {
-	boolean ejecutar(ValidarCodigoCommand comando);
+	boolean ejecutar(ValidarCodigoCommandDTO comando);
 }

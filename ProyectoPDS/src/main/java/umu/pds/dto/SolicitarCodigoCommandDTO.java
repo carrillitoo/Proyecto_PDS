@@ -1,5 +1,5 @@
 package umu.pds.dto;
 
-public record SolicitarCodigoCommand(
+public record SolicitarCodigoCommandDTO(
 		String email
 ) {}

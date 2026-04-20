@@ -3,8 +3,8 @@ package umu.pds.api.adapters.in.rest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import umu.pds.dto.AnadirEtiquetaCommand;
-import umu.pds.dto.CrearTarjetaCommand;
+import umu.pds.dto.AnadirEtiquetaCommandDTO;
+import umu.pds.dto.CrearTarjetaCommandDTO;
 import umu.pds.api.domain.models.Tarjeta;
 import umu.pds.api.domain.ports.in.AnadirEtiquetaPort;
 import umu.pds.api.domain.ports.in.CrearTarjetaPort;
@@ -26,7 +26,7 @@ public class TarjetaController {
     // ENDPOINT -> Creación una tarjeta
     // POST http://localhost:8080/api/tarjetas
     @PostMapping
-    public ResponseEntity<Tarjeta> crearTarjeta(@RequestBody CrearTarjetaCommand command) {
+    public ResponseEntity<Tarjeta> crearTarjeta(@RequestBody CrearTarjetaCommandDTO command) {
         Tarjeta tarjetaCreada = crearTarjetaPort.ejecutar(command);
         return ResponseEntity.status(HttpStatus.CREATED).body(tarjetaCreada);
     }
@@ -38,7 +38,7 @@ public class TarjetaController {
             @PathVariable("id") UUID id,
             @RequestBody AnadirEtiquetaWebRequest request) {
 
-        AnadirEtiquetaCommand command = new AnadirEtiquetaCommand(id, request.nombreEtiqueta(), request.colorHex());
+        AnadirEtiquetaCommandDTO command = new AnadirEtiquetaCommandDTO(id, request.nombreEtiqueta(), request.colorHex());
         Tarjeta tarjetaActualizada = anadirEtiquetaPort.ejecutar(command);
         return ResponseEntity.ok(tarjetaActualizada);
     }

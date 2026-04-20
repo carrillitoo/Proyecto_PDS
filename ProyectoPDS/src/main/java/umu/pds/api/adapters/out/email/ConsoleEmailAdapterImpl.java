@@ -6,7 +6,7 @@ import umu.pds.api.domain.ports.out.EmailPort;
 
 //adaptador para simular el envio de emails
 @Component
-public class ConsoleEmailAdapter implements EmailPort {
+public class ConsoleEmailAdapterImpl implements EmailPort {
 
     @Override
     public void enviarCodigoAcceso(Email destino, String codigo) {

@@ -40,7 +40,7 @@ class ListaTareasControllerTest {
 
     // Mockeamos los UseCases de las listas y tarjetas
     @MockBean private CrearListaTareasUseCase crearListaTareasUseCase;
-    @MockBean private AddTarjetaListaUseCase addTarjetaListaUseCase;
+    @MockBean private AddTarjetaListaUseCaseImpl addTarjetaListaUseCase;
     @MockBean private EliminarTarjetaUseCase eliminarTarjetaUseCase;
     @MockBean private MoverTarjetaUseCase moverTarjetaUseCase;
     @MockBean private CheckTarjetaCompletadaUseCase checkTarjetaCompletadaUseCase;

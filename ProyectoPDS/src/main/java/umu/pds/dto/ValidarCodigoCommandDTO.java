@@ -1,6 +1,6 @@
 package umu.pds.dto;
 
-public record ValidarCodigoCommand(
+public record ValidarCodigoCommandDTO(
 		String email,
 		String codigo
 ) {}
