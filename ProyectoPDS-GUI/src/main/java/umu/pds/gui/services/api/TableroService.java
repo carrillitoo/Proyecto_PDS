@@ -7,8 +7,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 
-import umu.pds.gui.services.api.dto.CrearTableroRequestDto;
-import umu.pds.gui.services.api.dto.TableroResponseDto;
+import umu.pds.dto.CrearTableroRequestDTO;
+import umu.pds.dto.TableroResponseDTO;
 
 public class TableroService {
 
@@ -23,8 +23,8 @@ public class TableroService {
         this.objectMapper = new ObjectMapper();
     }
 
-    public TableroResponseDto createBoard(String nombre, String emailCreador) throws Exception {
-        CrearTableroRequestDto body = new CrearTableroRequestDto(nombre, emailCreador);
+    public TableroResponseDTO createBoard(String nombre, String emailCreador) throws Exception {
+        CrearTableroRequestDTO body = new CrearTableroRequestDTO(nombre, emailCreador);
         String json = objectMapper.writeValueAsString(body);
         
         HttpRequest request = HttpRequest.newBuilder()
@@ -35,12 +35,12 @@ public class TableroService {
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         if (response.statusCode() == 200 || response.statusCode() == 201) {
-            return objectMapper.readValue(response.body(), TableroResponseDto.class);
+            return objectMapper.readValue(response.body(), TableroResponseDTO.class);
         }
         throw new RuntimeException("Error creando tablero: " + response.statusCode());
     }
 
-    public TableroResponseDto getBoard(String id) throws Exception {
+    public TableroResponseDTO getBoard(String id) throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "/" + id))
                 .GET()
@@ -48,7 +48,7 @@ public class TableroService {
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         if (response.statusCode() == 200) {
-            return objectMapper.readValue(response.body(), TableroResponseDto.class);
+            return objectMapper.readValue(response.body(), TableroResponseDTO.class);
         }
         throw new RuntimeException("Error obteniendo tablero: " + response.statusCode());
     }

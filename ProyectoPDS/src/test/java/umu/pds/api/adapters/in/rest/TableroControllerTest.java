@@ -11,8 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
-import umu.pds.api.application.dto.CompactarTableroRequestDTO;
-import umu.pds.api.application.dto.CrearTableroRequestDTO;
+import umu.pds.dto.CompactarTableroRequestDTO;
+import umu.pds.dto.CrearTableroRequestDTO;
 import umu.pds.api.application.usecases.*;
 import umu.pds.api.domain.exceptions.TableroNoEncontradoException;
 import umu.pds.api.domain.models.EstadoTablero;

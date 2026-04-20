@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import umu.pds.api.application.dto.AnadirEtiquetaCommand;
+import umu.pds.dto.AnadirEtiquetaCommand;
 import umu.pds.api.domain.exceptions.TarjetaNoEncontradaException;
 import umu.pds.api.domain.models.Tarea;
 import umu.pds.api.domain.models.Tarjeta;

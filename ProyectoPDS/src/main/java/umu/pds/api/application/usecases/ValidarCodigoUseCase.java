@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
 import umu.pds.api.domain.models.Email;
-import umu.pds.api.application.dto.ValidarCodigoCommand;
+import umu.pds.dto.ValidarCodigoCommand;
 import umu.pds.api.domain.ports.in.ValidarCodigoPort;
 import umu.pds.api.domain.ports.out.UsuarioRepositoryPort;
 

@@ -1,7 +1,7 @@
 package umu.pds.api.application.usecases;
 
 import org.springframework.stereotype.Service;
-import umu.pds.api.application.dto.AnadirEtiquetaCommand;
+import umu.pds.dto.AnadirEtiquetaCommand;
 import umu.pds.api.domain.exceptions.TarjetaNoEncontradaException;
 import umu.pds.api.domain.models.Color;
 import umu.pds.api.domain.models.Etiqueta;

@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import umu.pds.api.application.dto.CompactarTableroRequestDTO;
-import umu.pds.api.application.dto.CrearTableroRequestDTO;
-import umu.pds.api.application.dto.TableroResponseDTO;
+import umu.pds.dto.CompactarTableroRequestDTO;
+import umu.pds.dto.CrearTableroRequestDTO;
+import umu.pds.dto.TableroResponseDTO;
 import umu.pds.api.application.usecases.CompactarTableroUseCase;
 import umu.pds.api.application.usecases.CongelarTableroUseCase;
 import umu.pds.api.application.usecases.CrearTableroUseCase;

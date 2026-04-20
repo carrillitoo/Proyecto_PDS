@@ -3,7 +3,7 @@ package umu.pds.api.application.usecases;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
-import umu.pds.api.application.dto.CompartirTableroCommand;
+import umu.pds.dto.CompartirTableroCommand;
 import umu.pds.api.domain.models.Email;
 import umu.pds.api.domain.models.Usuario;
 import umu.pds.api.domain.ports.in.CompartirTableroPort;

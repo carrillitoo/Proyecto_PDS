@@ -10,9 +10,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import umu.pds.api.application.dto.AddTarjetaRequestDTO;
-import umu.pds.api.application.dto.CrearListaRequestDTO;
-import umu.pds.api.application.dto.MoverTarjetaRequestDTO;
+import umu.pds.dto.AddTarjetaRequestDTO;
+import umu.pds.dto.CrearListaRequestDTO;
+import umu.pds.dto.MoverTarjetaRequestDTO;
 import umu.pds.api.application.usecases.*;
 import umu.pds.api.domain.exceptions.LimiteListaExcedidoException;
 import umu.pds.api.domain.exceptions.TransicionInvalidaException;

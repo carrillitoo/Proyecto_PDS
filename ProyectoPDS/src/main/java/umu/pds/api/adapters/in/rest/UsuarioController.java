@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import umu.pds.api.application.dto.SolicitarCodigoCommand;
-import umu.pds.api.application.dto.ValidarCodigoCommand;
+import umu.pds.dto.SolicitarCodigoCommand;
+import umu.pds.dto.ValidarCodigoCommand;
 import umu.pds.api.domain.ports.in.SolicitarCodigoPort;
 import umu.pds.api.domain.ports.in.ValidarCodigoPort;
 

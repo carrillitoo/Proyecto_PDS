@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import umu.pds.api.application.dto.CrearTarjetaCommand;
+import umu.pds.dto.CrearTarjetaCommand;
 import umu.pds.api.domain.models.Tarjeta;
 import umu.pds.api.domain.models.TarjetaChecklist;
 import umu.pds.api.domain.models.TarjetaTarea;

@@ -7,8 +7,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 
-import umu.pds.gui.services.api.dto.AddTarjetaRequestDto;
-import umu.pds.gui.services.api.dto.TarjetaResponseDto;
+import umu.pds.dto.AddTarjetaRequestDTO;
+import umu.pds.dto.TarjetaResponseDTO;
 
 public class TarjetaService {
 
@@ -23,8 +23,8 @@ public class TarjetaService {
         this.objectMapper = new ObjectMapper();
     }
 
-    public TarjetaResponseDto createCard(String titulo, String descripcion, String tipo) throws Exception {
-        AddTarjetaRequestDto requestDto = new AddTarjetaRequestDto(titulo, descripcion, tipo, null);
+    public TarjetaResponseDTO createCard(String titulo, String descripcion, String tipo) throws Exception {
+        AddTarjetaRequestDTO requestDto = new AddTarjetaRequestDTO(titulo, descripcion, tipo, null);
         String json = objectMapper.writeValueAsString(requestDto);
         
         HttpRequest request = HttpRequest.newBuilder()
@@ -35,7 +35,7 @@ public class TarjetaService {
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         if (response.statusCode() == 200 || response.statusCode() == 201) {
-            return objectMapper.readValue(response.body(), TarjetaResponseDto.class);
+            return objectMapper.readValue(response.body(), TarjetaResponseDTO.class);
         }
         throw new RuntimeException("Error creando tarjeta: " + response.statusCode());
     }

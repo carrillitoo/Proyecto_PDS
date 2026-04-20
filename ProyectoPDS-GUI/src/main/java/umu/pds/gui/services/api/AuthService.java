@@ -6,8 +6,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import umu.pds.gui.services.api.dto.SolicitarCodigoRequest;
-import umu.pds.gui.services.api.dto.ValidarCodigoRequest;
+import umu.pds.dto.SolicitarCodigoCommand;
+import umu.pds.dto.ValidarCodigoCommand;
 
 public class AuthService {
     private final String BASE_URL = "http://localhost:8080/api/usuarios";
@@ -22,7 +22,7 @@ public class AuthService {
     }
 
     public boolean solicitarCodigo(String email) throws Exception {
-        SolicitarCodigoRequest requestBody = new SolicitarCodigoRequest(email);
+        SolicitarCodigoCommand requestBody = new SolicitarCodigoCommand(email);
         String json = objectMapper.writeValueAsString(requestBody);
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -37,7 +37,7 @@ public class AuthService {
     
     public boolean validarCodigo(String email, String codigo) throws Exception {
         
-        ValidarCodigoRequest requestBody = new ValidarCodigoRequest(email, codigo);
+        ValidarCodigoCommand requestBody = new ValidarCodigoCommand(email, codigo);
         String json = objectMapper.writeValueAsString(requestBody);
 
         HttpRequest request = HttpRequest.newBuilder()

@@ -1,4 +1,4 @@
-package umu.pds.api.application.dto;
+package umu.pds.dto;
 
 import org.junit.jupiter.api.Test;
 
