@@ -35,7 +35,8 @@ public class VerifyController {
         if (digit6 != null) code += digit6.getText();
 
         if (code.length() < 6) {
-            code = "123456"; // Fallback por si acaso
+            showAlert("Código Incompleto", "El código debe tener 6 dígitos.");
+            return;
         }
 
         System.out.println("Validando código '" + code + "' para el email: " + userEmail);
@@ -101,5 +102,13 @@ public class VerifyController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.show();
     }
 }

@@ -1,5 +1,7 @@
 package umu.pds.api.adapters.in.rest;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
@@ -19,6 +22,7 @@ import umu.pds.api.application.usecases.CongelarTableroUseCase;
 import umu.pds.api.application.usecases.CrearTableroUseCase;
 import umu.pds.api.application.usecases.DescongelarTableroUseCase;
 import umu.pds.api.application.usecases.GetTableroUseCase;
+import umu.pds.api.application.usecases.ListarTablerosUseCase;
 import umu.pds.api.domain.models.Tablero;
 
 @RestController //xra devolver JSONS
@@ -30,19 +34,33 @@ public class TableroController {
 	private final DescongelarTableroUseCase descogelarTableroUseCase;
 	private final GetTableroUseCase getTableroUseCase;
 	private final CompactarTableroUseCase compactarTableroUseCase;
+	private final ListarTablerosUseCase listarTablerosUseCase;
 		
 	public TableroController(CrearTableroUseCase crearTableroUseCase,
 							CongelarTableroUseCase cogelarTableroUseCase,
 							DescongelarTableroUseCase descogelarTableroUseCase,
 							GetTableroUseCase getTableroUseCase,
-							CompactarTableroUseCase compactarTableroUseCase) {
+							CompactarTableroUseCase compactarTableroUseCase,
+							ListarTablerosUseCase listarTablerosUseCase) {
 		this.crearTableroUseCase = crearTableroUseCase;
 		this.cogelarTableroUseCase = cogelarTableroUseCase;
 		this.descogelarTableroUseCase = descogelarTableroUseCase;
 		this.getTableroUseCase = getTableroUseCase;
 		this.compactarTableroUseCase = compactarTableroUseCase;
+		this.listarTablerosUseCase = listarTablerosUseCase;
 	}
 	
+    // -------------------------------ENDPOINT Listar Tableros (GET)-------------------------------
+    @GetMapping
+    public ResponseEntity<List<TableroResponseDTO>> listarTableros(@RequestParam(value = "usuario", required = false) String emailUsuario) {
+        if (emailUsuario == null || emailUsuario.isBlank()) {
+            return ResponseEntity.badRequest().build();
+        }
+        List<Tablero> tableros = listarTablerosUseCase.ejecutar(emailUsuario);
+        List<TableroResponseDTO> dtos = tableros.stream().map(this::mapearATableroDTO).toList();
+        return ResponseEntity.ok(dtos);
+    }
+
     // -------------------------------ENDPOINT Crear Tablero (POST)-------------------------------
     @PostMapping
     public ResponseEntity<TableroResponseDTO> crearTablero(@Valid @RequestBody CrearTableroRequestDTO request) { //sacamos los datos del json

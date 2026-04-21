@@ -35,7 +35,15 @@ public class MainLayoutController {
 
     // --- ACCIONES DEL MENÚ LATERAL ---
     @FXML private void goDashboard() { loadCenterView("Dashboard"); }
-    @FXML private void goBoard() { loadCenterView("BoardWorkspace"); }
+    @FXML private void goBoard() {
+        String boardId = umu.pds.gui.services.GlobalState.getInstance().getCurrentBoardId();
+        if (boardId != null && !boardId.isBlank()) {
+            loadCenterView("BoardWorkspace");
+        } else {
+            System.out.println("No hay tablero seleccionado. Redirigiendo al Dashboard.");
+            loadCenterView("Dashboard");
+        }
+    }
     @FXML private void goPermissions() { loadCenterView("PermisosTablero"); }
     @FXML private void goCompaction() { loadCenterView("ConfiguracionTablero"); }
     @FXML private void goTemplates() { loadCenterView("Plantillas"); }

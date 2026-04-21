@@ -8,4 +8,6 @@ import java.util.UUID;
 
 @Repository  //no hace falta crear los metodos porque vienen ya por herencia 
 //(si se hace Ctrl + "+" se puede ver todos los metodos que podemos sobreescribir)
-public interface TableroJpaRepository extends JpaRepository<TableroEntity, UUID> {}
+public interface TableroJpaRepository extends JpaRepository<TableroEntity, UUID> {
+    java.util.List<TableroEntity> findByEmailCreador(String emailCreador);
+}

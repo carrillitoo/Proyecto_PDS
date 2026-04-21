@@ -7,6 +7,9 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
+import umu.pds.gui.services.GlobalState;
+import umu.pds.gui.services.api.TarjetaService;
+
 public class CreateCardController {
 
     @FXML private ComboBox<String> tipoCombo;
@@ -45,23 +48,58 @@ public class CreateCardController {
         String titulo = tituloField.getText();
         String descripcion = descripcionArea.getText();
 
-        if ("Tarea".equals(tipo)) {
-            String contenido = contenidoTareaArea.getText();
-            System.out.println("Creando TarjetaTarea: " + titulo + " | Tarea: " + contenido);
-            // TODO: Conectar con backend - LLamar a CardService para crear la tarjeta de tipo TAREA
-        } else {
-            int numItems = checklistItemsContainer.getChildren().size();
-            System.out.println("Creando TarjetaChecklist: " + titulo + " con " + numItems + " items");
-            // TODO: Conectar con backend - LLamar a CardService para crear la tarjeta de tipo CHECKLIST
+        if (titulo == null || titulo.trim().isEmpty()) {
+            showAlert("Título Obligatorio", "El título de la tarjeta no puede estar vacío");
+            return;
         }
 
-        // Volver al tablero
-        MainLayoutController.getInstance().loadCenterView("BoardWorkspace");
+        if (descripcion == null || descripcion.trim().isEmpty()) {
+            showAlert("Descripción Obligatoria", "La descripción de la tarjeta no puede estar vacía");
+            return;
+        }
+
+        String boardId = GlobalState.getInstance().getCurrentBoardId();
+        String listId = GlobalState.getInstance().getCurrentListId();
+
+        try {
+            String contenido = "TAREA".equals(tipo) ? contenidoTareaArea.getText() : "{}";
+            
+            if ("Checklist".equals(tipo)) {
+                // Formatting checklist items basic approach
+                java.util.List<String> items = new java.util.ArrayList<>();
+                for (javafx.scene.Node node : checklistItemsContainer.getChildren()) {
+                    if (node instanceof TextField) {
+                        String text = ((TextField) node).getText();
+                        if (!text.trim().isEmpty()) items.add(text);
+                    }
+                }
+                contenido = String.join("||", items);
+            }
+
+            boolean exito = tarjetaService.createCard(boardId, listId, titulo, descripcion, tipo.toUpperCase(), contenido);
+            if (!exito) {
+                showAlert("Error API", "La API falló al crear la tarjeta");
+                return;
+            }
+            
+            // Volver al tablero
+            MainLayoutController.getInstance().loadCenterView("BoardWorkspace");
+        } catch (Exception ex) {
+            showAlert("Error de Conexión", "Error contactando con la API: " + ex.getMessage());
+        }
     }
 
     @FXML
     private void handleClose() {
         System.out.println("Cerrando formulario de creación de tarjeta...");
         MainLayoutController.getInstance().loadCenterView("BoardWorkspace");
+    }
+
+    private void showAlert(String title, String content) {
+        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.show();
     }
 }

@@ -8,6 +8,10 @@ import javafx.scene.layout.VBox;
 
 import java.util.List;
 
+import umu.pds.dto.TableroResponseDTO;
+import umu.pds.gui.services.GlobalState;
+import umu.pds.gui.services.api.TableroService;
+
 public class DashboardController {
 
     @FXML
@@ -16,43 +20,50 @@ public class DashboardController {
     @FXML
     private VBox activityContainer;
 
-    // DTOs simulados
-    public record BoardDto(String id, String title, String colorHex) {}
-    public record ActivityLog(String description, String timestamp, String boardName) {}
+    // Activity Logs Simulados (Actividad no tiene backend aun)
+    public record ActivityLog(String description, String timestamp, String boardName) {
+    }
 
     @FXML
     public void initialize() {
         System.out.println("Dashboard cargado.");
-        // TODO: Conectar con backend - Obtener la lista de tableros del usuario actual y la actividad reciente
         renderBoards();
         renderActivity();
     }
 
     private void renderBoards() {
-        if (boardsContainer == null) return;
+        if (boardsContainer == null)
+            return;
         boardsContainer.getChildren().clear();
 
-        // Datos mock parametrizados
-        List<BoardDto> myBoards = List.of(
-            new BoardDto("b1", "Lanzamiento Q4", "#0079bf"),
-            new BoardDto("b2", "Rediseño UI", "#5aac44"),
-            new BoardDto("b3", "Marketing Campaing", "#eb5a46"),
-            new BoardDto("b4", "Backend API v2", "#89609e")
-        );
+        try {
+            TableroService tableroService = new TableroService();
+            String userEmail = GlobalState.getInstance().getUserEmail();
+            if (userEmail == null || userEmail.isBlank()) {
+                System.out.println("No hay email de sesión, redirigiendo a login...");
+                // Podríamos forzar un render later para redirigir si quisiéramos, 
+                // pero por ahora solo evitamos el crash y usamos un test email.
+                userEmail = "test@example.com";
+            }
 
-        for (BoardDto board : myBoards) {
-            VBox boardCard = new VBox();
-            boardCard.setStyle("-fx-background-color: " + board.colorHex() + ";");
-            boardCard.getStyleClass().add("board-card");
-            // Efectos visuales premium dinámicos para hover se manejan en CSS, 
-            // pero el click handler lo inyectamos aquí:
-            boardCard.setOnMouseClicked(e -> abrirTablero(board.id()));
+            List<TableroResponseDTO> myBoards = tableroService.getDashboards(userEmail);
 
-            Label titleLabel = new Label(board.title());
-            titleLabel.getStyleClass().add("board-card-title");
-            boardCard.getChildren().add(titleLabel);
+            for (TableroResponseDTO board : myBoards) {
+                VBox boardCard = new VBox();
+                String colorHex = "#0079bf";
+                boardCard.setStyle("-fx-background-color: " + colorHex + ";");
+                boardCard.getStyleClass().add("board-card");
+                boardCard.setOnMouseClicked(e -> abrirTablero(board.id()));
 
-            boardsContainer.getChildren().add(boardCard);
+                Label titleLabel = new Label(board.nombre());
+                titleLabel.getStyleClass().add("board-card-title");
+                boardCard.getChildren().add(titleLabel);
+
+                boardsContainer.getChildren().add(boardCard);
+            }
+        } catch (Exception ex) {
+            System.err.println("Error obteniendo tableros: " + ex.getMessage());
+            // No bloqueamos la interfaz si falla la API
         }
 
         // Placeholder para crear nuevo tablero
@@ -62,36 +73,36 @@ public class DashboardController {
         newBoardPlaceholder.setPrefHeight(120);
         newBoardPlaceholder.getStyleClass().add("new-board-placeholder");
         newBoardPlaceholder.setOnMouseClicked(e -> handleNewBoard());
-        
+
         Label plusLabel = new Label("+");
         plusLabel.setStyle("-fx-font-size: 30px; -fx-text-fill: #707882;");
         Label textLabel = new Label("Nuevo Tablero");
         textLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #707882; -fx-font-weight: bold;");
-        
+
         newBoardPlaceholder.getChildren().addAll(plusLabel, textLabel);
         boardsContainer.getChildren().add(newBoardPlaceholder);
     }
 
     private void renderActivity() {
-        if (activityContainer == null) return;
+        if (activityContainer == null)
+            return;
         activityContainer.getChildren().clear();
 
         List<ActivityLog> logs = List.of(
-            new ActivityLog("Actualizaste la tarjeta 'Moodboard Visual'", "Hace 2 horas", "Rediseño UI"),
-            new ActivityLog("Creaste la lista 'To Do'", "Hace 5 horas", "Backend API v2"),
-            new ActivityLog("Te invitaron al tablero", "Hace 1 día", "Marketing Campaing")
-        );
+                new ActivityLog("Actualizaste la tarjeta 'Moodboard Visual'", "Hace 2 horas", "Rediseño UI"),
+                new ActivityLog("Creaste la lista 'To Do'", "Hace 5 horas", "Backend API v2"),
+                new ActivityLog("Te invitaron al tablero", "Hace 1 día", "Marketing Campaing"));
 
         for (ActivityLog log : logs) {
             VBox logCard = new VBox();
             logCard.setSpacing(10);
-            
+
             Label title = new Label(log.description());
             title.setStyle("-fx-font-weight: bold;");
-            
+
             Label subtitle = new Label("En " + log.boardName() + " • " + log.timestamp());
             subtitle.setStyle("-fx-text-fill: #707882; -fx-font-size: 11px;");
-            
+
             logCard.getChildren().addAll(title, subtitle);
             activityContainer.getChildren().add(logCard);
         }
@@ -99,7 +110,7 @@ public class DashboardController {
 
     private void abrirTablero(String boardId) {
         System.out.println("Abriendo el tablero (BoardWorkspace) asociado al ID: " + boardId);
-        // En una app real, aquí guardaríamos el boardId actual en una sesión global
+        GlobalState.getInstance().setCurrentBoardId(boardId);
         MainLayoutController.getInstance().loadCenterView("BoardWorkspace");
     }
 

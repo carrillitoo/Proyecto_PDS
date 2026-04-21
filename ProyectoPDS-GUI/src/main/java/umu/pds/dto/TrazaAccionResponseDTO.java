@@ -3,8 +3,6 @@ package umu.pds.dto;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import umu.pds.api.domain.models.TipoAccion;
-
 public record TrazaAccionResponseDTO(
 		String accion,
         String tarjetaId,

@@ -9,4 +9,5 @@ public interface TableroRepositoryPort {
     void guardar(Tablero tablero);
     Optional<Tablero> buscarPorId(TableroId id);
     void eliminar(TableroId id);
+    java.util.List<Tablero> buscarPorEmailCreador(String email);
 }

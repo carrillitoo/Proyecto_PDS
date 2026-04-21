@@ -45,4 +45,11 @@ public class TableroRepositoryAdapterImpl implements TableroRepositoryPort {
         // le decimos al repo que borre segun el uuid interno
         jpaRepository.deleteById(id.valor());
     }
+
+    @Override
+    public java.util.List<Tablero> buscarPorEmailCreador(String email) {
+        return jpaRepository.findByEmailCreador(email).stream()
+                .map(mapper::toDomain)
+                .toList();
+    }
 }

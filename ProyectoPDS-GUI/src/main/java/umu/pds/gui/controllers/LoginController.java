@@ -17,7 +17,14 @@ public class LoginController {
     private void handleLogin() {
         String email = emailField.getText();
         if (email == null || email.trim().isEmpty()) {
-            email = "demo@pdsarchitect.com";
+            showAlert("Email Obligatorio", "Por favor, introduce tu correo electrónico.");
+            return;
+        }
+
+        // Validación de Regex básica
+        if (!email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+            showAlert("Email Inválido", "El formato del correo electrónico no es válido.");
+            return;
         }
         
         final String finalEmail = email;
@@ -52,5 +59,31 @@ public class LoginController {
                 });
             }
         }).start();
+    }
+
+    @FXML
+    private void handleRegister() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Información de Registro");
+        alert.setHeaderText("Autenticación Segura sin Contraseñas");
+        alert.setContentText("Tu cuenta se crea automáticamente cuando accedes por primera vez. Para registrarte o iniciar sesión, simplemente introduce tu correo electrónico y haz clic en 'Entrar a mis Tableros'. Te enviaremos un código temporal a tu bandeja de entrada.");
+        alert.show();
+    }
+
+    @FXML
+    private void handleForgot() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Recuperación de Acceso");
+        alert.setHeaderText("¡No hay contraseñas que olvidar!");
+        alert.setContentText("El sistema utiliza códigos temporales OTP vinculados a tu email, por lo que nunca tendrás que recordar contraseñas. Puedes iniciar sesión usando tu correo de manera segura en cualquier momento.");
+        alert.show();
+    }
+
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.show();
     }
 }

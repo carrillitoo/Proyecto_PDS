@@ -32,11 +32,14 @@ public class AuthService {
                 .build();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        return response.statusCode() == 200;
+        if (response.statusCode() != 200 && response.statusCode() != 202) {
+            System.err.println("Error solicitando código: " + response.statusCode() + " - " + response.body());
+            return false;
+        }
+        return true;
     }
     
     public boolean validarCodigo(String email, String codigo) throws Exception {
-        
         ValidarCodigoCommandDTO requestBody = new ValidarCodigoCommandDTO(email, codigo);
         String json = objectMapper.writeValueAsString(requestBody);
 
@@ -46,12 +49,12 @@ public class AuthService {
                 .POST(HttpRequest.BodyPublishers.ofString(json))
                 .build();
 
-       //enviamos y esperando una respuesta
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() == 200) {
-            // devolvemos true encaso de codigo correcto
             return Boolean.parseBoolean(response.body());
+        } else {
+            System.err.println("Error validando código: " + response.statusCode() + " - " + response.body());
         }
         return false;
     }

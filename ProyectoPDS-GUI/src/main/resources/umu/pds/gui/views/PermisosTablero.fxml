@@ -8,7 +8,7 @@
 <?import javafx.collections.FXCollections?>
 <?import java.lang.String?>
 
-<BorderPane prefHeight="800.0" prefWidth="1150.0" stylesheets="@Styles.css" xmlns="http://javafx.scene.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="umu.pds.gui.controllers.PermisosController">
+<BorderPane stylesheets="@Styles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="umu.pds.gui.controllers.PermisosController">
    <center>
       <ScrollPane fitToWidth="true" styleClass="scroll-pane">
          <content>

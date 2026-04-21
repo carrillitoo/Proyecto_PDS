@@ -15,76 +15,53 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+
+import umu.pds.dto.ListaTareasResponseDTO;
+import umu.pds.dto.TableroResponseDTO;
+import umu.pds.dto.TarjetaResponseDTO;
+import umu.pds.gui.services.GlobalState;
+import umu.pds.gui.services.api.TableroService;
+import umu.pds.gui.services.api.TarjetaService;
 
 public class TableroAvanzadoController {
 
     @FXML
     private HBox listsContainer;
 
-    // DTOs simulados
-    public record LabelDto(String name, String colorHex) {}
-    
-    public static class KanbanCard {
-        public String id;
-        public String title;
-        public List<LabelDto> labels;
-        public KanbanCard(String id, String title, List<LabelDto> labels) {
-            this.id = id; this.title = title; this.labels = new ArrayList<>(labels);
-        }
-    }
-    
-    public static class KanbanList {
-        public String id;
-        public String title;
-        public List<KanbanCard> cards;
-        public KanbanList(String id, String title, List<KanbanCard> cards) {
-            this.id = id; this.title = title; this.cards = new ArrayList<>(cards);
-        }
-    }
-
-    private List<KanbanList> boardData = new ArrayList<>();
+    private String currentBoardId;
+    private TableroService tableroService = new TableroService();
+    private TarjetaService tarjetaService = new TarjetaService();
 
     @FXML
     public void initialize() {
         System.out.println("Inicializando Tablero Avanzado (Kanban Dinámico con DnD)...");
-        // TODO: Conectar con backend - Obtener el tablero y sus listas/tarjetas desde la API
-        initializeMockData();
-        renderBoard();
+        currentBoardId = GlobalState.getInstance().getCurrentBoardId();
+        if (currentBoardId != null) {
+            fetchAndRenderBoard();
+        } else {
+            System.err.println("Advertencia: No hay un boardId seleccionado.");
+        }
     }
 
-    private void initializeMockData() {
-        // Datos mock
-        List<LabelDto> feDev = List.of(new LabelDto("FE DEV", "#2196f3"));
-        List<LabelDto> urgente = List.of(new LabelDto("URGENTE", "#f44336"));
-        List<LabelDto> backend = List.of(new LabelDto("BACKEND", "#9c27b0"));
-
-        KanbanList todo = new KanbanList("list-1", "To Do", List.of(
-            new KanbanCard("c-1", "Optimizar renderizado del dashboard para navegadores antiguos", feDev),
-            new KanbanCard("c-2", "Crear endpoint de compactación", backend),
-            new KanbanCard("c-3", "Fix bug de sesión caducada", urgente)
-        ));
-
-        KanbanList inProgress = new KanbanList("list-2", "In Progress", List.of(
-            new KanbanCard("c-4", "Renovar paleta de colores", feDev)
-        ));
-
-        KanbanList done = new KanbanList("list-3", "Done", List.of(
-            new KanbanCard("c-5", "Mock base de datos", backend)
-        ));
-
-        boardData.addAll(List.of(todo, inProgress, done));
+    private void fetchAndRenderBoard() {
+        try {
+            TableroResponseDTO tablero = tableroService.getTableroById(currentBoardId);
+            renderBoard(tablero);
+        } catch (Exception ex) {
+            System.err.println("Error recuperando tablero avanzado: " + ex.getMessage());
+            ex.printStackTrace();
+        }
     }
 
-    private void renderBoard() {
+    private void renderBoard(TableroResponseDTO tablero) {
         if (listsContainer == null) return;
         listsContainer.getChildren().clear();
 
-        for (KanbanList listData : boardData) {
-            VBox listColumn = createListColumn(listData);
-            listsContainer.getChildren().add(listColumn);
+        if (tablero.listas() != null) {
+            for (ListaTareasResponseDTO listData : tablero.listas()) {
+                VBox listColumn = createListColumn(listData);
+                listsContainer.getChildren().add(listColumn);
+            }
         }
 
         // El placeholder de nueva lista
@@ -102,7 +79,7 @@ public class TableroAvanzadoController {
         listsContainer.getChildren().add(addListPlaceholder);
     }
 
-    private VBox createListColumn(KanbanList listData) {
+    private VBox createListColumn(ListaTareasResponseDTO listData) {
         VBox column = new VBox();
         column.setPrefWidth(280.0);
         column.setSpacing(10.0);
@@ -111,7 +88,7 @@ public class TableroAvanzadoController {
         // Header
         HBox header = new HBox();
         header.setAlignment(Pos.CENTER_LEFT);
-        Label titleLabel = new Label(listData.title);
+        Label titleLabel = new Label(listData.nombreLista());
         titleLabel.getStyleClass().add("list-header-text");
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
@@ -125,55 +102,51 @@ public class TableroAvanzadoController {
         cardsContainer.setMinHeight(50); // Para poder dropear si está vacía
         VBox.setVgrow(cardsContainer, Priority.ALWAYS);
 
-        for (KanbanCard cardData : listData.cards) {
-            VBox cardNode = createCardNode(cardData, listData.id);
-            cardsContainer.getChildren().add(cardNode);
+        if (listData.tarjetas() != null) {
+            for (TarjetaResponseDTO cardData : listData.tarjetas()) {
+                VBox cardNode = createCardNode(cardData, listData.nombreLista());
+                cardsContainer.getChildren().add(cardNode);
+            }
         }
 
-        // Configuración de Drag & Drop para esta columna
-        setupDropTarget(cardsContainer, listData.id);
+        // Configuración de Drag & Drop para esta columna (Usamos el nombre de la lista como ID de lista)
+        setupDropTarget(cardsContainer, listData.nombreLista());
 
         // Add Card button at bottom
         Button addCardBtn = new Button("+ Añadir tarjeta");
         addCardBtn.setMaxWidth(Double.MAX_VALUE);
         addCardBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #707882; -fx-cursor: hand;");
-        addCardBtn.setOnAction(e -> handleAddCard());
+        addCardBtn.setOnAction(e -> handleAddCard(listData.nombreLista()));
 
         column.getChildren().addAll(header, cardsContainer, addCardBtn);
         return column;
     }
 
-    private VBox createCardNode(KanbanCard cardData, String sourceListId) {
+    private VBox createCardNode(TarjetaResponseDTO cardData, String sourceListId) {
         VBox cardNode = new VBox();
         cardNode.setSpacing(10.0);
         cardNode.getStyleClass().add("task-card");
         
-        // Labels (etiquetas)
+        // Labels mockeadas de momento (backend DTO no las incluye aún)
         HBox labelsBox = new HBox();
         labelsBox.setSpacing(5.0);
-        for (LabelDto label : cardData.labels) {
-            Region colorIndicator = new Region();
-            colorIndicator.setPrefWidth(40.0);
-            colorIndicator.setPrefHeight(8.0);
-            colorIndicator.setStyle("-fx-background-color: " + label.colorHex() + "; -fx-background-radius: 4;");
-            labelsBox.getChildren().add(colorIndicator);
-        }
+        // Podríamos pintar prioridades o tags simulados si es necesario.
 
         // Título interactivo
-        Text textTitle = new Text(cardData.title);
+        Text textTitle = new Text(cardData.titulo());
         textTitle.setWrappingWidth(240.0);
         textTitle.setStyle("-fx-font-size: 14px; -fx-fill: #172b4d;");
 
         cardNode.getChildren().addAll(labelsBox, textTitle);
 
         // Click handler (abre el modal)
-        cardNode.setOnMouseClicked(e -> handleOpenCard());
+        cardNode.setOnMouseClicked(e -> handleOpenCard(cardData.id()));
 
         // Configuración de DRAG source
         cardNode.setOnDragDetected((MouseEvent event) -> {
             Dragboard db = cardNode.startDragAndDrop(TransferMode.MOVE);
             ClipboardContent content = new ClipboardContent();
-            content.putString(cardData.id + "|" + sourceListId); // ID + SourceListID
+            content.putString(cardData.id() + "|" + sourceListId); // ID + SourceListID
             db.setContent(content);
             cardNode.getStyleClass().add("dragging-card");
             event.consume();
@@ -182,8 +155,8 @@ public class TableroAvanzadoController {
         cardNode.setOnDragDone((DragEvent event) -> {
             cardNode.getStyleClass().remove("dragging-card");
             if (event.getTransferMode() == TransferMode.MOVE) {
-                // Se completó exitosamente, forzamos re-render
-                renderBoard();
+                // Se completó exitosamente, no re-rendereamos enseguida porque el drop maneja la llamada API
+                // fetchAndRenderBoard();
             }
             event.consume();
         });
@@ -233,27 +206,19 @@ public class TableroAvanzadoController {
     }
 
     private void moveCard(String cardId, String sourceListId, String targetListId) {
-        KanbanCard cardToMove = null;
-        
-        // Quitar de source
-        Optional<KanbanList> sourceListOpt = boardData.stream().filter(l -> l.id.equals(sourceListId)).findFirst();
-        if (sourceListOpt.isPresent()) {
-            KanbanList sourceList = sourceListOpt.get();
-            Optional<KanbanCard> cardOpt = sourceList.cards.stream().filter(c -> c.id.equals(cardId)).findFirst();
-            if (cardOpt.isPresent()) {
-                cardToMove = cardOpt.get();
-                sourceList.cards.remove(cardToMove);
-            }
-        }
-
-        // Añadir a target
-        if (cardToMove != null) {
-            Optional<KanbanList> targetListOpt = boardData.stream().filter(l -> l.id.equals(targetListId)).findFirst();
-            if (targetListOpt.isPresent()) {
-                targetListOpt.get().cards.add(cardToMove);
+        try {
+            boolean exito = tarjetaService.moveCard(currentBoardId, cardId, sourceListId, targetListId);
+            if (exito) {
                 System.out.println("Tarjeta movida con éxito al drag & drop.");
-                // TODO: Conectar con backend - Actualizar la lista destino de la tarjeta en la BD
+                // Recargamos los datos del servidor para pintar bien todo
+                fetchAndRenderBoard();
+            } else {
+                System.err.println("La API reportó un fallo moviendo la tarjeta.");
             }
+        } catch (Exception ex) {
+            System.err.println("Error procesando moveCard en API: " + ex.getMessage());
+            ex.printStackTrace();
+            fetchAndRenderBoard(); // Refrescar para revertir movimiento visual en todo caso
         }
     }
 
@@ -280,14 +245,16 @@ public class TableroAvanzadoController {
     }
 
     @FXML
-    private void handleOpenCard() {
-        System.out.println("Abriendo detalle de tarjeta...");
+    private void handleOpenCard(String cardId) {
+        System.out.println("Abriendo detalle de tarjeta con ID: " + cardId);
+        GlobalState.getInstance().setCurrentCardId(cardId);
         MainLayoutController.getInstance().loadCenterView("Tarea");
     }
 
     @FXML
-    private void handleAddCard() {
-        System.out.println("Abriendo formulario para añadir tarjeta...");
+    private void handleAddCard(String listId) {
+        System.out.println("Abriendo formulario para añadir tarjeta en la lista: " + listId);
+        GlobalState.getInstance().setCurrentListId(listId);
         MainLayoutController.getInstance().loadCenterView("CrearTarjeta");
     }
 

@@ -8,6 +8,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import umu.pds.gui.services.GlobalState;
+import umu.pds.gui.services.api.TarjetaService;
 
 public class EtiquetasController {
 
@@ -27,7 +29,7 @@ public class EtiquetasController {
         Color color = colorPicker.getValue();
 
         if (nombre == null || nombre.trim().isEmpty()) {
-            System.out.println("El nombre de la etiqueta no puede estar vacío.");
+            showAlert("Nombre Requerido", "El nombre de la etiqueta no puede estar vacío.");
             return;
         }
 
@@ -37,7 +39,23 @@ public class EtiquetasController {
             (int)(color.getBlue()*255));
 
         System.out.println("Añadiendo etiqueta: " + nombre + " con color " + hexColor);
-        // TODO: Conectar con backend - Llamar a CardService.addLabelToCard(cardId, nombre, hexColor)
+        String cardId = GlobalState.getInstance().getCurrentCardId();
+        if (cardId == null) {
+            showAlert("Error de Contexto", "No hay una tarjeta seleccionada para añadir la etiqueta.");
+            return;
+        }
+
+        try {
+            TarjetaService tarjetaService = new TarjetaService();
+            boolean exito = tarjetaService.addLabelToCard(cardId, nombre, hexColor);
+            if (!exito) {
+                showAlert("Error API", "La API falló al añadir la etiqueta.");
+                return;
+            }
+        } catch (Exception ex) {
+            showAlert("Error de Conexión", "Error al crear la etiqueta: " + ex.getMessage());
+            return; // don't render visually if API failed
+        }
 
         // Crear chip visual
         Label chip = new Label(nombre);
@@ -64,5 +82,13 @@ public class EtiquetasController {
     private void handleClose() {
         System.out.println("Cerrando gestión de etiquetas...");
         MainLayoutController.getInstance().loadCenterView("BoardWorkspace");
+    }
+
+    private void showAlert(String title, String content) {
+        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.show();
     }
 }

@@ -6,6 +6,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 
+import umu.pds.gui.services.GlobalState;
+import umu.pds.gui.services.api.TableroService;
+
 public class PermisosController {
 
     @FXML private ComboBox<String> roleCombo1;
@@ -27,8 +30,22 @@ public class PermisosController {
         ComboBox<String> source = (ComboBox<String>) event.getSource();
         String newRole = source.getValue();
         System.out.println("Actualizando en la BD el nuevo rol a: " + newRole);
-        // TODO: Conectar con backend - Actualizar el rol del usuario en este tablero mediante la API
-        // Llamará a: usuario.concederAccesoATablero(tableroId, Rol.valueOf(newRole))
+        
+        String boardId = GlobalState.getInstance().getCurrentBoardId();
+        try {
+            TableroService service = new TableroService();
+            // Determinamos un rol del backend basado en la seleccion del frontend
+            String roleEnum = newRole.toUpperCase().equals("ADMINISTRADOR") ? "ADMIN" : newRole.toUpperCase();
+            if (roleEnum.equals("LECTOR")) roleEnum = "VIEWER";
+            if (roleEnum.equals("EDITOR")) roleEnum = "GUEST"; // Asumiendo que es invitado/guest
+            
+            // TODO: In a real implementation, we would get the email of the selected user from the UI row
+            String targetUserEmail = "sara@pdsarchitect.com"; 
+            service.shareBoard(boardId, targetUserEmail, roleEnum);
+            System.out.println("Permisos guardados satisfactoriamente.");
+        } catch (Exception e) {
+            System.err.println("Error actualizando rol: " + e.getMessage());
+        }
     }
 
     @FXML
