@@ -1,4 +1,4 @@
-package umu.pds.dto;
+package umu.pds.api.adapters.in.rest.dto;
 
 
 // Recoge los datos necesarios para crear una tarjeta.

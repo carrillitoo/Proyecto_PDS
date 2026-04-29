@@ -1,4 +1,4 @@
-package umu.pds.dto;
+package umu.pds.api.adapters.in.rest.dto;
 
 
 import java.util.List;
@@ -13,5 +13,6 @@ public record TableroResponseDTO(
 	    String estado, 
 	    String url,
 	    List<ListaTareasResponseDTO> listas, 
-	    List<TrazaAccionResponseDTO> historial 
+	    List<TrazaAccionResponseDTO> historial,
+		List<EtiquetaDTO> etiquetas
 	) {}

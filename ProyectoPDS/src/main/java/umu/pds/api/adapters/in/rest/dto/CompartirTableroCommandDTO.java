@@ -1,4 +1,4 @@
-package umu.pds.dto;
+package umu.pds.api.adapters.in.rest.dto;
 
 import umu.pds.api.domain.models.Rol;
 

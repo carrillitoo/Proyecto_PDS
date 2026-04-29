@@ -76,8 +76,9 @@ public class CreateCardController {
                 contenido = String.join("||", items);
             }
 
-            boolean exito = tarjetaService.createCard(boardId, listId, titulo, descripcion, tipo.toUpperCase(), contenido);
-            if (!exito) {
+            TarjetaService tarjetaService = new TarjetaService();
+            umu.pds.dto.TarjetaResponseDTO nuevaTarjeta = tarjetaService.createCard(boardId, listId, titulo, descripcion, tipo.toUpperCase(), contenido);
+            if (nuevaTarjeta == null) {
                 showAlert("Error API", "La API falló al crear la tarjeta");
                 return;
             }

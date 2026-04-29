@@ -30,19 +30,6 @@
                </children>
             </VBox>
 
-            <VBox spacing="12.0">
-               <children>
-                  <Label styleClass="input-label" text="PLANTILLA" />
-                  <HBox spacing="10.0">
-                     <children>
-                        <Button prefHeight="80.0" prefWidth="140.0" styleClass="template-card" text="Vacio" />
-                        <Button prefHeight="80.0" prefWidth="140.0" styleClass="template-card, template-card-active" text="Kanban" />
-                        <Button prefHeight="80.0" prefWidth="140.0" styleClass="template-card" text="Lista" />
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
-
             <Separator style="-fx-padding: 10 0;" />
 
             <VBox spacing="15.0">

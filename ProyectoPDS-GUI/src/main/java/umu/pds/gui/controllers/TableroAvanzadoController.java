@@ -227,6 +227,7 @@ public class TableroAvanzadoController {
     @FXML
     private void handleInvite() {
         System.out.println("Abriendo panel de invitaciones...");
+        MainLayoutController.getInstance().loadCenterView("InvitarMiembroDialog");
     }
 
     @FXML

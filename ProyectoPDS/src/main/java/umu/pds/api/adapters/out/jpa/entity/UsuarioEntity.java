@@ -24,6 +24,11 @@ public class UsuarioEntity {
 
     @Id
     private String email;
+    private String nombre;
+    
+    @Column(name = "url_foto")
+    private String urlFoto;
+    
     private String codigoAcceso;
 
     @ElementCollection(fetch = FetchType.EAGER)
@@ -39,8 +44,10 @@ public class UsuarioEntity {
     public UsuarioEntity() {
     }
     
-    public UsuarioEntity(String email, String codigoAcceso, Map<String, Rol> accesos) {
+    public UsuarioEntity(String email, String nombre, String urlFoto, String codigoAcceso, Map<String, Rol> accesos) {
         this.email = email;
+        this.nombre = nombre;
+        this.urlFoto = urlFoto;
         this.codigoAcceso = codigoAcceso;
         this.accesosTableros = (accesos != null) ? new HashMap<>(accesos) : new HashMap<>();
     }
@@ -69,5 +76,21 @@ public class UsuarioEntity {
 
     public void setAccesosTableros(Map<String, Rol> accesosTableros) {
         this.accesosTableros = accesosTableros;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getUrlFoto() {
+        return urlFoto;
+    }
+
+    public void setUrlFoto(String urlFoto) {
+        this.urlFoto = urlFoto;
     }
 }

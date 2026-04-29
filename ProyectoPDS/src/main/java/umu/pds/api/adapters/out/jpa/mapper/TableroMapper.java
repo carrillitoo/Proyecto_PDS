@@ -28,13 +28,21 @@ public class TableroMapper {
                                 .map(this::toEntity)
                                 .collect(Collectors.toList());
 
-                return new TableroEntity(
+                List<EtiquetaEmbeddable> etiquetasEntities = tablero.getEtiquetas().stream()
+                                .map(e -> new EtiquetaEmbeddable(e.nombre(), e.color().hexCode()))
+                                .collect(Collectors.toList());
+
+                TableroEntity entity = new TableroEntity(
                                 tablero.getId().valor(),
                                 tablero.getNombre(),
                                 tablero.getEmailCreador(),
                                 tablero.getEstado(),
                                 tablero.getUrl(),
                                 listasEntities);
+                
+                entity.setHistorial(historialEntities);
+                entity.setEtiquetas(etiquetasEntities);
+                return entity;
         }
 
         private ListaTareasEntity toEntity(ListaTareas lista) {
@@ -114,6 +122,13 @@ public class TableroMapper {
                                 .map(this::toDomain)
                                 .collect(Collectors.toList());
 
+                List<Etiqueta> etiquetas = new ArrayList<>();
+                if (entity.getEtiquetas() != null) {
+                        etiquetas = entity.getEtiquetas().stream()
+                                        .map(e -> new Etiqueta(e.getNombre(), new Color(e.getColorHex())))
+                                        .collect(Collectors.toList());
+                }
+
                 return Tablero.reconstituir(
                                 new TableroId(entity.getId()),
                                 entity.getNombre(),
@@ -121,7 +136,8 @@ public class TableroMapper {
                                 entity.getEstado(),
                                 entity.getUrl(),
                                 listas,
-                                historial);
+                                historial,
+                                etiquetas);
         }
 
         private ListaTareas toDomain(ListaTareasEntity entity) {

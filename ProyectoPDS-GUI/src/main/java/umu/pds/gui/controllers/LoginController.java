@@ -70,15 +70,6 @@ public class LoginController {
         alert.show();
     }
 
-    @FXML
-    private void handleForgot() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Recuperación de Acceso");
-        alert.setHeaderText("¡No hay contraseñas que olvidar!");
-        alert.setContentText("El sistema utiliza códigos temporales OTP vinculados a tu email, por lo que nunca tendrás que recordar contraseñas. Puedes iniciar sesión usando tu correo de manera segura en cualquier momento.");
-        alert.show();
-    }
-
     private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);

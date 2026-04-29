@@ -23,6 +23,8 @@ public class UsuarioRepositoryAdapterImpl implements UsuarioRepositoryPort {
         // convertimos el objeto en entidad de db
         UsuarioEntity entity = new UsuarioEntity(
             usuario.getEmail().getDireccion(),
+            usuario.getNombre(),
+            usuario.getUrlFoto(),
             usuario.getCodigoAcceso(),
             usuario.getAccesosTableros()
         );
@@ -41,9 +43,16 @@ public class UsuarioRepositoryAdapterImpl implements UsuarioRepositoryPort {
         return jpaRepository.existsById(email.getDireccion());
     }
 
+    @Override
+    public java.util.List<Usuario> buscarTodos() {
+        return jpaRepository.findAll().stream()
+                .map(this::mapToDomain)
+                .toList();
+    }
+
     //metodo para convertit de entidad a dominio
     private Usuario mapToDomain(UsuarioEntity entity) {
-        Usuario usuario = new Usuario(new Email(entity.getEmail()));
+        Usuario usuario = new Usuario(new Email(entity.getEmail()), entity.getNombre(), entity.getUrlFoto());
         usuario.generarCodigoAcceso(entity.getCodigoAcceso());
         
         if (entity.getAccesosTableros() != null) {

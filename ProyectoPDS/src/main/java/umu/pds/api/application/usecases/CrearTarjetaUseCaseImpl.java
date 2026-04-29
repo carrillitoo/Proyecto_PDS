@@ -1,7 +1,7 @@
 package umu.pds.api.application.usecases;
 
 import org.springframework.stereotype.Service;
-import umu.pds.dto.CrearTarjetaCommandDTO;
+import umu.pds.api.adapters.in.rest.dto.CrearTarjetaCommandDTO;
 import umu.pds.api.domain.models.Tarea;
 import umu.pds.api.domain.models.Tarjeta;
 import umu.pds.api.domain.models.TarjetaChecklist;

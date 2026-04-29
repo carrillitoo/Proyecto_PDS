@@ -42,12 +42,6 @@
                   <Button fx:id="loginButton" onAction="#handleLogin" maxWidth="Infinity" prefHeight="50.0" styleClass="primary-button" text="Entrar a mis Tableros" />
                   
                   <Separator style="-fx-padding: 10 0;" />
-
-                  <VBox alignment="CENTER" spacing="12.0">
-                     <children>
-                        <Hyperlink styleClass="footer-link" text="¿Has olvidado tu contraseña?" onAction="#handleForgot" />
-                     </children>
-                  </VBox>
                </children>
             </VBox>
 

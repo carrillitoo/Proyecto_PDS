@@ -31,24 +31,10 @@
                      <children>
                         <Button onAction="#handleFilterByLabel" styleClass="filter-button" text="Filtrar por etiqueta" />
                         <Separator orientation="VERTICAL" prefHeight="20.0" />
-                        
-                        <HBox alignment="CENTER_LEFT" spacing="8.0">
-                           <children>
-                              <HBox styleClass="filter-chip">
-                                 <children>
-                                    <Label prefHeight="28.0" prefWidth="51.0" styleClass="filter-chip-text" text="FE DEV  " />
-                                    <Button onAction="#handleRemoveFilter" styleClass="filter-chip-close" text="x" />
-                                 </children>
-                              </HBox>
-                              <HBox styleClass="filter-chip">
-                                 <children>
-                                    <Label prefHeight="28.0" prefWidth="70.0" styleClass="filter-chip-text" text="URGENTE" />
-                                    <Button onAction="#handleRemoveFilter" prefHeight="26.0" prefWidth="16.0" styleClass="filter-chip-close" text="x" />
-                                 </children>
-                              </HBox>
-                              <Button onAction="#handleClearFilters" style="-fx-background-color: transparent; -fx-text-fill: #0079bf; -fx-font-size: 12px; -fx-font-weight: bold;" text="Limpiar todo" />
-                           </children>
+                        <HBox fx:id="activeFiltersContainer" alignment="CENTER_LEFT" spacing="8.0">
+                           <!-- Los chips de filtro se generan dinámicamente -->
                         </HBox>
+                        <Button fx:id="clearFiltersBtn" onAction="#handleClearFilters" style="-fx-background-color: transparent; -fx-text-fill: #0079bf; -fx-font-size: 12px; -fx-font-weight: bold;" text="Limpiar todo" visible="false" managed="false" />
                      </children>
                   </HBox>
                </children>

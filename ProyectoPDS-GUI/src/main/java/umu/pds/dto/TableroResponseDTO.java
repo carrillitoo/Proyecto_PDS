@@ -10,5 +10,6 @@ public record TableroResponseDTO(
 	    String estado, 
 	    String url,
 	    List<ListaTareasResponseDTO> listas, 
-	    List<TrazaAccionResponseDTO> historial 
+	    List<TrazaAccionResponseDTO> historial,
+		List<EtiquetaDTO> etiquetas
 	) {}

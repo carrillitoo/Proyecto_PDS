@@ -3,6 +3,8 @@ package umu.pds.gui.services;
 public class GlobalState {
     private static GlobalState instance;
     private String userEmail;
+    private String userName;
+    private String userPhotoUrl;
     private String currentBoardId;
     private String currentListId;
     private String currentCardId;
@@ -22,6 +24,22 @@ public class GlobalState {
 
     public void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserPhotoUrl() {
+        return userPhotoUrl;
+    }
+
+    public void setUserPhotoUrl(String userPhotoUrl) {
+        this.userPhotoUrl = userPhotoUrl;
     }
 
     public String getCurrentBoardId() {

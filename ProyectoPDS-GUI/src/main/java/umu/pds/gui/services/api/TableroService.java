@@ -185,4 +185,38 @@ public class TableroService {
             throw new RuntimeException("Error descongelando tablero");
         }
     }
+
+    public boolean createEtiqueta(String tableroId, String nombre, String colorHex) throws Exception {
+        String json = "{\"nombre\": \"" + nombre + "\", \"colorHex\": \"" + colorHex + "\"}";
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/" + tableroId + "/etiquetas"))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        return response.statusCode() == 200 || response.statusCode() == 201;
+    }
+
+    public boolean updateEtiqueta(String tableroId, String oldNombre, String nuevoNombre, String nuevoColorHex) throws Exception {
+        String json = "{\"nuevoNombre\": \"" + nuevoNombre + "\", \"nuevoColorHex\": \"" + nuevoColorHex + "\"}";
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/" + tableroId + "/etiquetas/" + oldNombre.replace(" ", "%20")))
+                .header("Content-Type", "application/json")
+                .PUT(HttpRequest.BodyPublishers.ofString(json))
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        return response.statusCode() == 200;
+    }
+
+    public boolean deleteEtiqueta(String tableroId, String nombreEtiqueta) throws Exception {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(BASE_URL + "/" + tableroId + "/etiquetas/" + nombreEtiqueta.replace(" ", "%20")))
+                .DELETE()
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        return response.statusCode() == 200;
+    }
 }

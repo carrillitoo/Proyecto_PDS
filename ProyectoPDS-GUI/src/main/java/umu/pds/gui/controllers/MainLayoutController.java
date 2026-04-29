@@ -3,18 +3,33 @@ package umu.pds.gui.controllers;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Circle;
 import umu.pds.gui.App;
+import umu.pds.gui.services.GlobalState;
 
 public class MainLayoutController {
 
     @FXML private StackPane contentArea;
+    @FXML private Circle avatarCircle;
+    @FXML private Label userNameLabel;
     
     private static MainLayoutController instance;
 
     @FXML
     public void initialize() {
         instance = this;
+        // Actualizar nombre de usuario si está disponible
+        String userName = GlobalState.getInstance().getUserName();
+        if (userName != null && !userName.isBlank()) {
+            userNameLabel.setText(userName);
+        } else {
+            String email = GlobalState.getInstance().getUserEmail();
+            if (email != null && email.contains("@")) {
+                userNameLabel.setText(email.substring(0, email.indexOf("@")));
+            }
+        }
         goDashboard();
     }
 
@@ -35,18 +50,8 @@ public class MainLayoutController {
 
     // --- ACCIONES DEL MENÚ LATERAL ---
     @FXML private void goDashboard() { loadCenterView("Dashboard"); }
-    @FXML private void goBoard() {
-        String boardId = umu.pds.gui.services.GlobalState.getInstance().getCurrentBoardId();
-        if (boardId != null && !boardId.isBlank()) {
-            loadCenterView("BoardWorkspace");
-        } else {
-            System.out.println("No hay tablero seleccionado. Redirigiendo al Dashboard.");
-            loadCenterView("Dashboard");
-        }
-    }
-    @FXML private void goPermissions() { loadCenterView("PermisosTablero"); }
-    @FXML private void goCompaction() { loadCenterView("ConfiguracionTablero"); }
-    @FXML private void goTemplates() { loadCenterView("Plantillas"); }
+    @FXML private void goBoard() { loadCenterView("Dashboard"); }
+    @FXML private void goEtiquetas() { loadCenterView("GestorEtiquetas"); }
     @FXML private void goHistory() { loadCenterView("HistorialActividad"); }
 
     @FXML
@@ -56,8 +61,24 @@ public class MainLayoutController {
     }
 
     @FXML
+    private void handleOpenJoinDialog() {
+        System.out.println("Abriendo dialog para unirse a un tablero...");
+        loadCenterView("UnirseTableroDialog");
+    }
+
+    @FXML
+    private void handleOpenProfileDialog() {
+        System.out.println("Abriendo dialog de edición de perfil...");
+        loadCenterView("EditarPerfilDialog");
+    }
+
+    @FXML
     private void logout() {
         try {
+            GlobalState.getInstance().setUserEmail(null);
+            GlobalState.getInstance().setUserName(null);
+            GlobalState.getInstance().setUserPhotoUrl(null);
+            GlobalState.getInstance().setCurrentBoardId(null);
             App.setRoot("Login");
         } catch (Exception e) {
             e.printStackTrace();

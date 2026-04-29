@@ -48,6 +48,10 @@ public class TableroEntity {
     @JoinColumn(name = "tablero_id")
     private List<TrazaAccionEntity> historial = new ArrayList<>();
     
+    @jakarta.persistence.ElementCollection(fetch = FetchType.EAGER)
+    @jakarta.persistence.CollectionTable(name = "tablero_etiquetas", joinColumns = @JoinColumn(name = "tablero_id"))
+    private List<EtiquetaEmbeddable> etiquetas = new ArrayList<>();
+    
 
     //---------------------------BUILDERS---------------------------
     protected TableroEntity() {}
@@ -82,4 +86,7 @@ public class TableroEntity {
     
     public List<TrazaAccionEntity> getHistorial() { return historial; }
     public void setHistorial(List<TrazaAccionEntity> historial) { this.historial = historial; }
+
+    public List<EtiquetaEmbeddable> getEtiquetas() { return etiquetas; }
+    public void setEtiquetas(List<EtiquetaEmbeddable> etiquetas) { this.etiquetas = etiquetas; }
 }

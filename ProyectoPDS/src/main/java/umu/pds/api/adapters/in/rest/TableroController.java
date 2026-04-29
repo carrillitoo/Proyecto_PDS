@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import umu.pds.dto.CompactarTableroRequestDTO;
-import umu.pds.dto.CrearTableroRequestDTO;
-import umu.pds.dto.TableroResponseDTO;
+import umu.pds.api.adapters.in.rest.dto.CompactarTableroRequestDTO;
+import umu.pds.api.adapters.in.rest.dto.CrearTableroRequestDTO;
+import umu.pds.api.adapters.in.rest.dto.TableroResponseDTO;
 import umu.pds.api.application.usecases.CompactarTableroUseCase;
 import umu.pds.api.application.usecases.CongelarTableroUseCase;
 import umu.pds.api.application.usecases.CrearTableroUseCase;
@@ -35,19 +35,28 @@ public class TableroController {
 	private final GetTableroUseCase getTableroUseCase;
 	private final CompactarTableroUseCase compactarTableroUseCase;
 	private final ListarTablerosUseCase listarTablerosUseCase;
+	private final umu.pds.api.domain.ports.in.CrearEtiquetaTableroPort crearEtiquetaTableroPort;
+	private final umu.pds.api.domain.ports.in.ActualizarEtiquetaTableroPort actualizarEtiquetaTableroPort;
+	private final umu.pds.api.domain.ports.in.EliminarEtiquetaTableroPort eliminarEtiquetaTableroPort;
 		
 	public TableroController(CrearTableroUseCase crearTableroUseCase,
 							CongelarTableroUseCase cogelarTableroUseCase,
 							DescongelarTableroUseCase descogelarTableroUseCase,
 							GetTableroUseCase getTableroUseCase,
 							CompactarTableroUseCase compactarTableroUseCase,
-							ListarTablerosUseCase listarTablerosUseCase) {
+							ListarTablerosUseCase listarTablerosUseCase,
+							umu.pds.api.domain.ports.in.CrearEtiquetaTableroPort crearEtiquetaTableroPort,
+							umu.pds.api.domain.ports.in.ActualizarEtiquetaTableroPort actualizarEtiquetaTableroPort,
+							umu.pds.api.domain.ports.in.EliminarEtiquetaTableroPort eliminarEtiquetaTableroPort) {
 		this.crearTableroUseCase = crearTableroUseCase;
 		this.cogelarTableroUseCase = cogelarTableroUseCase;
 		this.descogelarTableroUseCase = descogelarTableroUseCase;
 		this.getTableroUseCase = getTableroUseCase;
 		this.compactarTableroUseCase = compactarTableroUseCase;
 		this.listarTablerosUseCase = listarTablerosUseCase;
+		this.crearEtiquetaTableroPort = crearEtiquetaTableroPort;
+		this.actualizarEtiquetaTableroPort = actualizarEtiquetaTableroPort;
+		this.eliminarEtiquetaTableroPort = eliminarEtiquetaTableroPort;
 	}
 	
     // -------------------------------ENDPOINT Listar Tableros (GET)-------------------------------
@@ -113,9 +122,40 @@ public class TableroController {
 
         return ResponseEntity.ok().build(); //es un void un 200 OK y para alante
     }
+
+    // -------------------------------ENDPOINT Añadir Etiqueta (POST)-------------------------------
+    @PostMapping("/{idTablero}/etiquetas")
+    public ResponseEntity<umu.pds.api.adapters.in.rest.dto.EtiquetaDTO> crearEtiqueta(@PathVariable("idTablero") String idTablero, @RequestBody umu.pds.api.adapters.in.rest.dto.CrearEtiquetaTableroRequestDTO command) {
+        umu.pds.api.adapters.in.rest.dto.EtiquetaDTO etiqueta = crearEtiquetaTableroPort.ejecutar(java.util.UUID.fromString(idTablero), command);
+        return ResponseEntity.ok(etiqueta);
+    }
+
+    // -------------------------------ENDPOINT Actualizar Etiqueta (PUT)-------------------------------
+    @PutMapping("/{idTablero}/etiquetas/{nombreEtiqueta}")
+    public ResponseEntity<umu.pds.api.adapters.in.rest.dto.EtiquetaDTO> actualizarEtiqueta(
+            @PathVariable("idTablero") String idTablero, 
+            @PathVariable("nombreEtiqueta") String nombreEtiqueta, 
+            @RequestBody umu.pds.api.adapters.in.rest.dto.ActualizarEtiquetaTableroRequestDTO command) {
+        umu.pds.api.adapters.in.rest.dto.EtiquetaDTO etiqueta = actualizarEtiquetaTableroPort.ejecutar(java.util.UUID.fromString(idTablero), nombreEtiqueta, command);
+        return ResponseEntity.ok(etiqueta);
+    }
+
+    // -------------------------------ENDPOINT Eliminar Etiqueta (DELETE)-------------------------------
+    @org.springframework.web.bind.annotation.DeleteMapping("/{idTablero}/etiquetas/{nombreEtiqueta}")
+    public ResponseEntity<Void> eliminarEtiqueta(@PathVariable("idTablero") String idTablero, @PathVariable("nombreEtiqueta") String nombreEtiqueta) {
+        eliminarEtiquetaTableroPort.ejecutar(java.util.UUID.fromString(idTablero), nombreEtiqueta);
+        return ResponseEntity.ok().build();
+    }
     
     // -------------------------------MAPPERS-------------------------------
     private TableroResponseDTO mapearATableroDTO(Tablero tablero) {
+		List<umu.pds.api.adapters.in.rest.dto.EtiquetaDTO> etiquetasDto = null;
+		if (tablero.getEtiquetas() != null) {
+			etiquetasDto = tablero.getEtiquetas().stream()
+					.map(e -> new umu.pds.api.adapters.in.rest.dto.EtiquetaDTO(e.nombre(), e.color().hexCode()))
+					.toList();
+		}
+
         return new TableroResponseDTO(
                 tablero.getId().toString(),
                 tablero.getNombre(),
@@ -123,7 +163,8 @@ public class TableroController {
                 tablero.getEstado().name(),
                 tablero.getUrl(),
                 null, 
-                null  
+                null,
+				etiquetasDto
         );
     }
 }

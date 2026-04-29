@@ -120,9 +120,4 @@ public class DashboardController {
         MainLayoutController.getInstance().loadCenterView("CrearTablero");
     }
 
-    @FXML
-    private void abrirPlantillas() {
-        System.out.println("Abriendo galería de plantillas YAML...");
-        MainLayoutController.getInstance().loadCenterView("Plantillas");
-    }
 }

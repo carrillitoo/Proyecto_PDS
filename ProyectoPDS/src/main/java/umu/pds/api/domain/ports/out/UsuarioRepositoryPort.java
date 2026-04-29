@@ -8,4 +8,5 @@ public interface UsuarioRepositoryPort {
     void guardar(Usuario usuario);
     Optional<Usuario> buscarPorEmail(Email email);
     boolean existePorEmail(Email email);
+    java.util.List<Usuario> buscarTodos();
 }

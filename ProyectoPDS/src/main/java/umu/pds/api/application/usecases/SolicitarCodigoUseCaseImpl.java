@@ -2,7 +2,7 @@ package umu.pds.api.application.usecases;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import umu.pds.dto.SolicitarCodigoCommandDTO;
+import umu.pds.api.adapters.in.rest.dto.SolicitarCodigoCommandDTO;
 import umu.pds.api.domain.models.Email;
 import umu.pds.api.domain.models.Usuario;
 import umu.pds.api.domain.ports.in.SolicitarCodigoPort;

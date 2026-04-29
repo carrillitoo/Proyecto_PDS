@@ -45,7 +45,7 @@ public class Tablero {
 	private final List<TrazaAccion> historial;			//historial de trazas de acciones
 	private final String emailCreador;					//email del usuario que crea el tablero (obligatorio)
 	private String url;									//url para acceder al tablero y/O compartirla xra que accendasn
-	
+	private final List<Etiqueta> etiquetas;				//catálogo de etiquetas del tablero
 	
 	
 	//---------------------------------BUIDER---------------------------------
@@ -67,10 +67,11 @@ public class Tablero {
         this.historial = new ArrayList<>();
         this.emailCreador = email;
         this.url = PREFIJO_URL + id.toString() ;
+        this.etiquetas = new ArrayList<>();
     }
 	
 	// para la capa JPA como el resto
-    public static Tablero reconstituir(TableroId id, String nombre, String emailCreador, EstadoTablero estado, String url, List<ListaTareas> listas, List<TrazaAccion> historial) {
+    public static Tablero reconstituir(TableroId id, String nombre, String emailCreador, EstadoTablero estado, String url, List<ListaTareas> listas, List<TrazaAccion> historial, List<Etiqueta> etiquetas) {
         Tablero tablero = new Tablero(id, nombre, emailCreador);
         
         tablero.estado = estado;
@@ -81,6 +82,11 @@ public class Tablero {
         
         tablero.historial.clear();
         tablero.historial.addAll(historial);
+        
+        if (etiquetas != null) {
+            tablero.etiquetas.clear();
+            tablero.etiquetas.addAll(etiquetas);
+        }
         
         return tablero;
     }
@@ -97,6 +103,7 @@ public class Tablero {
 	public String getEmailCreador() {return emailCreador;}
 	public String getUrl() {return url;}
 	public static String getPrefijoUrl() {return PREFIJO_URL;}
+	public List<Etiqueta> getEtiquetas() {return Collections.unmodifiableList(this.etiquetas);}
 	
 	
 	//---------------------------------OPERACIONES DEL TABLERO---------------------------------
@@ -108,6 +115,29 @@ public class Tablero {
 
         this.listas.add(nuevaLista);
     }
+	
+	//añadir etiqueta al tablero
+	public void addEtiqueta(Etiqueta etiqueta) {
+	    boolean existe = this.etiquetas.stream().anyMatch(e -> e.nombre().equalsIgnoreCase(etiqueta.nombre()));
+	    if (existe) {
+	        throw new IllegalArgumentException("Ya existe una etiqueta con el nombre: " + etiqueta.nombre());
+	    }
+	    this.etiquetas.add(etiqueta);
+	}
+	
+	//actualizar etiqueta del tablero
+	public void updateEtiqueta(String nombreAnterior, Etiqueta nuevaEtiqueta) {
+	    boolean removed = this.etiquetas.removeIf(e -> e.nombre().equalsIgnoreCase(nombreAnterior));
+	    if (!removed) {
+	        throw new IllegalArgumentException("No existe ninguna etiqueta con el nombre: " + nombreAnterior);
+	    }
+	    this.etiquetas.add(nuevaEtiqueta);
+	}
+	
+	//eliminar etiqueta del tablero
+	public void removeEtiqueta(String nombreEtiqueta) {
+	    this.etiquetas.removeIf(e -> e.nombre().equalsIgnoreCase(nombreEtiqueta));
+	}
 	
 	//añadir tarjeta a una lista
 	public void addTarjeta(String nombreLista, Tarjeta tarjeta) throws LimiteListaExcedidoException {

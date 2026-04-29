@@ -25,16 +25,6 @@
                   <VBox fx:id="activityContainer" spacing="10" styleClass="activity-card" />
                </children>
             </VBox>
-            
-            <Separator maxWidth="900" style="-fx-padding: 20 0;" />
-
-            <VBox alignment="CENTER" spacing="15.0" maxWidth="900" style="-fx-background-color: #e6e8eb; -fx-padding: 30; -fx-background-radius: 12;">
-               <children>
-                  <Text style="-fx-font-size: 22px; -fx-font-weight: 800;" text="Automatización Avanzada" />
-                  <Text style="-fx-fill: #404751; -fx-text-alignment: center;" text="Crea tableros complejos cargando archivos YAML preconfigurados o gestiona tus plantillas." />
-                  <Button styleClass="primary-button" text="Ir a Plantillas YAML" onAction="#abrirPlantillas" />
-               </children>
-            </VBox>
 
          </children>
       </VBox>

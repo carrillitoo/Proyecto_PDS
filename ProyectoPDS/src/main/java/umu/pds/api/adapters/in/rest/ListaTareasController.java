@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import umu.pds.dto.AddTarjetaRequestDTO;
-import umu.pds.dto.CrearListaRequestDTO;
-import umu.pds.dto.MoverTarjetaRequestDTO;
-import umu.pds.dto.TarjetaResponseDTO;
+import umu.pds.api.adapters.in.rest.dto.AddTarjetaRequestDTO;
+import umu.pds.api.adapters.in.rest.dto.CrearListaRequestDTO;
+import umu.pds.api.adapters.in.rest.dto.MoverTarjetaRequestDTO;
+import umu.pds.api.adapters.in.rest.dto.TarjetaResponseDTO;
 import umu.pds.api.application.usecases.AddTarjetaListaUseCaseImpl;
 import umu.pds.api.application.usecases.CheckTarjetaCompletadaUseCase;
 import umu.pds.api.application.usecases.CrearListaTareasUseCase;
