@@ -11,15 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import umu.pds.api.adapters.in.rest.dto.AddTarjetaRequestDTO;
-import umu.pds.api.adapters.in.rest.dto.CrearListaRequestDTO;
-import umu.pds.api.adapters.in.rest.dto.MoverTarjetaRequestDTO;
-import umu.pds.api.adapters.in.rest.dto.TarjetaResponseDTO;
-import umu.pds.api.application.usecases.AddTarjetaListaUseCaseImpl;
+import umu.pds.dto.AddTarjetaRequestDTO;
+import umu.pds.dto.CrearListaRequestDTO;
+import umu.pds.dto.TarjetaResponseDTO;
+import umu.pds.api.application.usecases.AddTarjetaListaUseCase;
 import umu.pds.api.application.usecases.CheckTarjetaCompletadaUseCase;
 import umu.pds.api.application.usecases.CrearListaTareasUseCase;
 import umu.pds.api.application.usecases.EliminarTarjetaUseCase;
-import umu.pds.api.application.usecases.MoverTarjetaUseCase;
 import umu.pds.api.domain.models.Tarjeta;
 
 
@@ -28,21 +26,18 @@ import umu.pds.api.domain.models.Tarjeta;
 public class ListaTareasController {
 
 	private final CrearListaTareasUseCase crearListaTareasUseCase;
-	private final AddTarjetaListaUseCaseImpl addTarjetaListaUseCase;
+	private final AddTarjetaListaUseCase addTarjetaListaUseCase;
 	private final EliminarTarjetaUseCase eliminarTarjetaUseCase;
-	private final MoverTarjetaUseCase moverTarjetaUseCase;
 	private final CheckTarjetaCompletadaUseCase checkTarjetaCompletadaUseCase;
 	
 	
 	public ListaTareasController(CrearListaTareasUseCase crearListaTareasUseCase,
-								AddTarjetaListaUseCaseImpl addTarjetaListaUseCase,
+								AddTarjetaListaUseCase addTarjetaListaUseCase,
 								EliminarTarjetaUseCase eliminarTarjetaUseCase,
-								MoverTarjetaUseCase moverTarjetaUseCase,
 								CheckTarjetaCompletadaUseCase checkTarjetaCompletadaUseCase) {
 		this.crearListaTareasUseCase = crearListaTareasUseCase;
 		this.addTarjetaListaUseCase = addTarjetaListaUseCase;
 		this.eliminarTarjetaUseCase = eliminarTarjetaUseCase;
-		this.moverTarjetaUseCase = moverTarjetaUseCase;
 		this.checkTarjetaCompletadaUseCase = checkTarjetaCompletadaUseCase;
 	}
 	
@@ -79,16 +74,7 @@ public class ListaTareasController {
 	
 	    return ResponseEntity.noContent().build(); // HTTP 204 No Content (he leido que es lo tipico para deletes)
 	}
-	//-------------------------------ENDPOINT Mover una tarjeta (PUT)-------------------------------	
-	@PutMapping("/tarjetas/{idTarjeta}/mover")
-	public ResponseEntity<Void> moverTarjeta(@PathVariable("idTablero") String idTablero,
-											 @PathVariable("idTarjeta") String idTarjeta,
-									         @Valid @RequestBody MoverTarjetaRequestDTO request) {
-	
-	    moverTarjetaUseCase.ejecutar(idTablero, idTarjeta, request.listaOrigen(), request.listaDestino());
-	
-	    return ResponseEntity.ok().build(); // HTTP 200 OK
-	}
+
 	
 	//-------------------------------ENDPOINT Completar una tarjeta (PUT)-------------------------------
 	@PutMapping("/{nombreLista}/tarjetas/{idTarjeta}/completar")

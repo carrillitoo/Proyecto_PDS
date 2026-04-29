@@ -17,8 +17,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import umu.pds.api.domain.exceptions.TarjetaNoEncontradaException;
 import umu.pds.api.domain.models.Tarjeta;
 import umu.pds.api.domain.models.TarjetaTarea;
+import umu.pds.api.domain.models.Tarea;
 import umu.pds.api.domain.ports.out.TarjetaRepositoryPort;
 import umu.pds.dto.AnadirEtiquetaCommandDTO;
+
+import java.time.LocalDateTime;
 
 @ExtendWith(MockitoExtension.class)
 public class AnadirEtiquetaUseCaseImplTest {
@@ -34,7 +37,8 @@ public class AnadirEtiquetaUseCaseImplTest {
 
     @BeforeEach
     void setUp() {
-        tarjeta = new TarjetaTarea(tarjetaId, "Test", "Test desc", false, java.time.LocalDateTime.now(), new umu.pds.api.domain.models.Tarea("Tarea"));
+        tarjeta = new TarjetaTarea(tarjetaId, "Test", "Test desc", false, LocalDateTime.now(),
+                new Tarea("Tarea"));
     }
 
     @Test
@@ -47,7 +51,8 @@ public class AnadirEtiquetaUseCaseImplTest {
 
         assertNotNull(result);
         assertEquals(1, result.getEtiquetas().size());
-        assertTrue(result.getEtiquetas().stream().anyMatch(e -> e.nombre().equals("Backend") && e.color().hexCode().equals("#0000FF")));
+        assertTrue(result.getEtiquetas().stream()
+                .anyMatch(e -> e.nombre().equals("Backend") && e.color().hexCode().equals("#0000FF")));
         verify(tarjetaRepositoryPort).guardar(tarjeta);
     }
 

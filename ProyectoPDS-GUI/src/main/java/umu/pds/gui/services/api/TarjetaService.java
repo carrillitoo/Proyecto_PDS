@@ -6,6 +6,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
+import java.util.UUID;
 
 import umu.pds.dto.AddTarjetaRequestDTO;
 import umu.pds.dto.TarjetaResponseDTO;
@@ -23,13 +24,14 @@ public class TarjetaService {
         this.objectMapper = new ObjectMapper();
     }
 
-    public TarjetaResponseDTO createCard(String tableroId, String listaDestino, String titulo, String descripcion, String tipo, String contenidoTarea) throws Exception {
+    public TarjetaResponseDTO createCard(String tableroId, String listaDestino, String titulo, String descripcion,
+            String tipo, String contenidoTarea) throws Exception {
         AddTarjetaRequestDTO requestDto = new AddTarjetaRequestDTO(titulo, descripcion, tipo, contenidoTarea);
         String json = objectMapper.writeValueAsString(requestDto);
-        
+
         // POST /api/tableros/{idTablero}/listas/{nombreLista}/tarjetas
         String url = "http://localhost:8080/api/tableros/" + tableroId + "/listas/" + listaDestino + "/tarjetas";
-        
+
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .header("Content-Type", "application/json")
@@ -45,7 +47,7 @@ public class TarjetaService {
 
     public boolean addLabelToCard(String tarjetaId, String nombreEtiqueta, String colorHex) throws Exception {
         umu.pds.dto.AnadirEtiquetaCommandDTO body = new umu.pds.dto.AnadirEtiquetaCommandDTO(
-                java.util.UUID.fromString(tarjetaId), nombreEtiqueta, colorHex);
+                UUID.fromString(tarjetaId), nombreEtiqueta, colorHex);
         String json = objectMapper.writeValueAsString(body);
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -58,12 +60,15 @@ public class TarjetaService {
         return response.statusCode() == 200 || response.statusCode() == 201;
     }
 
-    public boolean moveCard(String tableroId, String tarjetaId, String listaOrigen, String listaDestino) throws Exception {
-        umu.pds.dto.MoverTarjetaRequestDTO requestDto = new umu.pds.dto.MoverTarjetaRequestDTO(listaOrigen, listaDestino);
+    public boolean moveCard(String tableroId, String tarjetaId, String listaOrigen, String listaDestino)
+            throws Exception {
+        umu.pds.dto.MoverTarjetaRequestDTO requestDto = new umu.pds.dto.MoverTarjetaRequestDTO(listaOrigen,
+                listaDestino);
         String json = objectMapper.writeValueAsString(requestDto);
 
-        // Path matches backend: /api/tableros/{idTablero}/listas/tarjetas/{idTarjeta}/mover
-        String url = "http://localhost:8080/api/tableros/" + tableroId + "/listas/tarjetas/" + tarjetaId + "/mover";
+        // Path matches backend:
+        // /api/tableros/{idTablero}/tarjetas/{idTarjeta}/mover
+        String url = "http://localhost:8080/api/tableros/" + tableroId + "/tarjetas/" + tarjetaId + "/mover";
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))

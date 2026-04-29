@@ -1,6 +1,5 @@
 package umu.pds.api.application.usecases;
 
-import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +16,7 @@ import umu.pds.api.domain.ports.out.TableroRepositoryPort;
 
 @Service
 @Transactional
-public class AddTarjetaListaUseCaseImpl {
+public class AddTarjetaListaUseCaseImpl implements AddTarjetaListaUseCase {
     private final TableroRepositoryPort tableroRepository;
 
     public AddTarjetaListaUseCaseImpl(TableroRepositoryPort tableroRepository) {

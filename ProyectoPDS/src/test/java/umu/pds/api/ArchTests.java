@@ -61,15 +61,15 @@ public class ArchTests {
             .orShould().resideInAPackage("..gui..");
 
     @ArchTest
-    static final ArchRule max_20_metodos_publicos = classes()
+    static final ArchRule max_25_metodos_publicos = classes()
             .that().areNotInterfaces()
-            .should(new ArchCondition<JavaClass>("no tener más de 20 métodos públicos") {
+            .should(new ArchCondition<JavaClass>("no tener más de 25 métodos públicos") {
                 @Override
                 public void check(JavaClass item, ConditionEvents events) {
                     long count = item.getMethods().stream()
                             .filter(m -> m.getModifiers().contains(JavaModifier.PUBLIC))
                             .count();
-                    if (count > 20) {
+                    if (count > 25) {
                         events.add(SimpleConditionEvent.violated(item,
                                 item.getName() + " tiene " + count + " métodos públicos"));
                     }

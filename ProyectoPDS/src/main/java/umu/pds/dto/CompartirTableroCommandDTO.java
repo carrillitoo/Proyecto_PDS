@@ -1,9 +1,7 @@
-package umu.pds.api.adapters.in.rest.dto;
-
-import umu.pds.api.domain.models.Rol;
+package umu.pds.dto;
 
 public record CompartirTableroCommandDTO(
     String emailInvitado,
     String tableroId,
-    Rol rol
+    String rol
 ) {}

@@ -21,7 +21,7 @@ public class CrearTableroUseCaseTest {
     private TableroRepositoryPort tableroRepositoryPort;
 
     @InjectMocks
-    private CrearTableroUseCase useCase;
+    private CrearTableroUseCaseImpl useCase;
 
     @Test
     void deberiaCrearTableroYGuardar() {

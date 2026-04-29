@@ -1,3 +1,3 @@
-package umu.pds.api.adapters.in.rest.dto;
+package umu.pds.dto;
 
 public record ActualizarEtiquetaTableroRequestDTO(String nuevoNombre, String nuevoColorHex) {}

@@ -11,16 +11,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import umu.pds.api.adapters.in.rest.dto.ActualizarUsuarioRequestDTO;
-import umu.pds.api.adapters.in.rest.dto.SolicitarCodigoCommandDTO;
-import umu.pds.api.adapters.in.rest.dto.UsuarioResponseDTO;
-import umu.pds.api.adapters.in.rest.dto.ValidarCodigoCommandDTO;
+import umu.pds.dto.ActualizarUsuarioRequestDTO;
+import umu.pds.dto.SolicitarCodigoCommandDTO;
+import umu.pds.dto.UsuarioResponseDTO;
+import umu.pds.dto.ValidarCodigoCommandDTO;
 import umu.pds.api.domain.ports.in.ActualizarUsuarioPort;
 import umu.pds.api.domain.ports.in.ListarUsuariosPort;
 import umu.pds.api.domain.ports.in.ObtenerUsuarioPort;
 import umu.pds.api.domain.ports.in.SolicitarCodigoPort;
 import umu.pds.api.domain.ports.in.SubirFotoPerfilPort;
-import umu.pds.api.domain.ports.in.ValidarCodigoPort;s
+import umu.pds.api.domain.ports.in.ValidarCodigoPort;
 
 @RestController
 @RequestMapping("/api/usuarios")

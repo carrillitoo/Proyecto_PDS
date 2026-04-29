@@ -21,7 +21,7 @@ public class CompactarTableroUseCaseTest {
     private TableroRepositoryPort tableroRepositoryPort;
 
     @InjectMocks
-    private CompactarTableroUseCase useCase;
+    private CompactarTableroUseCaseImpl useCase;
 
     @Test
     void deberiaCompactarTablero() {

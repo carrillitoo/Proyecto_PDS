@@ -1,4 +1,4 @@
-package umu.pds.api.adapters.in.rest.dto;
+package umu.pds.dto;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

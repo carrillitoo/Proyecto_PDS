@@ -1,7 +1,7 @@
 package umu.pds.api.application.usecases;
 
 import org.springframework.stereotype.Service;
-import umu.pds.api.adapters.in.rest.dto.UsuarioResponseDTO;
+import umu.pds.dto.UsuarioResponseDTO;
 import umu.pds.api.domain.models.Email;
 import umu.pds.api.domain.models.Usuario;
 import umu.pds.api.domain.ports.in.ObtenerUsuarioPort;

@@ -22,7 +22,7 @@ public class EliminarTarjetaUseCaseTest {
     private TableroRepositoryPort tableroRepositoryPort;
 
     @InjectMocks
-    private EliminarTarjetaUseCase useCase;
+    private EliminarTarjetaUseCaseImpl useCase;
 
     @Test
     void deberiaEliminarTarjeta() {

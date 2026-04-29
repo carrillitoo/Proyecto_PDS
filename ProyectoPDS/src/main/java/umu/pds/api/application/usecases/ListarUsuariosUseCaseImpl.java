@@ -1,7 +1,7 @@
 package umu.pds.api.application.usecases;
 
 import org.springframework.stereotype.Service;
-import umu.pds.api.adapters.in.rest.dto.UsuarioResponseDTO;
+import umu.pds.dto.UsuarioResponseDTO;
 import umu.pds.api.domain.ports.in.ListarUsuariosPort;
 import umu.pds.api.domain.ports.out.UsuarioRepositoryPort;
 import java.util.List;

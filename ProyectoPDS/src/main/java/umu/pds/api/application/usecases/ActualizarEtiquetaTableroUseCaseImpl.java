@@ -1,8 +1,8 @@
 package umu.pds.api.application.usecases;
 
 import org.springframework.stereotype.Service;
-import umu.pds.api.adapters.in.rest.dto.ActualizarEtiquetaTableroRequestDTO;
-import umu.pds.api.adapters.in.rest.dto.EtiquetaDTO;
+import umu.pds.dto.ActualizarEtiquetaTableroRequestDTO;
+import umu.pds.dto.EtiquetaDTO;
 import umu.pds.api.domain.models.Color;
 import umu.pds.api.domain.models.Etiqueta;
 import umu.pds.api.domain.models.Tablero;

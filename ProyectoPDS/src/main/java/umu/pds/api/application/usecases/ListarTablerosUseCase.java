@@ -4,20 +4,8 @@ import umu.pds.api.domain.models.Tablero;
 import umu.pds.api.domain.ports.out.TableroRepositoryPort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
-@Service
-@Transactional(readOnly = true)
-public class ListarTablerosUseCase {
-	private final TableroRepositoryPort tableroRepository;
-	
-	public ListarTablerosUseCase(TableroRepositoryPort tableroRepository) {
-		this.tableroRepository = tableroRepository;
-	}
-	
-	//devuelve todos los tableros creados por un usuario
-	public List<Tablero> ejecutar(String emailCreador) {
-		return tableroRepository.buscarPorEmailCreador(emailCreador);
-    }
+public interface ListarTablerosUseCase {
+    public List<Tablero> ejecutar(String emailCreador);
 }

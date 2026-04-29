@@ -24,7 +24,7 @@ public class CrearListaTareasUseCaseTest {
     private TableroRepositoryPort tableroRepositoryPort;
 
     @InjectMocks
-    private CrearListaTareasUseCase useCase;
+    private CrearListaTareasUseCaseImpl useCase;
 
     @Test
     void deberiaCrearListaTareas() {

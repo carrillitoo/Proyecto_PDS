@@ -21,7 +21,7 @@ public class DescongelarTableroUseCaseTest {
     private TableroRepositoryPort tableroRepositoryPort;
 
     @InjectMocks
-    private DescongelarTableroUseCase useCase;
+    private DescongelarTableroUseCaseImpl useCase;
 
     @Test
     void deberiaDescongelarTablero() {

@@ -23,7 +23,7 @@ public class MoverTarjetaUseCaseTest {
     private TableroRepositoryPort tableroRepositoryPort;
 
     @InjectMocks
-    private MoverTarjetaUseCase useCase;
+    private MoverTarjetaUseCaseImpl useCase;
 
     @Test
     void deberiaMoverTarjeta() throws LimiteListaExcedidoException {

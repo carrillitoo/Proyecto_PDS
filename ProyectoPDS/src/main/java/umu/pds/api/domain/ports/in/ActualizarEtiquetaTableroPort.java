@@ -1,7 +1,7 @@
 package umu.pds.api.domain.ports.in;
 
-import umu.pds.api.adapters.in.rest.dto.ActualizarEtiquetaTableroRequestDTO;
-import umu.pds.api.adapters.in.rest.dto.EtiquetaDTO;
+import umu.pds.dto.ActualizarEtiquetaTableroRequestDTO;
+import umu.pds.dto.EtiquetaDTO;
 import java.util.UUID;
 
 public interface ActualizarEtiquetaTableroPort {

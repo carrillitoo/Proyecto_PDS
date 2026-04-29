@@ -11,7 +11,7 @@ public class ConsoleEmailAdapterImpl implements EmailPort {
     @Override
     public void enviarCodigoAcceso(Email destino, String codigo) {
         System.out.println("\n------------------------------------------------");
-        System.out.println("📩 [SIMULADOR DE EMAIL]");
+        System.out.println("[SIMULADOR DE EMAIL]");
         System.out.println("PARA: " + destino.getDireccion());
         System.out.println("ASUNTO: Tu código de acceso a Trello PDS");
         System.out.println("MENSAJE: Tu código de seguridad es: " + codigo);

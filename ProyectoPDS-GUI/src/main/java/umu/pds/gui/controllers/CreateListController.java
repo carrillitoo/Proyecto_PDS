@@ -1,6 +1,9 @@
 package umu.pds.gui.controllers;
 
+import java.util.Collections;
+
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import umu.pds.gui.services.api.TableroService;
@@ -8,14 +11,16 @@ import umu.pds.gui.services.GlobalState;
 
 public class CreateListController {
 
-    @FXML private TextField listNameField;
-    @FXML private Slider capacitySlider;
+    @FXML
+    private TextField listNameField;
+    @FXML
+    private Slider capacitySlider;
 
     @FXML
     public void initialize() {
         System.out.println("Modal de Crear Lista cargado.");
     }
-    
+
     @FXML
     private void handleCreateList() {
         String listName = listNameField.getText();
@@ -25,18 +30,18 @@ public class CreateListController {
         }
 
         System.out.println("Creando lista: " + listName + " con límite " + (int) capacitySlider.getValue());
-        
+
         try {
             TableroService tableroService = new TableroService();
             String currentBoardId = GlobalState.getInstance().getCurrentBoardId();
-            
+
             if (currentBoardId == null) {
                 showAlert("Error de Contexto", "No se puede crear lista porque no hay un tablero seleccionado.");
                 return;
             }
-            
-            boolean exito = tableroService.createList(currentBoardId, listName, java.util.Collections.emptyList());
-            
+
+            boolean exito = tableroService.createList(currentBoardId, listName, Collections.emptyList());
+
             if (exito) {
                 System.out.println("Lista creada exitosamente en la API.");
             } else {
@@ -58,7 +63,7 @@ public class CreateListController {
     }
 
     private void showAlert(String title, String content) {
-        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
+        Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(content);

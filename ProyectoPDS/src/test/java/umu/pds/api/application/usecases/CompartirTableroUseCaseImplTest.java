@@ -29,7 +29,7 @@ public class CompartirTableroUseCaseImplTest {
     @Test
     void deberiaCompartirTableroConUsuarioExistente() {
         Usuario mockUsuario = mock(Usuario.class);
-        CompartirTableroCommandDTO cmd = new CompartirTableroCommandDTO("test@email.com", "123e4567-e89b-12d3-a456-426614174001", Rol.LEECTOR);
+        CompartirTableroCommandDTO cmd = new CompartirTableroCommandDTO("test@email.com", "123e4567-e89b-12d3-a456-426614174001", "LEECTOR");
         when(usuarioRepository.buscarPorEmail(any(Email.class))).thenReturn(Optional.of(mockUsuario));
 
         useCase.ejecutar(cmd);
@@ -40,7 +40,7 @@ public class CompartirTableroUseCaseImplTest {
 
     @Test
     void deberiaCompartirTableroCreandoUsuarioNuevo() {
-        CompartirTableroCommandDTO cmd = new CompartirTableroCommandDTO("test@email.com", "123e4567-e89b-12d3-a456-426614174001", Rol.LEECTOR);
+        CompartirTableroCommandDTO cmd = new CompartirTableroCommandDTO("test@email.com", "123e4567-e89b-12d3-a456-426614174001", "LEECTOR");
         when(usuarioRepository.buscarPorEmail(any(Email.class))).thenReturn(Optional.empty());
 
         useCase.ejecutar(cmd);

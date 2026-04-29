@@ -1,17 +1,19 @@
 package umu.pds.gui.controllers;
 
+import umu.pds.gui.services.GlobalState;
 import umu.pds.gui.services.api.TableroService;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 
 public class CompactionController {
 
     @FXML
-    private javafx.scene.control.Button activateBtn;
+    private Button activateBtn;
     @FXML
-    private javafx.scene.control.Button saveBtn;
+    private Button saveBtn;
     @FXML
-    private javafx.scene.control.Button freezeBtn;
+    private Button freezeBtn;
 
     private boolean isFrozen = false;
     private boolean isActivated = false;
@@ -37,7 +39,7 @@ public class CompactionController {
     @FXML
     private void handleSaveConfig() {
         System.out.println("Guardando configuración de compactación...");
-        String boardId = umu.pds.gui.services.GlobalState.getInstance().getCurrentBoardId();
+        String boardId = GlobalState.getInstance().getCurrentBoardId();
         try {
             TableroService service = new TableroService();
             service.compactarTablero(boardId, 30);
@@ -51,7 +53,7 @@ public class CompactionController {
     @FXML
     private void handleToggleFreeze() {
         System.out.println("Alternando estado congelar/descongelar del tablero...");
-        String boardId = umu.pds.gui.services.GlobalState.getInstance().getCurrentBoardId();
+        String boardId = GlobalState.getInstance().getCurrentBoardId();
         try {
             TableroService service = new TableroService();
             if (!isFrozen) {

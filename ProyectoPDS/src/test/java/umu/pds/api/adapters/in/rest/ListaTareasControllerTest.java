@@ -12,10 +12,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import umu.pds.dto.AddTarjetaRequestDTO;
 import umu.pds.dto.CrearListaRequestDTO;
-import umu.pds.dto.MoverTarjetaRequestDTO;
 import umu.pds.api.application.usecases.*;
 import umu.pds.api.domain.exceptions.LimiteListaExcedidoException;
-import umu.pds.api.domain.exceptions.TransicionInvalidaException;
 import umu.pds.api.domain.models.Tarjeta;
 
 import java.time.LocalDateTime;
@@ -24,7 +22,6 @@ import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -40,9 +37,8 @@ class ListaTareasControllerTest {
 
     // Mockeamos los UseCases de las listas y tarjetas
     @MockBean private CrearListaTareasUseCase crearListaTareasUseCase;
-    @MockBean private AddTarjetaListaUseCaseImpl addTarjetaListaUseCase;
+    @MockBean private AddTarjetaListaUseCase addTarjetaListaUseCase;
     @MockBean private EliminarTarjetaUseCase eliminarTarjetaUseCase;
-    @MockBean private MoverTarjetaUseCase moverTarjetaUseCase;
     @MockBean private CheckTarjetaCompletadaUseCase checkTarjetaCompletadaUseCase;
 
     private Tarjeta tarjetaMock;
@@ -120,45 +116,6 @@ class ListaTareasControllerTest {
                 .andExpect(status().isNoContent()); // Verificamos que devuelve el 204
     }
 
-    @Test // mover tarjeta bien devuelve 200ok
-    void moverTarjeta_Return200OK() throws Exception {
-        MoverTarjetaRequestDTO request = new MoverTarjetaRequestDTO("TODO", "DOING");
-        doNothing().when(moverTarjetaUseCase).ejecutar(ID_TABLERO, ID_TARJETA, "TODO", "DOING");
-
-        mockMvc.perform(put("/api/tableros/" + ID_TABLERO + "/listas/tarjetas/" + ID_TARJETA + "/mover")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isOk());
-    }
-
-    @Test // mover tarjeta sin destino devuelve BR 
-    void moverTarjeta_SinDestino_Return400BadRequest() throws Exception {
-        MoverTarjetaRequestDTO request = new MoverTarjetaRequestDTO("TODO", "");
-
-        mockMvc.perform(put("/api/tableros/" + ID_TABLERO + "/listas/tarjetas/" + ID_TARJETA + "/mover")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.error").value("Validation Error"));
-    }
-    
-
-
-    @Test // mover tarjeta saltando las transiciones devuelve BR
-    void moverTarjeta_TransicionInvalida_Return400BadRequest() throws Exception {
-        MoverTarjetaRequestDTO request = new MoverTarjetaRequestDTO("TODO", "DONE");
-        
-        doThrow(new TransicionInvalidaException(ID_TARJETA, "DONE", "IN REVIEW")) //dothrow xk es void (2.20 12/3 y llevo 20 mins viendo porque fallaba)
-            .when(moverTarjetaUseCase).ejecutar(anyString(), anyString(), anyString(), anyString());
-
-        mockMvc.perform(put("/api/tableros/" + ID_TABLERO + "/listas/tarjetas/" + ID_TARJETA + "/mover")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.error").value("Bad Request"))
-                .andExpect(jsonPath("$.mensaje").exists());
-    }
-    
     @Test //checkear tarjeta devuelve ok
     void completarTarjeta_Return200OK() throws Exception {
         doNothing().when(checkTarjetaCompletadaUseCase).ejecutar(ID_TABLERO, NOMBRE_LISTA, ID_TARJETA);

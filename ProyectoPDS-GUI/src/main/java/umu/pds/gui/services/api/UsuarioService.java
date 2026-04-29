@@ -2,6 +2,8 @@ package umu.pds.gui.services.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import umu.pds.dto.UsuarioResponseDTO;
+
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -18,7 +20,7 @@ public class UsuarioService {
                 .build();
     }
 
-    public umu.pds.dto.UsuarioResponseDTO getPerfil(String email) throws Exception {
+    public UsuarioResponseDTO getPerfil(String email) throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "/" + email))
                 .GET()
@@ -27,12 +29,12 @@ public class UsuarioService {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         if (response.statusCode() == 200) {
             ObjectMapper mapper = new ObjectMapper();
-            return mapper.readValue(response.body(), umu.pds.dto.UsuarioResponseDTO.class);
+            return mapper.readValue(response.body(), UsuarioResponseDTO.class);
         }
         throw new RuntimeException("Error obteniendo perfil: " + response.statusCode());
     }
 
-    public umu.pds.dto.UsuarioResponseDTO updatePerfil(String email, String nuevoNombre) throws Exception {
+    public UsuarioResponseDTO updatePerfil(String email, String nuevoNombre) throws Exception {
         String json = "{\"nombre\": \"" + nuevoNombre + "\"}";
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "/" + email))
@@ -43,12 +45,12 @@ public class UsuarioService {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         if (response.statusCode() == 200) {
             ObjectMapper mapper = new ObjectMapper();
-            return mapper.readValue(response.body(), umu.pds.dto.UsuarioResponseDTO.class);
+            return mapper.readValue(response.body(), UsuarioResponseDTO.class);
         }
         throw new RuntimeException("Error actualizando perfil: " + response.statusCode());
     }
 
-    public java.util.List<umu.pds.dto.UsuarioResponseDTO> getAllUsuarios() throws Exception {
+    public java.util.List<UsuarioResponseDTO> getAllUsuarios() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL))
                 .GET()
@@ -57,7 +59,7 @@ public class UsuarioService {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         if (response.statusCode() == 200) {
             ObjectMapper mapper = new ObjectMapper();
-            umu.pds.dto.UsuarioResponseDTO[] array = mapper.readValue(response.body(), umu.pds.dto.UsuarioResponseDTO[].class);
+            UsuarioResponseDTO[] array = mapper.readValue(response.body(), UsuarioResponseDTO[].class);
             return java.util.Arrays.asList(array);
         }
         throw new RuntimeException("Error obteniendo usuarios (" + response.statusCode() + ")");

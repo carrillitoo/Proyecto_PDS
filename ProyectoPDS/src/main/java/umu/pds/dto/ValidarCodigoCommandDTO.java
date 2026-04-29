@@ -1,4 +1,4 @@
-package umu.pds.api.adapters.in.rest.dto;
+package umu.pds.dto;
 
 public record ValidarCodigoCommandDTO(
 		String email,

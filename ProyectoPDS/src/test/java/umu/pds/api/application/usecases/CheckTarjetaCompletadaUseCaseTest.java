@@ -22,7 +22,7 @@ public class CheckTarjetaCompletadaUseCaseTest {
     private TableroRepositoryPort tableroRepositoryPort;
 
     @InjectMocks
-    private CheckTarjetaCompletadaUseCase useCase;
+    private CheckTarjetaCompletadaUseCaseImpl useCase;
 
     @Test
     void deberiaMarcarComoCompletada() {

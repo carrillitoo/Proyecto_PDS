@@ -22,7 +22,7 @@ public class GetTableroUseCaseTest {
     private TableroRepositoryPort tableroRepositoryPort;
 
     @InjectMocks
-    private GetTableroUseCase useCase;
+    private GetTableroUseCaseImpl useCase;
 
     @Test
     void deberiaDevolverTablero() {

@@ -8,6 +8,7 @@ import umu.pds.api.domain.models.Tablero;
 import umu.pds.api.domain.models.TableroId;
 import umu.pds.api.domain.ports.out.TableroRepositoryPort;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component // para que pueda meter spring los usecases
@@ -24,10 +25,10 @@ public class TableroRepositoryAdapterImpl implements TableroRepositoryPort {
 
     @Override
     public void guardar(Tablero tablero) {
-    	
-    	//cogemos el objeto y lo pasamos a entidad de db
+
+        // cogemos el objeto y lo pasamos a entidad de db
         TableroEntity entity = mapper.toEntity(tablero);
-        
+
         jpaRepository.save(entity);
     }
 
@@ -35,8 +36,8 @@ public class TableroRepositoryAdapterImpl implements TableroRepositoryPort {
     public Optional<Tablero> buscarPorId(TableroId id) {
         // buscamos con el uuid interno
         Optional<TableroEntity> entityOptional = jpaRepository.findById(id.valor());
-        
-        //necesitaremos pasar a dominio, 
+
+        // necesitaremos pasar a dominio,
         return entityOptional.map(mapper::toDomain);
     }
 
@@ -47,7 +48,7 @@ public class TableroRepositoryAdapterImpl implements TableroRepositoryPort {
     }
 
     @Override
-    public java.util.List<Tablero> buscarPorEmailCreador(String email) {
+    public List<Tablero> buscarPorEmailCreador(String email) {
         return jpaRepository.findByEmailCreador(email).stream()
                 .map(mapper::toDomain)
                 .toList();

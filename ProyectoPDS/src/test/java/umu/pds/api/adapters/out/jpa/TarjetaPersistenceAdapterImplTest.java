@@ -2,7 +2,6 @@ package umu.pds.api.adapters.out.jpa;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -13,6 +12,7 @@ import umu.pds.api.domain.models.Color;
 import umu.pds.api.domain.models.Etiqueta;
 import umu.pds.api.domain.models.Tarjeta;
 import umu.pds.api.domain.models.TarjetaTarea;
+import umu.pds.api.domain.models.Tarea;
 
 import java.util.*;
 import java.time.LocalDateTime;
@@ -36,13 +36,13 @@ public class TarjetaPersistenceAdapterImplTest {
 
     @Test
     void testGuardarTarjetaTarea() {
-        TarjetaTarea tarjeta = new TarjetaTarea(UUID.randomUUID(), "Tarea 1", "Desc", false, java.time.LocalDateTime.now(), new umu.pds.api.domain.models.Tarea("Tarea"));
+        TarjetaTarea tarjeta = new TarjetaTarea(UUID.randomUUID(), "Tarea 1", "Desc", false, LocalDateTime.now(),
+                new Tarea("Tarea"));
         tarjeta.anadirEtiqueta(new Etiqueta("Importante", new Color("#FF0000")));
 
         TarjetaTareaEntity entityToReturn = new TarjetaTareaEntity(
-                tarjeta.getId(), "Tarea 1", "Desc", false, tarjeta.getFechaCreacion(), "Tarea por defecto"
-        );
-        
+                tarjeta.getId(), "Tarea 1", "Desc", false, tarjeta.getFechaCreacion(), "Tarea por defecto");
+
         when(jpaRepository.save(any(TarjetaEntity.class))).thenReturn(entityToReturn);
 
         Tarjeta resultado = adapter.guardar(tarjeta);
@@ -56,8 +56,7 @@ public class TarjetaPersistenceAdapterImplTest {
     void testBuscarPorId() {
         UUID id = UUID.randomUUID();
         TarjetaTareaEntity entityToReturn = new TarjetaTareaEntity(
-                id, "Tarea 1", "Desc", false, LocalDateTime.now(), "Tarea por defecto"
-        );
+                id, "Tarea 1", "Desc", false, LocalDateTime.now(), "Tarea por defecto");
 
         when(jpaRepository.findById(id)).thenReturn(Optional.of(entityToReturn));
 
@@ -79,8 +78,10 @@ public class TarjetaPersistenceAdapterImplTest {
 
     @Test
     void testBuscarPorFiltroDeColores() {
-        TarjetaTareaEntity entity1 = new TarjetaTareaEntity(UUID.randomUUID(), "T1", "desc", false, LocalDateTime.now(), "tarea1");
-        TarjetaTareaEntity entity2 = new TarjetaTareaEntity(UUID.randomUUID(), "T2", "desc", false, LocalDateTime.now(), "tarea2");
+        TarjetaTareaEntity entity1 = new TarjetaTareaEntity(UUID.randomUUID(), "T1", "desc", false, LocalDateTime.now(),
+                "tarea1");
+        TarjetaTareaEntity entity2 = new TarjetaTareaEntity(UUID.randomUUID(), "T2", "desc", false, LocalDateTime.now(),
+                "tarea2");
 
         when(jpaRepository.findAll()).thenReturn(Arrays.asList(entity1, entity2));
 

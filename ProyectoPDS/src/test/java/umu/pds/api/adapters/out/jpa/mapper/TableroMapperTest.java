@@ -10,8 +10,11 @@ import umu.pds.api.adapters.out.jpa.entity.TableroEntity;
 import umu.pds.api.domain.models.Tablero;
 import umu.pds.api.domain.models.TableroId;
 import umu.pds.api.domain.models.ListaTareas;
+import umu.pds.api.domain.models.Tarea;
 import umu.pds.api.domain.models.TarjetaTarea;
 import umu.pds.api.domain.exceptions.LimiteListaExcedidoException;
+
+import java.time.LocalDateTime;
 
 public class TableroMapperTest {
 
@@ -23,11 +26,12 @@ public class TableroMapperTest {
         TableroId id = new TableroId(randomId1);
         Tablero tablero = new Tablero(id, "Test Mapper", "test@test.com");
         ListaTareas lista = new ListaTareas("Lista");
-        lista.addTarjeta(new TarjetaTarea(UUID.randomUUID(), "T1", "Desc", false, java.time.LocalDateTime.now(), new umu.pds.api.domain.models.Tarea("Tarea")));
+        lista.addTarjeta(
+                new TarjetaTarea(UUID.randomUUID(), "T1", "Desc", false, LocalDateTime.now(), new Tarea("Tarea")));
         tablero.addLista(lista);
-        
+
         TableroEntity entity = mapper.toEntity(tablero);
-        
+
         assertNotNull(entity);
         assertEquals(randomId1, entity.getId());
         assertEquals("Test Mapper", entity.getNombre());
@@ -41,10 +45,10 @@ public class TableroMapperTest {
         TableroId id = new TableroId(UUID.randomUUID());
         Tablero original = new Tablero(id, "Cielo", "pepe@test.com");
         original.addLista(new ListaTareas("Done"));
-        
+
         TableroEntity entity = mapper.toEntity(original);
         Tablero result = mapper.toDomain(entity);
-        
+
         assertNotNull(result);
         assertEquals(original.getId().valor(), result.getId().valor());
         assertEquals(original.getNombre(), result.getNombre());
