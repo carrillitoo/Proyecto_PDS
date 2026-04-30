@@ -25,7 +25,7 @@ class UsuarioTest {
         assertEquals(1, usuario.getAccesosTableros().size());
         assertEquals(Rol.PROPIETARIO, usuario.getAccesosTableros().get("tablero1"));
 
-        usuario.concederAccesoATablero("tablero2", Rol.LEECTOR);
+        usuario.concederAccesoATablero("tablero2", Rol.LECTOR);
         assertEquals(2, usuario.getAccesosTableros().size());
 
         usuario.revocarAcceso("tablero1");

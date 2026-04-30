@@ -15,8 +15,6 @@ import umu.pds.api.domain.models.Email;
 import umu.pds.api.domain.models.Usuario;
 import umu.pds.api.domain.ports.out.EmailPort;
 import umu.pds.api.domain.ports.out.UsuarioRepositoryPort;
-import umu.pds.dto.SolicitarCodigoCommandDTO;
-
 @ExtendWith(MockitoExtension.class)
 public class SolicitarCodigoUseCaseImplTest {
 
@@ -32,10 +30,10 @@ public class SolicitarCodigoUseCaseImplTest {
     @Test
     void deberiaSolicitarCodigo() {
         Usuario mockUsuario = mock(Usuario.class);
-        SolicitarCodigoCommandDTO cmd = new SolicitarCodigoCommandDTO("test@email.com");
+        String email = "test@email.com";
         when(usuarioRepository.buscarPorEmail(any(Email.class))).thenReturn(Optional.of(mockUsuario));
 
-        useCase.ejecutar(cmd);
+        useCase.ejecutar(email);
 
         verify(mockUsuario).generarCodigoAcceso(anyString());
         verify(usuarioRepository).guardar(mockUsuario);

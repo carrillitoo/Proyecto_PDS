@@ -9,9 +9,11 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
+import java.util.Arrays;
+import java.util.List;
 
 public class UsuarioService {
-    private final String BASE_URL = "http://localhost:8080/api/usuarios";
+    private final String BASE_URL = "http://localhost:8080/tablerellos/usuarios";
     private final HttpClient client;
 
     public UsuarioService() {
@@ -28,7 +30,7 @@ public class UsuarioService {
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         if (response.statusCode() == 200) {
-            ObjectMapper mapper = new ObjectMapper();
+            ObjectMapper mapper = new ObjectMapper().findAndRegisterModules();
             return mapper.readValue(response.body(), UsuarioResponseDTO.class);
         }
         throw new RuntimeException("Error obteniendo perfil: " + response.statusCode());
@@ -44,13 +46,13 @@ public class UsuarioService {
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         if (response.statusCode() == 200) {
-            ObjectMapper mapper = new ObjectMapper();
+            ObjectMapper mapper = new ObjectMapper().findAndRegisterModules();
             return mapper.readValue(response.body(), UsuarioResponseDTO.class);
         }
         throw new RuntimeException("Error actualizando perfil: " + response.statusCode());
     }
 
-    public java.util.List<UsuarioResponseDTO> getAllUsuarios() throws Exception {
+    public List<UsuarioResponseDTO> getAllUsuarios() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL))
                 .GET()
@@ -60,7 +62,7 @@ public class UsuarioService {
         if (response.statusCode() == 200) {
             ObjectMapper mapper = new ObjectMapper();
             UsuarioResponseDTO[] array = mapper.readValue(response.body(), UsuarioResponseDTO[].class);
-            return java.util.Arrays.asList(array);
+            return Arrays.asList(array);
         }
         throw new RuntimeException("Error obteniendo usuarios (" + response.statusCode() + ")");
     }

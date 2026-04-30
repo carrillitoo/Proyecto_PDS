@@ -5,16 +5,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
-import javafx.scene.shape.Circle;
 import umu.pds.gui.App;
 import umu.pds.gui.services.GlobalState;
 
 public class MainLayoutController {
 
-    @FXML private StackPane contentArea;
-    @FXML private Circle avatarCircle;
-    @FXML private Label userNameLabel;
-    
+    @FXML
+    private StackPane contentArea;
+    @FXML
+    private Label userNameLabel;
+
     private static MainLayoutController instance;
 
     @FXML
@@ -49,15 +49,27 @@ public class MainLayoutController {
     }
 
     // --- ACCIONES DEL MENÚ LATERAL ---
-    @FXML private void goDashboard() { loadCenterView("Dashboard"); }
-    @FXML private void goBoard() { loadCenterView("Dashboard"); }
-    @FXML private void goEtiquetas() { loadCenterView("GestorEtiquetas"); }
-    @FXML private void goHistory() { loadCenterView("HistorialActividad"); }
+    @FXML
+    private void goDashboard() {
+        GlobalState.getInstance().setShowActivityInDashboard(true);
+        loadCenterView("Dashboard");
+    }
+
+    @FXML
+    private void goBoard() {
+        GlobalState.getInstance().setShowActivityInDashboard(false);
+        loadCenterView("Dashboard");
+    }
+
+    @FXML
+    private void goHistory() {
+        loadCenterView("HistorialActividad");
+    }
 
     @FXML
     private void handleOpenCreateMenu() {
         System.out.println("Botón Crear pulsado. Abriendo pantalla de creación...");
-        loadCenterView("CrearTablero"); 
+        loadCenterView("CrearTablero");
     }
 
     @FXML

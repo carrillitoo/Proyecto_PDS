@@ -10,7 +10,8 @@ public record CrearListaRequestDTO(
 		String nombreLista,
 		
 		
-		List<String> reglas
+		List<String> reglas,
+		Integer limite
 		) {
 	//esto lo pongo porque si se manda un null del front ya que es opcional reventaria el programa asinnnque pues eso tendríamos 
 	public CrearListaRequestDTO {

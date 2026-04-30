@@ -13,12 +13,14 @@
    <!-- Header -->
    <HBox alignment="CENTER_LEFT" spacing="15.0" style="-fx-background-color: #e8f0fe; -fx-padding: 12 25;">
       <children>
-         <Label style="-fx-font-size: 20px; -fx-font-weight: 800;" text="Tablero: Lanzamiento Q4" />
-         <Label fx:id="estadoBadge" style="-fx-background-color: #d4edda; -fx-padding: 4 12; -fx-background-radius: 12; -fx-text-fill: #155724; -fx-font-size: 11px; -fx-font-weight: bold;" text="ACTIVO" />
+         <Label fx:id="boardTitleLabel" style="-fx-font-size: 20px; -fx-font-weight: 800;" text="Tablero: (Cargando...)" />
+         <Label fx:id="estadoBadge" />
          <Region HBox.hgrow="ALWAYS" />
          <Button onAction="#loadKanban" styleClass="nav-link" text="Kanban" />
          <Button onAction="#loadMembers" styleClass="nav-link" text="Miembros" />
-         <Button onAction="#loadRules" styleClass="nav-link" text="Reglas" />
+         <Button onAction="#loadTags" styleClass="nav-link" text="Etiquetas" />
+         <Button fx:id="btnReglas" onAction="#loadRules" styleClass="nav-link" text="Compactación" />
+         <Button fx:id="btnCongelar" onAction="#handleToggleFreeze" styleClass="nav-link" text="Congelar" />
       </children>
    </HBox>
 

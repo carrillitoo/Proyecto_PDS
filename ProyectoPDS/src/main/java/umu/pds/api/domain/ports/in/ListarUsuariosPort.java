@@ -1,8 +1,8 @@
 package umu.pds.api.domain.ports.in;
 
-import umu.pds.dto.UsuarioResponseDTO;
+import umu.pds.api.domain.models.Usuario;
 import java.util.List;
 
 public interface ListarUsuariosPort {
-    List<UsuarioResponseDTO> ejecutar();
+    List<Usuario> ejecutar();
 }

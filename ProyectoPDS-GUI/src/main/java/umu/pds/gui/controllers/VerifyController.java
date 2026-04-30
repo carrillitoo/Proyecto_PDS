@@ -20,6 +20,71 @@ public class VerifyController {
     private final AuthService authService = new AuthService();
 
     @FXML
+    public void initialize() {
+        setupTextFieldAutoAdvance(digit1, null, digit2);
+        setupTextFieldAutoAdvance(digit2, digit1, digit3);
+        setupTextFieldAutoAdvance(digit3, digit2, digit4);
+        setupTextFieldAutoAdvance(digit4, digit3, digit5);
+        setupTextFieldAutoAdvance(digit5, digit4, digit6);
+        setupTextFieldAutoAdvance(digit6, digit5, null);
+    }
+
+    private void setupTextFieldAutoAdvance(TextField current, TextField previous, TextField next) {
+        if (current == null) return;
+        
+        current.textProperty().addListener((observable, oldValue, newValue) -> {
+            // Asegurarnos de que sólo se introduzcan números
+            if (newValue != null && !newValue.matches("\\d*")) {
+                current.setText(newValue.replaceAll("[^\\d]", ""));
+                return;
+            }
+            
+            // Limitar la longitud a 1 carácter y avanzar
+            if (newValue != null && newValue.length() > 0) {
+                if (newValue.length() > 1) {
+                    current.setText(newValue.substring(0, 1));
+                }
+                if (next != null) {
+                    next.requestFocus();
+                } else if (current == digit6) {
+                    // Si es el último dígito, verificar si todos están llenos
+                    checkAndSubmit();
+                }
+            }
+        });
+
+        current.setOnKeyPressed(event -> {
+            switch (event.getCode()) {
+                case BACK_SPACE:
+                    if (current.getText().isEmpty() && previous != null) {
+                        previous.requestFocus();
+                    }
+                    break;
+                case LEFT:
+                    if (previous != null) {
+                        previous.requestFocus();
+                    }
+                    break;
+                case RIGHT:
+                    if (next != null) {
+                        next.requestFocus();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        });
+    }
+
+    private void checkAndSubmit() {
+        if (digit1.getText().length() == 1 && digit2.getText().length() == 1 && 
+            digit3.getText().length() == 1 && digit4.getText().length() == 1 && 
+            digit5.getText().length() == 1 && digit6.getText().length() == 1) {
+            handleVerify();
+        }
+    }
+
+    @FXML
     private void handleVerify() {
         String userEmail = GlobalState.getInstance().getUserEmail();
         if (userEmail == null) {
@@ -27,12 +92,12 @@ public class VerifyController {
         }
         
         String code = "";
-        if (digit1 != null) code += digit1.getText();
-        if (digit2 != null) code += digit2.getText();
-        if (digit3 != null) code += digit3.getText();
-        if (digit4 != null) code += digit4.getText();
-        if (digit5 != null) code += digit5.getText();
-        if (digit6 != null) code += digit6.getText();
+        if (digit1 != null) code += digit1.getText().trim();
+        if (digit2 != null) code += digit2.getText().trim();
+        if (digit3 != null) code += digit3.getText().trim();
+        if (digit4 != null) code += digit4.getText().trim();
+        if (digit5 != null) code += digit5.getText().trim();
+        if (digit6 != null) code += digit6.getText().trim();
 
         if (code.length() < 6) {
             showAlert("Código Incompleto", "El código debe tener 6 dígitos.");

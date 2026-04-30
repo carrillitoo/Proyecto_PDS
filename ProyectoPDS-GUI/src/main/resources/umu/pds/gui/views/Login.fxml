@@ -20,7 +20,7 @@
             
             <VBox alignment="CENTER" spacing="5.0">
                <children>
-                  <Text styleClass="brand-title" text="Trello PDS" />
+                  <Text styleClass="brand-title" text="Tablerellos" />
                   <Rectangle height="4.0" styleClass="brand-underline" width="60.0" />
                </children>
             </VBox>

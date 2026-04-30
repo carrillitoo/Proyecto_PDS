@@ -37,7 +37,7 @@ public class LoginController {
                 Platform.runLater(() -> {
                     if (exito) {
                         try {
-                            GlobalState.getInstance().setUserEmail(finalEmail);
+                            GlobalState.getInstance().setUserEmail(finalEmail.toLowerCase());
                             App.setRoot("Verificar");
                         } catch (Exception e) {
                             e.printStackTrace();

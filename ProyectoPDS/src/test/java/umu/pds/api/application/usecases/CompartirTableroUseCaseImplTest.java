@@ -15,13 +15,14 @@ import umu.pds.api.domain.models.Email;
 import umu.pds.api.domain.models.Rol;
 import umu.pds.api.domain.models.Usuario;
 import umu.pds.api.domain.ports.out.UsuarioRepositoryPort;
-import umu.pds.dto.CompartirTableroCommandDTO;
-
 @ExtendWith(MockitoExtension.class)
 public class CompartirTableroUseCaseImplTest {
 
     @Mock
     private UsuarioRepositoryPort usuarioRepository;
+
+    @Mock
+    private umu.pds.api.domain.ports.out.TableroRepositoryPort tableroRepository;
 
     @InjectMocks
     private CompartirTableroUseCaseImpl useCase;
@@ -29,22 +30,35 @@ public class CompartirTableroUseCaseImplTest {
     @Test
     void deberiaCompartirTableroConUsuarioExistente() {
         Usuario mockUsuario = mock(Usuario.class);
-        CompartirTableroCommandDTO cmd = new CompartirTableroCommandDTO("test@email.com", "123e4567-e89b-12d3-a456-426614174001", "LEECTOR");
+        String email = "test@email.com";
+        String tableroId = "123e4567-e89b-12d3-a456-426614174001";
+        String rol = "LECTOR";
+        
+        umu.pds.api.domain.models.Tablero mockTablero = mock(umu.pds.api.domain.models.Tablero.class);
+        
         when(usuarioRepository.buscarPorEmail(any(Email.class))).thenReturn(Optional.of(mockUsuario));
+        when(tableroRepository.buscarPorId(any())).thenReturn(Optional.of(mockTablero));
 
-        useCase.ejecutar(cmd);
+        useCase.ejecutar(email, tableroId, rol);
 
-        verify(mockUsuario).concederAccesoATablero("123e4567-e89b-12d3-a456-426614174001", Rol.LEECTOR);
-        verify(usuarioRepository).guardar(mockUsuario);
+        verify(mockTablero).invitarMiembro(email, Rol.LECTOR);
+        verify(tableroRepository).guardar(mockTablero);
     }
 
     @Test
     void deberiaCompartirTableroCreandoUsuarioNuevo() {
-        CompartirTableroCommandDTO cmd = new CompartirTableroCommandDTO("test@email.com", "123e4567-e89b-12d3-a456-426614174001", "LEECTOR");
+        String email = "test@email.com";
+        String tableroId = "123e4567-e89b-12d3-a456-426614174001";
+        String rol = "LECTOR";
+        
+        umu.pds.api.domain.models.Tablero mockTablero = mock(umu.pds.api.domain.models.Tablero.class);
+        
         when(usuarioRepository.buscarPorEmail(any(Email.class))).thenReturn(Optional.empty());
+        when(tableroRepository.buscarPorId(any())).thenReturn(Optional.of(mockTablero));
 
-        useCase.ejecutar(cmd);
+        useCase.ejecutar(email, tableroId, rol);
 
-        verify(usuarioRepository).guardar(any(Usuario.class));
+        verify(mockTablero).invitarMiembro(email, Rol.LECTOR);
+        verify(tableroRepository).guardar(mockTablero);
     }
 }

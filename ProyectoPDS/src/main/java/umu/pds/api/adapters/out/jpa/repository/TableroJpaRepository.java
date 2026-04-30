@@ -14,4 +14,7 @@ import java.util.UUID;
 // al final ha habido que meter una para buscar los tableros de un tablero  
 public interface TableroJpaRepository extends JpaRepository<TableroEntity, UUID> {
     List<TableroEntity> findByEmailCreador(String emailCreador);
+
+    @org.springframework.data.jpa.repository.Query("SELECT DISTINCT t FROM TableroEntity t LEFT JOIN t.miembros m WHERE t.emailCreador = :email OR KEY(m) = :email")
+    List<TableroEntity> findByEmailCreadorOrMiembroEmail(@org.springframework.data.repository.query.Param("email") String email);
 }

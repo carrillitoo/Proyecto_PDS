@@ -11,6 +11,7 @@ import umu.pds.api.domain.models.TableroId;
 import umu.pds.api.domain.models.Tarjeta;
 import umu.pds.api.domain.models.TarjetaChecklist;
 import umu.pds.api.domain.models.TarjetaTarea;
+import umu.pds.api.domain.models.Checklist;
 import umu.pds.api.domain.models.Tarea;
 import umu.pds.api.domain.ports.out.TableroRepositoryPort;
 
@@ -32,10 +33,23 @@ public class AddTarjetaListaUseCaseImpl implements AddTarjetaListaUseCase {
                 .orElseThrow(() -> new TableroNoEncontradoException(tableroIdStr));
 
         Tarjeta nuevaTarjeta;
-        if (tipo.equalsIgnoreCase("CHECKLIST"))
-            nuevaTarjeta = new TarjetaChecklist(titulo, descripcion);
-        else
-            nuevaTarjeta = new TarjetaTarea(titulo, descripcion, new Tarea(contenidoTarea));
+        if (tipo.equalsIgnoreCase("CHECKLIST")) {
+            TarjetaChecklist tc = new TarjetaChecklist(titulo, descripcion);
+            if (contenidoTarea != null && !contenidoTarea.isBlank() && !contenidoTarea.equals("{}")) {
+                String[] items = contenidoTarea.split("\\|\\|");
+                for (String itemStr : items) {
+                    if (!itemStr.isBlank()) {
+                        tc.anadirItem(new Checklist(itemStr));
+                    }
+                }
+            }
+            nuevaTarjeta = tc;
+        } else {
+            // Si el contenido es null o vacío para una tarea, le ponemos uno por defecto para evitar errores en el V.O record
+            String content = (contenidoTarea == null || contenidoTarea.isBlank() || contenidoTarea.equals("{}")) 
+                             ? "Sin contenido" : contenidoTarea;
+            nuevaTarjeta = new TarjetaTarea(titulo, descripcion, new Tarea(content));
+        }
 
         tablero.addTarjeta(nombreLista, nuevaTarjeta);
 

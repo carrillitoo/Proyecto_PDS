@@ -10,17 +10,17 @@ class InvitacionTest {
 
     @Test // Debe crear la invitacion correctamente y empezar como no aceptada
     void crearInvitacionEInicializacion() {
-        Invitacion invitacion = new Invitacion("tablero-123", Rol.EDITOR);
+        Invitacion invitacion = new Invitacion("tablero-123", Rol.ESCRITOR);
 
         assertEquals("tablero-123", invitacion.getTableroId());
-        assertEquals(Rol.EDITOR, invitacion.getRolAsignado());
+        assertEquals(Rol.ESCRITOR, invitacion.getRolAsignado());
         assertFalse(invitacion.isAceptada());
         assertNotNull(invitacion.getFecha());
     }
 
     @Test // Debe aceptar correctamente
     void aceptarInvitacion() {
-        Invitacion invitacion = new Invitacion("tablero-123", Rol.LEECTOR);
+        Invitacion invitacion = new Invitacion("tablero-123", Rol.LECTOR);
         invitacion.aceptar();
         assertTrue(invitacion.isAceptada());
     }

@@ -29,6 +29,7 @@ public class UsuarioEntity {
     @Column(name = "url_foto")
     private String urlFoto;
     
+    @Column(name = "codigo_acceso")
     private String codigoAcceso;
 
     @ElementCollection(fetch = FetchType.EAGER)
@@ -67,7 +68,7 @@ public class UsuarioEntity {
     }
 
     public void setCodigoAcceso(String codigoAcceso) {
-        this.codigoAcceso = codigoAcceso;
+        this.codigoAcceso = codigoAcceso != null ? codigoAcceso.trim() : null;
     }
 
     public Map<String, Rol> getAccesosTableros() {

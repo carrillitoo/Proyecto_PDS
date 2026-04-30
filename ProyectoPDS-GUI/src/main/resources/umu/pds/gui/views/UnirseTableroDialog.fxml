@@ -28,7 +28,7 @@
          <VBox spacing="8.0">
             <children>
                <Label styleClass="input-label" text="ENLACE DEL TABLERO" />
-               <TextField fx:id="linkField" promptText="Ej: http://trello-pds.com/board/1234-abcd..." styleClass="text-field" />
+               <TextField fx:id="linkField" promptText="Ej: http://tablerellos.com/board/1234-abcd..." styleClass="text-field" />
             </children>
          </VBox>
 

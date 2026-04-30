@@ -22,11 +22,13 @@ public class CrearListaTareasUseCaseImpl implements CrearListaTareasUseCase {
 	}
 	
 	//comando de orquestacion que añade una nueva lista con reglas de base
-	public void ejecutar(String tableroIdStr, String nombreLista, List<String> reglas) {
+	public void ejecutar(String tableroIdStr, String nombreLista, List<String> reglas, Integer limite) {
 		Tablero tablero = tableroRepository.buscarPorId(TableroId.stringToTableroId(tableroIdStr))
 										   .orElseThrow(() -> new TableroNoEncontradoException(tableroIdStr));
 
-        ListaTareas nuevaLista = new ListaTareas(nombreLista);
+        // Si el límite es null, usamos el valor por defecto (infinito)
+        int limiteFinal = (limite != null) ? limite : ListaTareas.getLimPd();
+        ListaTareas nuevaLista = new ListaTareas(nombreLista, limiteFinal);
         
         // Añadimos las reglas de base en la construccion
         for (String regla : reglas) {

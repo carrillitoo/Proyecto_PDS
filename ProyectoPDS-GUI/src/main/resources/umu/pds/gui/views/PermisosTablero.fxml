@@ -16,106 +16,29 @@
                <children>
                   <VBox spacing="10">
                      <children>
-                        <HBox alignment="CENTER_LEFT" spacing="8">
-                           <children>
-                              <Label style="-fx-text-fill: #707882; -fx-font-size: 12px;" text="Marketing Team" />
-                              <Label style="-fx-text-fill: #707882; -fx-font-size: 12px;" text="&gt;" />
-                              <Label style="-fx-text-fill: #191c1e; -fx-font-weight: bold; -fx-font-size: 12px;" text="Lanzamiento Q4" />
-                           </children>
-                        </HBox>
-                        
                         <HBox alignment="CENTER_LEFT">
                            <children>
                               <Text style="-fx-font-size: 26px; -fx-font-weight: 800;" text="Permisos del Tablero" />
                               <Region HBox.hgrow="ALWAYS" />
-                              <Button styleClass="primary-button" text="+ Invitar Miembro" onAction="#handleInviteUser" />
+                              <Button fx:id="btnInvitar" styleClass="primary-button" text="+ Invitar Miembro" onAction="#handleInviteUser" />
                            </children>
                         </HBox>
                         <Text style="-fx-fill: #707882; -fx-font-size: 14px;" text="Gestiona quién puede ver y editar este tablero." />
                      </children>
                   </VBox>
 
-                  <VBox spacing="20" styleClass="permission-table-container" fx:id="usersTable">
+                  <VBox spacing="20" styleClass="permission-table-container">
                      <children>
                         <HBox styleClass="table-header-row">
                            <children>
                               <Label prefWidth="300" styleClass="table-header-text" text="Miembro" />
                               <Label prefWidth="200" styleClass="table-header-text" text="Rol" />
-                              <Label prefWidth="150" styleClass="table-header-text" text="Estado" />
                               <Region HBox.hgrow="ALWAYS" />
-                              <Label styleClass="table-header-text" text="Acciones" />
                            </children>
                         </HBox>
 
-                        <HBox alignment="CENTER_LEFT" styleClass="user-row">
-                           <children>
-                              <HBox prefWidth="300" spacing="15" alignment="CENTER_LEFT">
-                                 <children>
-                                    <Circle fill="#0079bf" radius="20.0" />
-                                    <VBox>
-                                       <children>
-                                          <Label style="-fx-font-weight: bold; -fx-font-size: 14px;" text="Tú (Admin)" />
-                                          <Label style="-fx-text-fill: #707882; -fx-font-size: 12px;" text="demo@pdsarchitect.com" />
-                                       </children>
-                                    </VBox>
-                                 </children>
-                              </HBox>
-                              <ComboBox fx:id="roleCombo1" prefWidth="180" styleClass="filter-select" onAction="#handleRoleChange">
-                                 <items>
-                                    <FXCollections fx:factory="observableArrayList">
-                                       <String fx:value="Lector" />
-                                       <String fx:value="Editor" />
-                                       <String fx:value="Administrador" />
-                                    </FXCollections>
-                                 </items>
-                                 <value>
-                                    <String fx:value="Administrador" />
-                                 </value>
-                              </ComboBox>
-                              <HBox prefWidth="150" alignment="CENTER_LEFT">
-                                 <children>
-                                    <Label style="-fx-background-color: #d4edda; -fx-text-fill: #155724; -fx-padding: 4 12; -fx-background-radius: 12; -fx-font-size: 11px; -fx-font-weight: bold;" text="Activo" />
-                                 </children>
-                              </HBox>
-                              <Region HBox.hgrow="ALWAYS" />
-                              <Button style="-fx-background-color: transparent; -fx-text-fill: #ba1a1a; -fx-font-weight: bold;" text="Transferir prop." />
-                           </children>
-                        </HBox>
-
-                        <HBox alignment="CENTER_LEFT" styleClass="user-row" fx:id="userRow2">
-                           <children>
-                              <HBox prefWidth="300" spacing="15" alignment="CENTER_LEFT">
-                                 <children>
-                                    <Circle fill="#5aac44" radius="20.0" />
-                                    <VBox>
-                                       <children>
-                                          <Label style="-fx-font-weight: bold; -fx-font-size: 14px;" text="Sara Fernández" />
-                                          <Label style="-fx-text-fill: #707882; -fx-font-size: 12px;" text="sara@pdsarchitect.com" />
-                                       </children>
-                                    </VBox>
-                                 </children>
-                              </HBox>
-                              <ComboBox fx:id="roleCombo2" prefWidth="180" styleClass="filter-select" onAction="#handleRoleChange">
-                                 <items>
-                                    <FXCollections fx:factory="observableArrayList">
-                                       <String fx:value="Lector" />
-                                       <String fx:value="Editor" />
-                                       <String fx:value="Administrador" />
-                                    </FXCollections>
-                                 </items>
-                                 <value>
-                                    <String fx:value="Editor" />
-                                 </value>
-                              </ComboBox>
-                              <HBox prefWidth="150" alignment="CENTER_LEFT">
-                                 <children>
-                                    <Label style="-fx-background-color: #fff3cd; -fx-text-fill: #856404; -fx-padding: 4 12; -fx-background-radius: 12; -fx-font-size: 11px; -fx-font-weight: bold;" text="Pendiente" />
-                                 </children>
-                              </HBox>
-                              <Region HBox.hgrow="ALWAYS" />
-                              <Button style="-fx-background-color: transparent; -fx-text-fill: #ba1a1a; -fx-font-weight: bold;" text="Revocar" onAction="#handleRevokeAccess" />
-                           </children>
-                        </HBox>
+                        <!-- Contenedor dinámico de miembros -->
+                        <VBox fx:id="membersContainer" spacing="10" />
 
                      </children>
                   </VBox>
@@ -125,8 +48,8 @@
                         <Label style="-fx-font-weight: bold;" text="Enlace de invitación pública" />
                         <HBox spacing="15" alignment="CENTER_LEFT">
                            <children>
-                              <TextField fx:id="urlField" editable="false" prefWidth="400" styleClass="text-field" text="https://trello.com/invite/b/xxx/yyy" />
-                              <Button fx:id="copyButton" styleClass="filter-button" text="Copiar Enlace" onAction="#handleCopyUrl" />
+                              <TextField fx:id="urlField" editable="false" prefWidth="400" styleClass="text-field" text="https://tablerellos.com/invite/b/xxx/yyy" />
+                              <Button styleClass="filter-button" text="Copiar Enlace" onAction="#handleCopyUrl" />
                               <Button style="-fx-background-color: transparent; -fx-text-fill: #707882;" text="Desactivar enlace" />
                            </children>
                         </HBox>

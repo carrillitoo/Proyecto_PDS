@@ -2,7 +2,7 @@ package umu.pds.api.application.usecases;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import umu.pds.dto.UsuarioResponseDTO;
+
 import umu.pds.api.domain.models.Email;
 import umu.pds.api.domain.models.Usuario;
 import umu.pds.api.domain.ports.in.SubirFotoPerfilPort;
@@ -33,37 +33,32 @@ public class SubirFotoPerfilUseCaseImpl implements SubirFotoPerfilPort {
     }
 
     @Override
-    public UsuarioResponseDTO ejecutar(String emailStr, MultipartFile file) {
+    public Usuario ejecutar(String emailStr, MultipartFile file) {
         Email email = new Email(emailStr);
         Usuario usuario = usuarioRepository.buscarPorEmail(email)
             .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-            
+             
         if (file == null || file.isEmpty()) {
             throw new IllegalArgumentException("El archivo de imagen no puede estar vacío");
         }
-        
+         
         try {
             String originalFilename = file.getOriginalFilename();
             String extension = "";
             if (originalFilename != null && originalFilename.contains(".")) {
                 extension = originalFilename.substring(originalFilename.lastIndexOf("."));
             }
-            
+             
             String newFilename = UUID.randomUUID().toString() + extension;
             Path uploadPath = Paths.get(UPLOAD_DIR + newFilename);
-            
+             
             Files.copy(file.getInputStream(), uploadPath, StandardCopyOption.REPLACE_EXISTING);
-            
+             
             String relativeUrl = "/images/usuarios/" + newFilename;
             usuario.setUrlFoto(relativeUrl);
             usuarioRepository.guardar(usuario);
-            
-            return new UsuarioResponseDTO(
-                usuario.getEmail().getDireccion(),
-                usuario.getNombre(),
-                usuario.getUrlFoto()
-            );
-            
+            return usuario;
+             
         } catch (IOException e) {
             throw new RuntimeException("Error al guardar la foto de perfil", e);
         }

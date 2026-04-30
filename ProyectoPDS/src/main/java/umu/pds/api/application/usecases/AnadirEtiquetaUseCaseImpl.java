@@ -1,7 +1,7 @@
 package umu.pds.api.application.usecases;
 
 import org.springframework.stereotype.Service;
-import umu.pds.dto.AnadirEtiquetaCommandDTO;
+import java.util.UUID;
 import umu.pds.api.domain.exceptions.TarjetaNoEncontradaException;
 import umu.pds.api.domain.models.Color;
 import umu.pds.api.domain.models.Etiqueta;
@@ -19,18 +19,18 @@ public class AnadirEtiquetaUseCaseImpl implements AnadirEtiquetaPort {
     }
 
     @Override
-    public Tarjeta ejecutar(AnadirEtiquetaCommandDTO command) {
+    public Tarjeta ejecutar(UUID tarjetaId, String nombreEtiqueta, String colorHex) {
         // Recupera la tarjeta de la BD, y si no existe lanzamos nuestra excepción
-        Tarjeta tarjeta = tarjetaRepositoryPort.buscarPorId(command.tarjetaId())
-                .orElseThrow(() -> new TarjetaNoEncontradaException(command.tarjetaId()));
-
+        Tarjeta tarjeta = tarjetaRepositoryPort.buscarPorId(tarjetaId)
+                .orElseThrow(() -> new TarjetaNoEncontradaException(tarjetaId));
+ 
         // Creamos los objetos, en este caso, el color y la etiqueta
-        Color color = new Color(command.colorHex());
-        Etiqueta nuevaEtiqueta = new Etiqueta(command.nombreEtiqueta(), color);
-
+        Color color = new Color(colorHex);
+        Etiqueta nuevaEtiqueta = new Etiqueta(nombreEtiqueta, color);
+ 
         // Le decimos a la tarjeta que añada la etiqueta
         tarjeta.anadirEtiqueta(nuevaEtiqueta);
-
+ 
         //Guardam la tarjeta actualizada de vuelta a la BD
         return tarjetaRepositoryPort.guardar(tarjeta);
     }

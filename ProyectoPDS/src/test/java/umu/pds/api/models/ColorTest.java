@@ -1,6 +1,5 @@
 package umu.pds.api.models;
 
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import umu.pds.api.domain.models.Color;
@@ -16,8 +15,9 @@ class ColorTest {
         assertEquals("#FF5733", color.hexCode());
     }
 
-    @Test // Debe crear un Color válido con formato Hexadecimal de 3 caracteres y normalizar a mayúsculas
-    
+    @Test // Debe crear un Color válido con formato Hexadecimal de 3 caracteres y
+          // normalizar a mayúsculas
+
     void crearColorValido3CaracteresYNormalizar() {
         Color color = new Color("#aBc");
         assertEquals("#ABC", color.hexCode()); // Verifica que lo pasa a mayúsculas

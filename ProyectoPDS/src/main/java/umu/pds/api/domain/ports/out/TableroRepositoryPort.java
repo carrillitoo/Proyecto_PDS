@@ -14,4 +14,5 @@ public interface TableroRepositoryPort {
     void eliminar(TableroId id);
 
     List<Tablero> buscarPorEmailCreador(String email);
+    List<Tablero> buscarPorEmailUsuario(String email);
 }

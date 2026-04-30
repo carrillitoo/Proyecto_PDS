@@ -8,6 +8,7 @@ import umu.pds.api.domain.exceptions.EtiquetaInvalidaException;
 import umu.pds.api.domain.models.Color;
 import umu.pds.api.domain.models.Etiqueta;
 import umu.pds.api.domain.models.Tarjeta;
+import umu.pds.api.domain.models.TipoTarjeta;
 
 public class TarjetaTest {
 
@@ -19,6 +20,11 @@ public class TarjetaTest {
         @Override
         protected void marcarComoCompletada() {
             this.completada = true;
+        }
+
+        @Override
+        public TipoTarjeta getTipo() {
+            return TipoTarjeta.TAREA;
         }
     }
 

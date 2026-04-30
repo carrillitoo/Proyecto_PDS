@@ -21,8 +21,8 @@ import umu.pds.api.domain.models.Tarea;
 import umu.pds.api.domain.models.Tarjeta;
 import umu.pds.api.domain.models.TarjetaTarea;
 import umu.pds.api.domain.ports.in.AnadirEtiquetaPort;
-import umu.pds.dto.AnadirEtiquetaCommandDTO;
-import umu.pds.dto.AnadirEtiquetaWebRequestDTO;
+
+import umu.pds.api.adapters.dto.AnadirEtiquetaWebRequestDTO;
 
 @WebMvcTest(TarjetaController.class)
 public class TarjetaControllerTest {
@@ -42,9 +42,9 @@ public class TarjetaControllerTest {
         AnadirEtiquetaWebRequestDTO request = new AnadirEtiquetaWebRequestDTO("Backend", "#0000FF");
         Tarjeta tarjeta = new TarjetaTarea(id, "Tarea", "Desc", false, LocalDateTime.now(), new Tarea("Tarea"));
 
-        when(anadirEtiquetaPort.ejecutar(any(AnadirEtiquetaCommandDTO.class))).thenReturn(tarjeta);
+        when(anadirEtiquetaPort.ejecutar(any(), any(), any())).thenReturn(tarjeta);
 
-        mockMvc.perform(post("/api/tarjetas/" + id + "/etiquetas")
+        mockMvc.perform(post("/tablerellos/tarjetas/" + id + "/etiquetas")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk());

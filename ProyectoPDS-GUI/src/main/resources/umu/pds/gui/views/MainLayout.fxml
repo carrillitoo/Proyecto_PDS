@@ -11,14 +11,13 @@
    <top>
       <HBox alignment="CENTER_LEFT" spacing="20.0" styleClass="top-nav">
          <children>
-            <Text style="-fx-font-weight: 900; -fx-font-size: 18px; -fx-fill: #0079bf; -fx-cursor: hand;" text="Trello PDS" onMouseClicked="#goDashboard" />
+            <Text style="-fx-font-weight: 900; -fx-font-size: 22px; -fx-fill: #0079bf; -fx-cursor: hand;" text="Tablerellos" onMouseClicked="#goDashboard" />
             <Region HBox.hgrow="ALWAYS" />
             <Button styleClass="create-button" text="Crear Tablero" onAction="#handleOpenCreateMenu" />
             <Button style="-fx-background-color: #e8f0fe; -fx-text-fill: #0079bf; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 8 16;" text="Unirse a Tablero" onAction="#handleOpenJoinDialog" />
             <HBox alignment="CENTER" spacing="8.0" style="-fx-cursor: hand;" onMouseClicked="#handleOpenProfileDialog">
                <children>
-                  <Circle fx:id="avatarCircle" fill="#e0e3e6" radius="16.0" />
-                  <Label fx:id="userNameLabel" style="-fx-font-weight: bold; -fx-font-size: 13px;" text="Usuario" />
+                  <Label fx:id="userNameLabel" style="-fx-font-weight: bold; -fx-font-size: 16px;" text="Usuario" />
                </children>
             </HBox>
          </children>
@@ -26,14 +25,14 @@
    </top>
 
    <left>
-      <VBox prefWidth="220.0" spacing="8" styleClass="sidebar">
+      <VBox prefWidth="280.0" spacing="12" styleClass="sidebar">
          <padding>
             <Insets top="20" bottom="20" left="15" right="15" />
          </padding>
          <children>
             <VBox spacing="5">
                <children>
-                  <Label style="-fx-font-weight: bold; -fx-font-size: 14px;" text="PDS Architect" />
+                  <Label style="-fx-font-weight: bold; -fx-font-size: 18px;" text="PDS Architect" />
                   <Label style="-fx-font-size: 10px; -fx-text-fill: #707882; -fx-font-weight: bold;" text="WORKSPACE" />
                </children>
                <padding><Insets bottom="15" /></padding>
@@ -41,7 +40,6 @@
             <Separator />
             <Button maxWidth="Infinity" styleClass="nav-link" text="Dashboard" onAction="#goDashboard" />
             <Button maxWidth="Infinity" styleClass="nav-link" text="Tableros" onAction="#goBoard" />
-            <Button maxWidth="Infinity" styleClass="nav-link" text="Etiquetas" onAction="#goEtiquetas" />
             <Button maxWidth="Infinity" styleClass="nav-link" text="Historial" onAction="#goHistory" />
             <Region VBox.vgrow="ALWAYS" />
             <Separator />

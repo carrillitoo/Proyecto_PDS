@@ -46,6 +46,11 @@ public final class TarjetaChecklist extends Tarjeta {
     // Solo se puede completar la tarjeta si todos sus items están ya completados
 
     @Override
+    public TipoTarjeta getTipo() {
+        return TipoTarjeta.CHECKLIST;
+    }
+
+    @Override
     public void marcarComoCompletada() {
         boolean todosCompletados = items.stream().allMatch(Checklist::isCompletado);
 

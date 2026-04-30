@@ -1,4 +1,4 @@
-package umu.pds.dto;
+package umu.pds.api.adapters.dto;
 
 import java.util.List;
 

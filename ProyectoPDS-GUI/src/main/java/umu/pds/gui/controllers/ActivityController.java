@@ -7,7 +7,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.util.StringConverter;
 import umu.pds.dto.TableroResponseDTO;
@@ -74,7 +73,8 @@ public class ActivityController {
         }
 
         try {
-            TableroResponseDTO details = tableroService.getTableroById(selected.id());
+            TableroResponseDTO details = tableroService.getTableroById(selected.id(),
+                    GlobalState.getInstance().getUserEmail());
             renderHistory(details.historial());
         } catch (Exception e) {
             e.printStackTrace();
@@ -94,7 +94,12 @@ public class ActivityController {
         emptyLabel.setVisible(false);
         emptyLabel.setManaged(false);
 
-        for (TrazaAccionResponseDTO traza : historial) {
+        // Creamos una copia mutable y le damos la vuelta para que lo mas reciente
+        // aparezca arriba
+        java.util.List<TrazaAccionResponseDTO> reversible = new java.util.ArrayList<>(historial);
+        java.util.Collections.reverse(reversible);
+
+        for (TrazaAccionResponseDTO traza : reversible) {
             HBox item = createHistoryItem(traza);
             historialContainer.getChildren().add(item);
         }
@@ -104,9 +109,6 @@ public class ActivityController {
         HBox hbox = new HBox(15);
         hbox.setStyle(
                 "-fx-padding: 15; -fx-background-color: white; -fx-background-radius: 8; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 10, 0, 0, 2);");
-
-        Circle avatar = new Circle(18);
-        avatar.setStyle("-fx-fill: #0079bf;");
 
         VBox content = new VBox(5);
         String desc = "Acción: " + traza.accion() + " sobre la tarjeta " + traza.tarjetaId();
@@ -122,7 +124,7 @@ public class ActivityController {
         date.setStyle("-fx-text-fill: #5e6c84; -fx-font-size: 12px;");
 
         content.getChildren().addAll(text, date);
-        hbox.getChildren().addAll(avatar, content);
+        hbox.getChildren().addAll(content);
 
         return hbox;
     }

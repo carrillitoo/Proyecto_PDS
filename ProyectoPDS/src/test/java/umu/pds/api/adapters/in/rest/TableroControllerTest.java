@@ -11,8 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
-import umu.pds.dto.CompactarTableroRequestDTO;
-import umu.pds.dto.CrearTableroRequestDTO;
+import umu.pds.api.adapters.dto.CompactarTableroRequestDTO;
+import umu.pds.api.adapters.dto.CrearTableroRequestDTO;
 import umu.pds.api.application.usecases.*;
 import umu.pds.api.domain.exceptions.TableroNoEncontradoException;
 import umu.pds.api.domain.models.EstadoTablero;
@@ -22,6 +22,7 @@ import umu.pds.api.domain.ports.in.ActualizarEtiquetaTableroPort;
 import umu.pds.api.domain.ports.in.CompartirTableroPort;
 import umu.pds.api.domain.ports.in.CrearEtiquetaTableroPort;
 import umu.pds.api.domain.ports.in.EliminarEtiquetaTableroPort;
+import umu.pds.api.domain.ports.in.AceptarInvitacionPort;
 import umu.pds.api.ApiApplication;
 
 import java.util.UUID;
@@ -66,6 +67,8 @@ class TableroControllerTest {
     private MoverTarjetaUseCase moverTarjetaUseCase;
     @MockBean
     private CompartirTableroPort compartirTableroPort;
+    @MockBean
+    private AceptarInvitacionPort aceptarInvitacionPort;
 
     private Tablero tableroMock;
     private final String ID_TABLERO = UUID.randomUUID().toString();
@@ -78,7 +81,7 @@ class TableroControllerTest {
         when(tableroMock.getNombre()).thenReturn("Tablero de Prueba");
         when(tableroMock.getEmailCreador()).thenReturn("sega@pds.com");
         when(tableroMock.getEstado()).thenReturn(EstadoTablero.ACTIVO);
-        when(tableroMock.getUrl()).thenReturn("http://api/tableros/123");
+        when(tableroMock.getUrl()).thenReturn("http://tablerellos/tableros/123");
     }
 
     @Test // creamos un tablero y nos devuelve 201
@@ -86,7 +89,7 @@ class TableroControllerTest {
         CrearTableroRequestDTO request = new CrearTableroRequestDTO("Mi Tablero", "sega@pds.com");
         when(crearTableroUseCase.ejecutar("Mi Tablero", "sega@pds.com")).thenReturn(tableroMock);
 
-        mockMvc.perform(post("/api/tableros")
+        mockMvc.perform(post("/tablerellos/tableros")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
@@ -98,7 +101,7 @@ class TableroControllerTest {
     void crearTablero_EmailInvalido_Return400BadRequest() throws Exception {
         CrearTableroRequestDTO request = new CrearTableroRequestDTO("Mi Tablero", "");
 
-        mockMvc.perform(post("/api/tableros")
+        mockMvc.perform(post("/tablerellos/tableros")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
@@ -109,7 +112,7 @@ class TableroControllerTest {
     void crearTablero_NombreVacio_Return400BadRequest() throws Exception {
         CrearTableroRequestDTO request = new CrearTableroRequestDTO("", "sega@pds.com");
 
-        mockMvc.perform(post("/api/tableros")
+        mockMvc.perform(post("/tablerellos/tableros")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
@@ -118,9 +121,11 @@ class TableroControllerTest {
 
     @Test // get un tablero que existe y devuelve 200 OK
     void getTablero_Return200OK() throws Exception {
-        when(getTableroUseCase.ejecutar(ID_TABLERO)).thenReturn(tableroMock);
+        String testEmail = "test@pds.com";
+        when(getTableroUseCase.ejecutar(ID_TABLERO, testEmail)).thenReturn(tableroMock);
 
-        mockMvc.perform(get("/api/tableros/" + ID_TABLERO))
+        mockMvc.perform(get("/tablerellos/tableros/" + ID_TABLERO)
+                .param("usuario", testEmail))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(ID_TABLERO))
                 .andExpect(jsonPath("$.estado").value("ACTIVO"));
@@ -128,11 +133,13 @@ class TableroControllerTest {
 
     @Test // get un tablero que no devuelve un 404 NF
     void getTablero_NoExiste_Return404NotFound() throws Exception {
+        String testEmail = "test@pds.com";
         // Simulamos que el UseCase lanza la excepción
-        when(getTableroUseCase.ejecutar("inexistente"))
+        when(getTableroUseCase.ejecutar("inexistente", testEmail))
                 .thenThrow(new TableroNoEncontradoException("inexistente"));
 
-        mockMvc.perform(get("/api/tableros/inexistente"))
+        mockMvc.perform(get("/tablerellos/tableros/inexistente")
+                .param("usuario", testEmail))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.error").value("Not Found")); // Verifica el GlobalExceptionHandler
     }
@@ -141,7 +148,7 @@ class TableroControllerTest {
     void congelarTablero_Return200OK() throws Exception {
         doNothing().when(congelarTableroUseCase).ejecutar(ID_TABLERO);
 
-        mockMvc.perform(put("/api/tableros/" + ID_TABLERO + "/congelar"))
+        mockMvc.perform(put("/tablerellos/tableros/" + ID_TABLERO + "/congelar"))
                 .andExpect(status().isOk());
     }
 
@@ -149,7 +156,7 @@ class TableroControllerTest {
     void descongelarTablero_Return200OK() throws Exception {
         doNothing().when(descongelarTableroUseCase).ejecutar(ID_TABLERO);
 
-        mockMvc.perform(put("/api/tableros/" + ID_TABLERO + "/descongelar"))
+        mockMvc.perform(put("/tablerellos/tableros/" + ID_TABLERO + "/descongelar"))
                 .andExpect(status().isOk());
     }
 
@@ -158,7 +165,7 @@ class TableroControllerTest {
         CompactarTableroRequestDTO request = new CompactarTableroRequestDTO(5);
         doNothing().when(compactarTableroUseCase).ejecutar(anyString(), anyInt());
 
-        mockMvc.perform(post("/api/tableros/" + ID_TABLERO + "/compactar")
+        mockMvc.perform(post("/tablerellos/tableros/" + ID_TABLERO + "/compactar")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk());

@@ -2,7 +2,7 @@ package umu.pds.api.application.usecases;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import umu.pds.dto.SolicitarCodigoCommandDTO;
+
 import umu.pds.api.domain.models.Email;
 import umu.pds.api.domain.models.Usuario;
 import umu.pds.api.domain.ports.in.SolicitarCodigoPort;
@@ -24,8 +24,8 @@ public class SolicitarCodigoUseCaseImpl implements SolicitarCodigoPort {
     }
 
     @Override
-    public void ejecutar(SolicitarCodigoCommandDTO comando) {
-        Email emailVO = new Email(comando.email());
+    public void ejecutar(String email) {
+        Email emailVO = new Email(email);
 
         // se busca el usuario y si no existe se crea
         Usuario usuario = usuarioRepository.buscarPorEmail(emailVO)

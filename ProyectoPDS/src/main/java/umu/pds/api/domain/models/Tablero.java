@@ -46,6 +46,8 @@ public class Tablero {
 	private final String emailCreador;					//email del usuario que crea el tablero (obligatorio)
 	private String url;									//url para acceder al tablero y/O compartirla xra que accendasn
 	private final List<Etiqueta> etiquetas;				//catálogo de etiquetas del tablero
+	private final java.util.Map<String, Rol> miembros;	//mapa de emails y roles de los miembros del tablero
+	private final java.util.Map<String, Rol> invitaciones; // mapa de invitaciones pendientes
 	
 	
 	//---------------------------------BUIDER---------------------------------
@@ -68,10 +70,13 @@ public class Tablero {
         this.emailCreador = email;
         this.url = PREFIJO_URL + id.toString() ;
         this.etiquetas = new ArrayList<>();
+        this.miembros = new java.util.HashMap<>();
+        this.miembros.put(email.toLowerCase(), Rol.PROPIETARIO);
+        this.invitaciones = new java.util.HashMap<>();
     }
 	
 	// para la capa JPA como el resto
-    public static Tablero reconstituir(TableroId id, String nombre, String emailCreador, EstadoTablero estado, String url, List<ListaTareas> listas, List<TrazaAccion> historial, List<Etiqueta> etiquetas) {
+    public static Tablero reconstituir(TableroId id, String nombre, String emailCreador, EstadoTablero estado, String url, List<ListaTareas> listas, List<TrazaAccion> historial, List<Etiqueta> etiquetas, java.util.Map<String, Rol> miembros, java.util.Map<String, Rol> invitaciones) {
         Tablero tablero = new Tablero(id, nombre, emailCreador);
         
         tablero.estado = estado;
@@ -87,6 +92,23 @@ public class Tablero {
             tablero.etiquetas.clear();
             tablero.etiquetas.addAll(etiquetas);
         }
+
+        if (miembros != null) {
+            tablero.miembros.clear();
+            // Asegurarnos de que todos los emails de miembros sean lowercase
+            miembros.forEach((k, v) -> tablero.miembros.put(k.toLowerCase(), v));
+        }
+        
+        if (invitaciones != null) {
+            tablero.invitaciones.clear();
+            // Asegurarnos de que todos los emails de invitaciones sean lowercase
+            invitaciones.forEach((k, v) -> tablero.invitaciones.put(k.toLowerCase(), v));
+        }
+
+        // Asegurar que el creador esté y tenga rol propietario si no viene
+        if (emailCreador != null && !tablero.miembros.containsKey(emailCreador.toLowerCase())) {
+            tablero.miembros.put(emailCreador.toLowerCase(), Rol.PROPIETARIO);
+        }
         
         return tablero;
     }
@@ -97,16 +119,37 @@ public class Tablero {
 	public String getNombre() {return nombre;}
 	//para que la lista no sea modificable y no haya adds (por si se necesita)
 	public List<ListaTareas> getListas() {return Collections.unmodifiableList(this.listas);}
-	public ListaTareas getListaCompletadas() {return listaCompletadas;}
-	public ListaTareas getListaArchivadas() {return listaArchivadas;}
 	public List<TrazaAccion> getHistorial() {return Collections.unmodifiableList(this.historial);}
 	public String getEmailCreador() {return emailCreador;}
 	public String getUrl() {return url;}
-	public static String getPrefijoUrl() {return PREFIJO_URL;}
 	public List<Etiqueta> getEtiquetas() {return Collections.unmodifiableList(this.etiquetas);}
+	public java.util.Map<String, Rol> getMiembros() {return Collections.unmodifiableMap(this.miembros);}
+	public java.util.Map<String, Rol> getInvitaciones() {return Collections.unmodifiableMap(this.invitaciones);}
 	
 	
 	//---------------------------------OPERACIONES DEL TABLERO---------------------------------
+	
+	//añadir miembro al tablero con un rol
+	public void addMiembro(String email, Rol rol) {
+	    if (email == null || email.trim().isEmpty()) return;
+	    this.miembros.put(email.toLowerCase(), rol);
+	}
+
+
+	
+	public void invitarMiembro(String email, Rol rol) {
+	    if (email == null || email.trim().isEmpty()) return;
+	    this.invitaciones.put(email.toLowerCase(), rol);
+	}
+
+	// aceptar invitacion: se mueve de invitaciones a miembros
+	public void aceptarInvitacion(String email) {
+	    String normalizedEmail = email.toLowerCase();
+	    if (this.invitaciones.containsKey(normalizedEmail)) {
+	        Rol rol = this.invitaciones.remove(normalizedEmail);
+	        this.miembros.put(normalizedEmail, rol);
+	    }
+	}
 	
 	//añadir lista al tablero
 	public void addLista(ListaTareas nuevaLista) {

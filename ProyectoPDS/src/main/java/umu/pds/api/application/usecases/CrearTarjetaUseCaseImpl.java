@@ -1,7 +1,7 @@
 package umu.pds.api.application.usecases;
 
 import org.springframework.stereotype.Service;
-import umu.pds.dto.CrearTarjetaCommandDTO;
+import umu.pds.api.domain.models.TipoTarjeta;
 import umu.pds.api.domain.models.Tarea;
 import umu.pds.api.domain.models.Tarjeta;
 import umu.pds.api.domain.models.TarjetaChecklist;
@@ -23,16 +23,17 @@ public class CrearTarjetaUseCaseImpl implements CrearTarjetaPort {
     }
 
     @Override
-    public Tarjeta ejecutar(CrearTarjetaCommandDTO command) {
-        Tarjeta nuevaTarjeta = switch (command.tipo()) {
+    public Tarjeta ejecutar(String tableroId, String listaId, String titulo, String descripcion, String tipo, String contenido) {
+        TipoTarjeta tipoEnum = TipoTarjeta.valueOf(tipo);
+        Tarjeta nuevaTarjeta = switch (tipoEnum) {
             case TAREA -> new TarjetaTarea(
-                    command.titulo(),
-                    command.descripcion(),
-                    new Tarea("Nueva tarea sin contenido") // Estado de inicio predeterminado
+                    titulo,
+                    descripcion,
+                    new Tarea(contenido != null ? contenido : "Nueva tarea sin contenido") // Usamos el contenido proporcionado
             );
             case CHECKLIST -> new TarjetaChecklist(
-                    command.titulo(),
-                    command.descripcion()
+                    titulo,
+                    descripcion
             );
         };
 

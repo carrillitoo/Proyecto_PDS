@@ -1,7 +1,7 @@
 package umu.pds.api.application.usecases;
 
 import org.springframework.stereotype.Service;
-import umu.pds.dto.UsuarioResponseDTO;
+import umu.pds.api.domain.models.Usuario;
 import umu.pds.api.domain.ports.in.ListarUsuariosPort;
 import umu.pds.api.domain.ports.out.UsuarioRepositoryPort;
 import java.util.List;
@@ -16,9 +16,7 @@ public class ListarUsuariosUseCaseImpl implements ListarUsuariosPort {
     }
 
     @Override
-    public List<UsuarioResponseDTO> ejecutar() {
-        return usuarioRepository.buscarTodos().stream()
-                .map(u -> new UsuarioResponseDTO(u.getEmail().getDireccion(), u.getNombre(), u.getUrlFoto()))
-                .toList();
+    public List<Usuario> ejecutar() {
+        return usuarioRepository.buscarTodos();
     }
 }

@@ -7,12 +7,8 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Text?>
 
 <BorderPane styleClass="modal-container" stylesheets="@Styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="umu.pds.gui.controllers.TaskDetailController">
@@ -31,87 +27,45 @@
    <center>
       <ScrollPane fitToWidth="true" styleClass="scroll-pane">
          <content>
-            <GridPane hgap="30.0">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="70.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="30.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-              </rowConstraints>
+            <VBox spacing="30.0">
                <children>
                   
-                  <VBox spacing="30.0">
+                  <VBox spacing="5.0">
                      <children>
-                        <VBox spacing="5.0">
-                           <children>
-                              <TextField fx:id="titleField" style="-fx-background-color: transparent; -fx-font-size: 26px; -fx-font-weight: bold; -fx-padding: 0;" text="Refactor Navigation Shell" />
-                              <Text style="-fx-fill: #404751; -fx-font-size: 13px;" text="en la lista In Progress" />
-                           </children>
-                        </VBox>
+                        <TextField fx:id="titleField" editable="false" style="-fx-background-color: transparent; -fx-font-size: 26px; -fx-font-weight: bold; -fx-padding: 0;" text="Refactor Navigation Shell" />
+                        <Text fx:id="listNameText" style="-fx-fill: #404751; -fx-font-size: 13px;" text="en la lista In Progress" />
+                     </children>
+                  </VBox>
 
-                        <HBox spacing="40.0">
+                  <VBox spacing="10.0">
+                     <children>
+                        <Label styleClass="input-label" text="ETIQUETAS" />
+                        <HBox fx:id="labelsBox" spacing="5.0">
                            <children>
-                              <VBox spacing="10.0">
-                                 <children>
-                                    <Label styleClass="input-label" text="MIEMBROS" />
-                                    <HBox spacing="5.0">
-                                       <children>
-                                          <Circle fill="#cfe5ff" radius="15.0" />
-                                          <Circle fill="#86db6c" radius="15.0" />
-                                          <Button style="-fx-background-radius: 20; -fx-font-size: 10px;" text="ADD" />
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
-                              <VBox spacing="10.0">
-                                 <children>
-                                    <Label styleClass="input-label" text="ETIQUETAS" />
-                                    <HBox spacing="5.0">
-                                       <children>
-                                          <Label style="-fx-background-color: #0079bf;" styleClass="badge-label" text="Engineering" />
-                                          <Label style="-fx-background-color: #156a03;" styleClass="badge-label" text="High Priority" />
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
                            </children>
                         </HBox>
-
-                        <VBox spacing="15.0">
-                           <children>
-                              <Text style="-fx-font-weight: bold; -fx-font-size: 18px;" text="Descripción" />
-                              <TextArea fx:id="descriptionArea" prefHeight="120.0" promptText="Añade una descripción más detallada..." styleClass="description-area" wrapText="true" />
-                           </children>
-                        </VBox>
                      </children>
                   </VBox>
 
-                  <VBox spacing="20.0" GridPane.columnIndex="1">
+                  <VBox spacing="15.0">
                      <children>
-                        <VBox spacing="8.0">
-                           <children>
-                              <Label styleClass="input-label" text="AÑADIR A LA TARJETA" />
-                              <Button maxWidth="Infinity" styleClass="action-button" text="Miembros" />
-                              <Button maxWidth="Infinity" styleClass="action-button" text="Etiquetas" onAction="#handleOpenLabels" />
-                              <Button maxWidth="Infinity" styleClass="action-button" text="Checklist" />
-                              <Button maxWidth="Infinity" styleClass="action-button" text="Fechas" />
-                              <Button maxWidth="Infinity" styleClass="action-button" text="Adjuntos" />
-                           </children>
+                        <Text style="-fx-font-weight: bold; -fx-font-size: 18px;" text="Descripción" />
+                        <TextArea fx:id="descriptionArea" editable="false" prefHeight="120.0" promptText="Añade una descripción más detallada..." styleClass="description-area" wrapText="true" />
+                        
+                        <VBox fx:id="contentContainer" spacing="10.0">
+                           <!-- Aquí irá el texto de la tarea o la lista de checklist -->
                         </VBox>
-                        <VBox spacing="8.0">
+
+                        <HBox alignment="CENTER_RIGHT">
                            <children>
-                              <Label styleClass="input-label" text="ACCIONES" />
-                              <Button maxWidth="Infinity" styleClass="action-button" text="Mover" />
-                              <Button maxWidth="Infinity" styleClass="action-button" text="Copiar" />
-                              <Button maxWidth="Infinity" styleClass="action-button" text="Archivar" />
-                              <Button maxWidth="Infinity" style="-fx-text-fill: #ba1a1a;" styleClass="action-button" text="Eliminar" />
+                              <Button fx:id="deleteBtn" onAction="#handleDelete" style="-fx-text-fill: #ba1a1a; -fx-background-color: #fce8e8; -fx-font-weight: bold; -fx-padding: 8 20;" styleClass="action-button" text="Eliminar" />
                            </children>
-                        </VBox>
+                        </HBox>
                      </children>
                   </VBox>
+
                </children>
-            </GridPane>
+            </VBox>
          </content>
          <padding>
             <Insets bottom="30.0" left="30.0" right="30.0" top="10.0" />
@@ -122,7 +76,7 @@
    <bottom>
       <HBox style="-fx-background-color: #e6e8eb; -fx-padding: 10 30;">
          <children>
-            <Text style="-fx-font-size: 10px; -fx-font-weight: bold; -fx-fill: #707882;" text="CREADO EL 24 DE OCTUBRE, 2023" />
+            <Text fx:id="createdDateText" style="-fx-font-size: 10px; -fx-font-weight: bold; -fx-fill: #707882;" text="CREADO EL 24 DE OCTUBRE, 2023" />
          </children>
       </HBox>
    </bottom>

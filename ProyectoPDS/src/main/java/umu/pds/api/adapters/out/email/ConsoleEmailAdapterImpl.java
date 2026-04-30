@@ -13,7 +13,7 @@ public class ConsoleEmailAdapterImpl implements EmailPort {
         System.out.println("\n------------------------------------------------");
         System.out.println("[SIMULADOR DE EMAIL]");
         System.out.println("PARA: " + destino.getDireccion());
-        System.out.println("ASUNTO: Tu código de acceso a Trello PDS");
+        System.out.println("ASUNTO: Tu código de acceso a Tablerellos");
         System.out.println("MENSAJE: Tu código de seguridad es: " + codigo);
         System.out.println("------------------------------------------------\n");
     }

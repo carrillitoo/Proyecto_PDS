@@ -16,8 +16,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import umu.pds.api.domain.models.Email;
 import umu.pds.api.domain.models.Usuario;
 import umu.pds.api.domain.ports.out.UsuarioRepositoryPort;
-import umu.pds.dto.ValidarCodigoCommandDTO;
-
 @ExtendWith(MockitoExtension.class)
 public class ValidarCodigoUseCaseImplTest {
 
@@ -30,23 +28,25 @@ public class ValidarCodigoUseCaseImplTest {
     @Test
     void deberiaValidarCodigoCorrectamente() {
         Usuario mockUsuario = mock(Usuario.class);
-        ValidarCodigoCommandDTO cmd = new ValidarCodigoCommandDTO("test@email.com", "123456");
+        String email = "test@email.com";
+        String codigo = "123456";
         when(usuarioRepository.buscarPorEmail(any(Email.class))).thenReturn(Optional.of(mockUsuario));
-        when(mockUsuario.esCodigoValido("123456")).thenReturn(true);
+        when(mockUsuario.esCodigoValido(codigo)).thenReturn(true);
 
-        boolean result = useCase.ejecutar(cmd);
+        boolean result = useCase.ejecutar(email, codigo);
 
         assertTrue(result);
         verify(usuarioRepository).buscarPorEmail(any(Email.class));
-        verify(mockUsuario).esCodigoValido("123456");
+        verify(mockUsuario).esCodigoValido(codigo);
     }
 
     @Test
     void deberiaRetornarFalsoSiUsuarioNoExiste() {
-        ValidarCodigoCommandDTO cmd = new ValidarCodigoCommandDTO("test@email.com", "123456");
+        String email = "test@email.com";
+        String codigo = "123456";
         when(usuarioRepository.buscarPorEmail(any(Email.class))).thenReturn(Optional.empty());
 
-        boolean result = useCase.ejecutar(cmd);
+        boolean result = useCase.ejecutar(email, codigo);
 
         assertFalse(result);
     }

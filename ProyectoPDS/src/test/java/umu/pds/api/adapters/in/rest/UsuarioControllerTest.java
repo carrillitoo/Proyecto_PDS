@@ -1,6 +1,6 @@
 package umu.pds.api.adapters.in.rest;
 
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -17,8 +17,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import umu.pds.api.domain.ports.in.SolicitarCodigoPort;
 import umu.pds.api.domain.ports.in.ValidarCodigoPort;
-import umu.pds.dto.SolicitarCodigoCommandDTO;
-import umu.pds.dto.ValidarCodigoCommandDTO;
+import umu.pds.api.adapters.dto.SolicitarCodigoCommandDTO;
+import umu.pds.api.adapters.dto.ValidarCodigoCommandDTO;
 import umu.pds.api.domain.ports.in.ObtenerUsuarioPort;
 import umu.pds.api.domain.ports.in.ActualizarUsuarioPort;
 import umu.pds.api.domain.ports.in.SubirFotoPerfilPort;
@@ -55,7 +55,7 @@ public class UsuarioControllerTest {
     void solicitarCodigo_DeberiaRetornar200() throws Exception {
         SolicitarCodigoCommandDTO cmd = new SolicitarCodigoCommandDTO("test@email.com");
 
-        mockMvc.perform(post("/api/usuarios/login/solicitar")
+        mockMvc.perform(post("/tablerellos/usuarios/login/solicitar")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(cmd)))
                 .andExpect(status().isOk());
@@ -64,10 +64,10 @@ public class UsuarioControllerTest {
     @Test
     void validarCodigo_DeberiaRetornar200_CuandoEsValido() throws Exception {
         ValidarCodigoCommandDTO cmd = new ValidarCodigoCommandDTO("test@email.com", "123456");
-        
-        when(validarCodigoPort.ejecutar(any(ValidarCodigoCommandDTO.class))).thenReturn(true);
 
-        mockMvc.perform(post("/api/usuarios/login/validar")
+        when(validarCodigoPort.ejecutar(anyString(), anyString())).thenReturn(true);
+
+        mockMvc.perform(post("/tablerellos/usuarios/login/validar")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(cmd)))
                 .andExpect(status().isOk())
@@ -77,10 +77,10 @@ public class UsuarioControllerTest {
     @Test
     void validarCodigo_DeberiaRetornar401_CuandoEsInvalido() throws Exception {
         ValidarCodigoCommandDTO cmd = new ValidarCodigoCommandDTO("test@email.com", "wrong");
-        
-        when(validarCodigoPort.ejecutar(any(ValidarCodigoCommandDTO.class))).thenReturn(false);
 
-        mockMvc.perform(post("/api/usuarios/login/validar")
+        when(validarCodigoPort.ejecutar(anyString(), anyString())).thenReturn(false);
+
+        mockMvc.perform(post("/tablerellos/usuarios/login/validar")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(cmd)))
                 .andExpect(status().isUnauthorized())

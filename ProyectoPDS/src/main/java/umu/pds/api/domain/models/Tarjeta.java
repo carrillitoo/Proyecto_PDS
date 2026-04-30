@@ -64,6 +64,8 @@ public abstract class Tarjeta{
         }
     }
 
+    public abstract TipoTarjeta getTipo();
+
     // GETTERS
     
     public UUID getId() { return id; }

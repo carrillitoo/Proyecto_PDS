@@ -1,10 +1,8 @@
 package umu.pds.api.application.usecases;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import umu.pds.dto.AnadirEtiquetaCommandDTO;
 import umu.pds.api.domain.exceptions.TarjetaNoEncontradaException;
 import umu.pds.api.domain.models.Tarea;
 import umu.pds.api.domain.models.Tarjeta;
@@ -31,22 +29,21 @@ class AnadirEtiquetaUseCaseTest {
 
     @Test // Añade una etiqueta a una tarjeta ya existente y guardarla
     void anadirEtiquetaExito() {
-    	
+
         UUID id = UUID.randomUUID();
- 
-        AnadirEtiquetaCommandDTO command = new AnadirEtiquetaCommandDTO(id, "Urgente", "#FF0000");
+
         Tarjeta tarjetaEnBd = new TarjetaTarea("Titulo", "Desc", new Tarea("Hacer algo"));
-        
+
         // Simulamos que el repositorio encuentra la tarjeta
         when(tarjetaRepositoryMock.buscarPorId(any())).thenReturn(Optional.of(tarjetaEnBd));
         // Simulamos el guardado devolviendo la misma tarjeta
         when(tarjetaRepositoryMock.guardar(any(Tarjeta.class))).thenAnswer(i -> i.getArgument(0));
 
-        Tarjeta tarjetaActualizada = anadirEtiquetaUseCase.ejecutar(command);
+        Tarjeta tarjetaActualizada = anadirEtiquetaUseCase.ejecutar(id, "Urgente", "#FF0000");
 
         assertEquals(1, tarjetaActualizada.getEtiquetas().size());
         assertTrue(tarjetaActualizada.getEtiquetas().stream().anyMatch(e -> e.nombre().equals("Urgente")));
-        
+
         // Se verifica que se llama a buscar y luego a guardar
         verify(tarjetaRepositoryMock, times(1)).buscarPorId(any());
         verify(tarjetaRepositoryMock, times(1)).guardar(tarjetaEnBd);
@@ -56,13 +53,12 @@ class AnadirEtiquetaUseCaseTest {
     void lanzarExcepcionSiTarjetaNoExiste() {
 
         UUID id = UUID.randomUUID();
-        AnadirEtiquetaCommandDTO command = new AnadirEtiquetaCommandDTO(id, "Urgente", "#FF0000");
-        
         // Simulamos que el repositorio no encuentra nada
         when(tarjetaRepositoryMock.buscarPorId(any())).thenReturn(Optional.empty());
 
-        assertThrows(TarjetaNoEncontradaException.class, () -> anadirEtiquetaUseCase.ejecutar(command));
-        
+        assertThrows(TarjetaNoEncontradaException.class,
+                () -> anadirEtiquetaUseCase.ejecutar(id, "Urgente", "#FF0000"));
+
         // Se verifica que nunca se llegó a llamar a guardar
         verify(tarjetaRepositoryMock, never()).guardar(any());
     }

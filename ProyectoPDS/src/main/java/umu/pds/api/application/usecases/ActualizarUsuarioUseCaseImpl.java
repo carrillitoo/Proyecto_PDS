@@ -1,8 +1,7 @@
 package umu.pds.api.application.usecases;
 
 import org.springframework.stereotype.Service;
-import umu.pds.dto.ActualizarUsuarioRequestDTO;
-import umu.pds.dto.UsuarioResponseDTO;
+
 import umu.pds.api.domain.models.Email;
 import umu.pds.api.domain.models.Usuario;
 import umu.pds.api.domain.ports.in.ActualizarUsuarioPort;
@@ -18,21 +17,20 @@ public class ActualizarUsuarioUseCaseImpl implements ActualizarUsuarioPort {
     }
 
     @Override
-    public UsuarioResponseDTO ejecutar(String emailStr, ActualizarUsuarioRequestDTO command) {
+    public Usuario ejecutar(String emailStr, String nombre, String urlFoto) {
         Email email = new Email(emailStr);
         Usuario usuario = usuarioRepository.buscarPorEmail(email)
             .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-            
-        if (command.nombre() != null && !command.nombre().trim().isEmpty()) {
-            usuario.setNombre(command.nombre());
+             
+        if (nombre != null && !nombre.trim().isEmpty()) {
+            usuario.setNombre(nombre);
         }
-        
+ 
+        if (urlFoto != null && !urlFoto.trim().isEmpty()) {
+            usuario.setUrlFoto(urlFoto);
+        }
+         
         usuarioRepository.guardar(usuario);
-            
-        return new UsuarioResponseDTO(
-            usuario.getEmail().getDireccion(),
-            usuario.getNombre(),
-            usuario.getUrlFoto()
-        );
+        return usuario;
     }
 }

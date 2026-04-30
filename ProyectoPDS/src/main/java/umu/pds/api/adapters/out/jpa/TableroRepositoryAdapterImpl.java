@@ -25,11 +25,46 @@ public class TableroRepositoryAdapterImpl implements TableroRepositoryPort {
 
     @Override
     public void guardar(Tablero tablero) {
+        Optional<TableroEntity> existingEntity = jpaRepository.findById(tablero.getId().valor());
 
-        // cogemos el objeto y lo pasamos a entidad de db
-        TableroEntity entity = mapper.toEntity(tablero);
+        if (existingEntity.isPresent()) {
+            TableroEntity entity = existingEntity.get();
+            
+            entity.setNombre(tablero.getNombre());
+            entity.setEmailCreador(tablero.getEmailCreador());
+            entity.setEstado(tablero.getEstado());
+            entity.setUrl(tablero.getUrl());
 
-        jpaRepository.save(entity);
+            // Sincronizar colecciones sin romper referencias
+            List<umu.pds.api.adapters.out.jpa.entity.ListaTareasEntity> nuevasListas = tablero.getListas().stream()
+                    .map(mapper::toEntity)
+                    .toList();
+            entity.getListas().clear();
+            entity.getListas().addAll(nuevasListas);
+
+            List<umu.pds.api.adapters.out.jpa.entity.TrazaAccionEntity> nuevoHistorial = tablero.getHistorial().stream()
+                    .map(mapper::toEntity)
+                    .toList();
+            entity.getHistorial().clear();
+            entity.getHistorial().addAll(nuevoHistorial);
+
+            List<umu.pds.api.adapters.out.jpa.entity.EtiquetaEmbeddable> nuevasEtiquetas = tablero.getEtiquetas().stream()
+                    .map(e -> new umu.pds.api.adapters.out.jpa.entity.EtiquetaEmbeddable(e.nombre(), e.color().hexCode()))
+                    .toList();
+            entity.getEtiquetas().clear();
+            entity.getEtiquetas().addAll(nuevasEtiquetas);
+
+            entity.getMiembros().clear();
+            entity.getMiembros().putAll(tablero.getMiembros());
+
+            entity.getInvitaciones().clear();
+            entity.getInvitaciones().putAll(tablero.getInvitaciones());
+
+            jpaRepository.save(entity);
+        } else {
+            TableroEntity entity = mapper.toEntity(tablero);
+            jpaRepository.save(entity);
+        }
     }
 
     @Override
@@ -50,6 +85,13 @@ public class TableroRepositoryAdapterImpl implements TableroRepositoryPort {
     @Override
     public List<Tablero> buscarPorEmailCreador(String email) {
         return jpaRepository.findByEmailCreador(email).stream()
+                .map(mapper::toDomain)
+                .toList();
+    }
+
+    @Override
+    public List<Tablero> buscarPorEmailUsuario(String email) {
+        return jpaRepository.findByEmailCreadorOrMiembroEmail(email).stream()
                 .map(mapper::toDomain)
                 .toList();
     }

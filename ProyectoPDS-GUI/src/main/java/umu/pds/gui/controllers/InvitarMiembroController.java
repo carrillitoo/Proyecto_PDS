@@ -32,8 +32,8 @@ public class InvitarMiembroController {
         tableroService = new TableroService();
         usuarioService = new UsuarioService();
         
-        rolCombo.setItems(FXCollections.observableArrayList("LECTURA", "EDICION"));
-        rolCombo.setValue("LECTURA");
+        rolCombo.setItems(FXCollections.observableArrayList("LECTOR", "ESCRITOR"));
+        rolCombo.setValue("LECTOR");
 
         loadUsers();
 
@@ -87,7 +87,8 @@ public class InvitarMiembroController {
             boolean ok = tableroService.shareBoard(boardId, email, rol);
             if (ok) {
                 // Obtener url
-                umu.pds.dto.TableroResponseDTO tablero = tableroService.getTableroById(boardId);
+                String userEmail = GlobalState.getInstance().getUserEmail();
+                umu.pds.dto.TableroResponseDTO tablero = tableroService.getTableroById(boardId, userEmail);
                 
                 linkContainer.setVisible(true);
                 linkContainer.setManaged(true);

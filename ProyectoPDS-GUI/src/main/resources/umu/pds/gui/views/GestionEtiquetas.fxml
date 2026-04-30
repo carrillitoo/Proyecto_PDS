@@ -38,6 +38,17 @@
 
          <Separator />
 
+         <!-- Etiquetas disponibles -->
+         <VBox spacing="8.0">
+            <children>
+               <Label styleClass="input-label" text="ETIQUETAS DEL TABLERO" />
+               <FlowPane fx:id="etiquetasDisponiblesContainer" hgap="8.0" vgap="8.0" />
+               <Label fx:id="emptyDisponiblesLabel" style="-fx-text-fill: #aaa; -fx-font-style: italic;" text="No hay etiquetas adicionales en el tablero" />
+            </children>
+         </VBox>
+
+         <Separator />
+
          <!-- Añadir nueva -->
          <VBox spacing="10.0">
             <children>

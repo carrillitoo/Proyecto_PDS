@@ -11,7 +11,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-
+import umu.pds.dto.TarjetaResponseDTO;
 import umu.pds.gui.services.GlobalState;
 import umu.pds.gui.services.api.TarjetaService;
 
@@ -74,23 +74,29 @@ public class CreateCardController {
         String listId = GlobalState.getInstance().getCurrentListId();
 
         try {
-            String contenido = "TAREA".equals(tipo) ? contenidoTareaArea.getText() : "{}";
+            String contenido = "";
+            String tipoApi = "TAREA";
 
-            if ("Checklist".equals(tipo)) {
-                // Formatting checklist items basic approach
+            if ("Tarea".equals(tipo)) {
+                contenido = contenidoTareaArea.getText();
+                tipoApi = "TAREA";
+            } else if ("Checklist".equals(tipo)) {
+                tipoApi = "CHECKLIST";
                 List<String> items = new ArrayList<>();
                 for (Node node : checklistItemsContainer.getChildren()) {
                     if (node instanceof TextField) {
                         String text = ((TextField) node).getText();
-                        if (!text.trim().isEmpty())
+                        if (text != null && !text.trim().isEmpty())
                             items.add(text);
                     }
                 }
                 contenido = String.join("||", items);
             }
 
-            boolean exito = tarjetaService.createCard(boardId, listId, titulo, descripcion, tipo.toUpperCase(), contenido);
-            if (!exito) {
+            TarjetaService tarjetaService = new TarjetaService();
+            TarjetaResponseDTO card = tarjetaService.createCard(boardId, listId, titulo, descripcion, tipoApi, contenido);
+            
+            if (card == null) {
                 showAlert("Error API", "La API falló al crear la tarjeta");
                 return;
             }

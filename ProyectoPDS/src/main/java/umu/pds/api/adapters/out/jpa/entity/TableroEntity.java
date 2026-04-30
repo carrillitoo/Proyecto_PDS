@@ -52,6 +52,20 @@ public class TableroEntity {
     @jakarta.persistence.CollectionTable(name = "tablero_etiquetas", joinColumns = @JoinColumn(name = "tablero_id"))
     private List<EtiquetaEmbeddable> etiquetas = new ArrayList<>();
     
+    @jakarta.persistence.ElementCollection(fetch = FetchType.EAGER)
+    @jakarta.persistence.CollectionTable(name = "tablero_miembros", joinColumns = @JoinColumn(name = "tablero_id"))
+    @jakarta.persistence.MapKeyColumn(name = "email")
+    @Column(name = "rol")
+    @Enumerated(EnumType.STRING)
+    private java.util.Map<String, umu.pds.api.domain.models.Rol> miembros = new java.util.HashMap<>();
+
+    @jakarta.persistence.ElementCollection(fetch = FetchType.EAGER)
+    @jakarta.persistence.CollectionTable(name = "tablero_invitaciones", joinColumns = @JoinColumn(name = "tablero_id"))
+    @jakarta.persistence.MapKeyColumn(name = "email")
+    @Column(name = "rol")
+    @Enumerated(EnumType.STRING)
+    private java.util.Map<String, umu.pds.api.domain.models.Rol> invitaciones = new java.util.HashMap<>();
+    
 
     //---------------------------BUILDERS---------------------------
     protected TableroEntity() {}
@@ -82,11 +96,42 @@ public class TableroEntity {
     public void setUrl(String url) { this.url = url; }
     
     public List<ListaTareasEntity> getListas() { return listas; }
-    public void setListas(List<ListaTareasEntity> listas) { this.listas = listas; }
+    public void setListas(List<ListaTareasEntity> nuevasListas) {
+        this.listas.clear();
+        if (nuevasListas != null) {
+            this.listas.addAll(nuevasListas);
+        }
+    }
     
     public List<TrazaAccionEntity> getHistorial() { return historial; }
-    public void setHistorial(List<TrazaAccionEntity> historial) { this.historial = historial; }
+    public void setHistorial(List<TrazaAccionEntity> nuevoHistorial) {
+        this.historial.clear();
+        if (nuevoHistorial != null) {
+            this.historial.addAll(nuevoHistorial);
+        }
+    }
 
     public List<EtiquetaEmbeddable> getEtiquetas() { return etiquetas; }
-    public void setEtiquetas(List<EtiquetaEmbeddable> etiquetas) { this.etiquetas = etiquetas; }
+    public void setEtiquetas(List<EtiquetaEmbeddable> nuevasEtiquetas) {
+        this.etiquetas.clear();
+        if (nuevasEtiquetas != null) {
+            this.etiquetas.addAll(nuevasEtiquetas);
+        }
+    }
+
+    public java.util.Map<String, umu.pds.api.domain.models.Rol> getMiembros() { return miembros; }
+    public void setMiembros(java.util.Map<String, umu.pds.api.domain.models.Rol> nuevosMiembros) {
+        this.miembros.clear();
+        if (nuevosMiembros != null) {
+            this.miembros.putAll(nuevosMiembros);
+        }
+    }
+
+    public java.util.Map<String, umu.pds.api.domain.models.Rol> getInvitaciones() { return invitaciones; }
+    public void setInvitaciones(java.util.Map<String, umu.pds.api.domain.models.Rol> nuevasInvitaciones) {
+        this.invitaciones.clear();
+        if (nuevasInvitaciones != null) {
+            this.invitaciones.putAll(nuevasInvitaciones);
+        }
+    }
 }

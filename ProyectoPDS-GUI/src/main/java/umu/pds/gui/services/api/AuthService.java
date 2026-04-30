@@ -10,7 +10,7 @@ import umu.pds.dto.SolicitarCodigoCommandDTO;
 import umu.pds.dto.ValidarCodigoCommandDTO;
 
 public class AuthService {
-    private final String BASE_URL = "http://localhost:8080/api/usuarios";
+    private final String BASE_URL = "http://localhost:8080/tablerellos/usuarios";
     private final HttpClient client;
     private final ObjectMapper objectMapper;
 
@@ -18,7 +18,7 @@ public class AuthService {
         this.client = HttpClient.newBuilder()
                 .connectTimeout(Duration.ofSeconds(5))
                 .build();
-        this.objectMapper = new ObjectMapper();
+        this.objectMapper = new ObjectMapper().findAndRegisterModules();
     }
 
     public boolean solicitarCodigo(String email) throws Exception {

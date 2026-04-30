@@ -1,4 +1,6 @@
-package umu.pds.dto;
+package umu.pds.api.adapters.dto;
+ 
+ import umu.pds.api.domain.models.TipoTarjeta;
 
 
 // Recoge los datos necesarios para crear una tarjeta.
@@ -8,10 +10,7 @@ public record CrearTarjetaCommandDTO(
         String descripcion,
         TipoTarjeta tipo
 ) {
-    public enum TipoTarjeta {
-        TAREA,
-        CHECKLIST
-    }
+
 
     public CrearTarjetaCommandDTO {
         if (titulo == null || titulo.trim().isEmpty()) {

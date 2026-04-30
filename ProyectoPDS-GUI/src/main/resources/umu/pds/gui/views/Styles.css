@@ -3,6 +3,7 @@
     -fx-background-color: #f8f9fc;
     -fx-font-family: "Inter", "Segoe UI", "Helvetica Neue", sans-serif;
     -fx-accent: #0079bf;
+    -fx-font-size: 16px;
 }
 
 /* --- branding y logo --- */
@@ -165,8 +166,8 @@
 
 .board-card {
     -fx-background-radius: 8;
-    -fx-min-height: 120;
-    -fx-min-width: 200;
+    -fx-min-height: 150;
+    -fx-min-width: 260;
     -fx-padding: 15;
     -fx-cursor: hand;
     -fx-background-color: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%), #0079bf;
@@ -299,9 +300,9 @@
 .list-column {
     -fx-background-color: #ebedf0; /* Color estándar de lista Trello */
     -fx-background-radius: 8;
-    -fx-pref-width: 280;
-    -fx-max-width: 280;
-    -fx-padding: 10;
+    -fx-pref-width: 320;
+    -fx-max-width: 320;
+    -fx-padding: 12;
 }
 
 .list-header-text {
@@ -795,3 +796,51 @@
 	    -fx-stroke: white;
 	    -fx-stroke-width: 2;
 	}
+
+/* --- Badges de Roles --- */
+.role-badge {
+    -fx-padding: 4 12;
+    -fx-background-radius: 12;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 11px;
+}
+.role-admin { -fx-background-color: #ba1a1a; }
+.role-escritor { -fx-background-color: #0079bf; }
+.role-lector { -fx-background-color: #707882; }
+
+/* --- Boton añadir etiqueta en tarjeta --- */
+.add-label-btn {
+    -fx-background-color: #ebedf0;
+    -fx-text-fill: #707882;
+    -fx-font-weight: bold;
+    -fx-font-size: 10px;
+    -fx-padding: 0 6;
+    -fx-background-radius: 4;
+    -fx-cursor: hand;
+}
+.add-label-btn:hover {
+    -fx-background-color: #e2e4e9;
+    -fx-text-fill: #172b4d;
+}
+
+.add-label-badge {
+    -fx-background-color: #ebedf0;
+    -fx-text-fill: #707882;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding: 4 12;
+    -fx-background-radius: 20;
+    -fx-cursor: hand;
+}
+
+.add-label-badge:hover {
+    -fx-background-color: #e2e4e9;
+    -fx-text-fill: #172b4d;
+}
+
+.card-label-bar {
+    -fx-pref-height: 8;
+    -fx-pref-width: 40;
+    -fx-background-radius: 4;
+}

@@ -149,7 +149,7 @@ public class TableroTest {
         assertFalse(listaToDo.containsTarjeta(tarjeta.getId())); // <-- CAMBIADO
         
         //peeero deberia esta en archivadas
-        assertTrue(tablero.getListaArchivadas().containsTarjeta(tarjeta.getId())); // <-- CAMBIADO
+        assertTrue(tablero.getListas().stream().filter(l -> l.getNombre().equals("Archivadas")).findFirst().get().containsTarjeta(tarjeta.getId())); // <-- CAMBIADO
         
         //checkeamos ya que estamos la traza
         TrazaAccion ultimaTraza = tablero.getHistorial().get(tablero.getHistorial().size() - 1);

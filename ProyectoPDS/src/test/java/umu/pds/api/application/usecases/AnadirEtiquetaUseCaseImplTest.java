@@ -19,7 +19,7 @@ import umu.pds.api.domain.models.Tarjeta;
 import umu.pds.api.domain.models.TarjetaTarea;
 import umu.pds.api.domain.models.Tarea;
 import umu.pds.api.domain.ports.out.TarjetaRepositoryPort;
-import umu.pds.dto.AnadirEtiquetaCommandDTO;
+
 
 import java.time.LocalDateTime;
 
@@ -43,12 +43,11 @@ public class AnadirEtiquetaUseCaseImplTest {
 
     @Test
     void deberiaAnadirEtiquetaGuardarYRetornar() {
-        AnadirEtiquetaCommandDTO cmd = new AnadirEtiquetaCommandDTO(tarjetaId, "Backend", "#0000FF");
         when(tarjetaRepositoryPort.buscarPorId(any())).thenReturn(Optional.of(tarjeta));
         when(tarjetaRepositoryPort.guardar(any(Tarjeta.class))).thenReturn(tarjeta);
-
-        Tarjeta result = useCase.ejecutar(cmd);
-
+ 
+        Tarjeta result = useCase.ejecutar(tarjetaId, "Backend", "#0000FF");
+ 
         assertNotNull(result);
         assertEquals(1, result.getEtiquetas().size());
         assertTrue(result.getEtiquetas().stream()
@@ -58,10 +57,9 @@ public class AnadirEtiquetaUseCaseImplTest {
 
     @Test
     void deberiaLanzarExcepcionSiTarjetaNoExiste() {
-        AnadirEtiquetaCommandDTO cmd = new AnadirEtiquetaCommandDTO(tarjetaId, "Backend", "#0000FF");
         when(tarjetaRepositoryPort.buscarPorId(any())).thenReturn(Optional.empty());
-
-        assertThrows(TarjetaNoEncontradaException.class, () -> useCase.ejecutar(cmd));
+ 
+        assertThrows(TarjetaNoEncontradaException.class, () -> useCase.ejecutar(tarjetaId, "Backend", "#0000FF"));
         verify(tarjetaRepositoryPort, never()).guardar(any());
     }
 }

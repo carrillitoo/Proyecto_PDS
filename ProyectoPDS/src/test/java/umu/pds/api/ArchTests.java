@@ -48,11 +48,18 @@ public class ArchTests {
             .consideringAllDependencies()
             .layer("Domain").definedBy("..domain..")
             .layer("Application").definedBy("..application..")
-            .layer("Adapters").definedBy("..adapters..")
-            .optionalLayer("DTO").definedBy("umu.pds.dto..")
+            .layer("Adapters").definedBy("..adapters.in..", "..adapters.out..")
+            .layer("DTO").definedBy("..adapters.dto..")
             .whereLayer("Domain").mayOnlyBeAccessedByLayers("Application", "Adapters", "DTO")
             .whereLayer("Application").mayOnlyBeAccessedByLayers("Adapters")
-            .whereLayer("Adapters").mayNotBeAccessedByAnyLayer();
+            .whereLayer("Adapters").mayNotBeAccessedByAnyLayer()
+            .whereLayer("DTO").mayOnlyBeAccessedByLayers("Adapters");
+
+    @ArchTest
+    static final ArchRule domain_y_application_no_usan_dto = classes()
+            .that().resideInAnyPackage("..domain..", "..application..")
+            .should().onlyDependOnClassesThat()
+            .resideOutsideOfPackage("..adapters.dto..");
 
     @ArchTest
     static final ArchRule rest_controllers_en_adaptadores = classes()

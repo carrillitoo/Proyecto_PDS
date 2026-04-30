@@ -1,6 +1,5 @@
 package umu.pds.api.models;
 
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import umu.pds.api.domain.models.Tarea;

@@ -1,8 +1,7 @@
 package umu.pds.api.domain.ports.in;
 
-import umu.pds.dto.ActualizarUsuarioRequestDTO;
-import umu.pds.dto.UsuarioResponseDTO;
+import umu.pds.api.domain.models.Usuario;
 
 public interface ActualizarUsuarioPort {
-    UsuarioResponseDTO ejecutar(String email, ActualizarUsuarioRequestDTO command);
+    Usuario ejecutar(String email, String nombre, String urlFoto);
 }

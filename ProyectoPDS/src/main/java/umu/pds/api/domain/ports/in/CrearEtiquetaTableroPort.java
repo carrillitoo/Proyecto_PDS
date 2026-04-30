@@ -1,9 +1,8 @@
 package umu.pds.api.domain.ports.in;
 
-import umu.pds.dto.CrearEtiquetaTableroRequestDTO;
-import umu.pds.dto.EtiquetaDTO;
+import umu.pds.api.domain.models.Etiqueta;
 import java.util.UUID;
 
 public interface CrearEtiquetaTableroPort {
-    EtiquetaDTO ejecutar(UUID tableroId, CrearEtiquetaTableroRequestDTO command);
+    Etiqueta ejecutar(UUID tableroId, String nombre, String colorHex);
 }

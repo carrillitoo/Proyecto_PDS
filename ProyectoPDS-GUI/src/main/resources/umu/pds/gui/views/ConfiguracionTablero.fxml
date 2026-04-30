@@ -4,11 +4,8 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Text?>
 
 <ScrollPane fitToWidth="true" styleClass="scroll-pane" stylesheets="@Styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="umu.pds.gui.controllers.CompactionController">
@@ -18,63 +15,27 @@
             
             <VBox spacing="10.0">
                <children>
-                  <Text style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-fill: #0079bf;" text="AUTOMATIZACION" />
-                  <Text style="-fx-font-size: 36px; -fx-font-weight: 800; -fx-font-family: 'Manrope';" text="Compactacion Automatica" />
-                  <Text style="-fx-font-size: 16px; -fx-fill: #707882;" text="Define estrategias para archivar tarjetas automaticamente y mantener el orden." />
+                  <Text style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-fill: #0079bf;" text="AUTOMATIZACIÓN" />
+                  <Text style="-fx-font-size: 36px; -fx-font-weight: 800; -fx-font-family: 'Manrope';" text="Compactación" />
+                  <Text style="-fx-font-size: 16px; -fx-fill: #707882;" text="Archiva las tarjetas inactivas del tablero de forma automática." />
                </children>
             </VBox>
 
             <HBox spacing="25.0" styleClass="compaction-strategy-card">
                <children>
-                  <VBox styleClass="strategy-icon-bg">
-                     <children>
-                        <Label style="-fx-font-weight: bold; -fx-text-fill: #475a7e; -fx-font-size: 18px;" text="H" />
-                     </children>
-                  </VBox>
                   <VBox spacing="15.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label styleClass="strategy-title" text="Archivado por Inactividad" />
-                        <Label styleClass="strategy-description" text="Archiva tarjetas que no han tenido actualizaciones, comentarios o movimientos en un periodo de tiempo determinado." wrapText="true" />
+                        <Label styleClass="strategy-title" text="Compactar por Antigüedad" />
+                        <Label styleClass="strategy-description" text="Archiva tarjetas cuya fecha de creación supere el periodo de tiempo seleccionado, moviéndolas automáticamente a la lista de Archivadas." wrapText="true" />
                         <HBox alignment="CENTER_LEFT" spacing="15.0">
                            <children>
-                              <Label style="-fx-font-weight: bold; -fx-font-size: 13px;" text="Tiempo de inactividad:" />
-                              <ComboBox prefWidth="150.0" promptText="1 mes" styleClass="filter-select" />
+                              <Button fx:id="compactarBtn" onAction="#handleCompact" styleClass="btn-activate-compaction" text="Compactar" />
+                              <Label style="-fx-font-weight: bold; -fx-font-size: 13px; -fx-padding: 0 0 0 20;" text="Tiempo de antigüedad:" />
+                              <ComboBox fx:id="antiguedadCombo" prefWidth="150.0" promptText="1 semana" styleClass="filter-select" />
                            </children>
                         </HBox>
                      </children>
                   </VBox>
-               </children>
-            </HBox>
-
-            <HBox spacing="25.0" styleClass="compaction-strategy-card">
-               <children>
-                  <VBox style="-fx-background-color: #a1f885;" styleClass="strategy-icon-bg">
-                     <children>
-                        <Label style="-fx-font-weight: bold; -fx-text-fill: #0c5300; -fx-font-size: 18px;" text="V" />
-                     </children>
-                  </VBox>
-                  <VBox spacing="15.0" HBox.hgrow="ALWAYS">
-                     <children>
-                        <Label styleClass="strategy-title" text="Limpieza de Lista Completada" />
-                        <HBox alignment="CENTER_LEFT" spacing="15.0">
-                           <children>
-                              <Label style="-fx-font-weight: bold; -fx-font-size: 13px;" text="Archivar despues de:" />
-                              <ComboBox prefWidth="150.0" promptText="3 dias" styleClass="filter-select" />
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
-
-            <Separator />
-
-            <HBox alignment="CENTER_LEFT" spacing="20.0">
-               <children>
-                  <Button fx:id="activateBtn" onAction="#handleActivateCompaction" styleClass="btn-activate-compaction" text="Activar Compactacion" />
-                  <Button fx:id="saveBtn" onAction="#handleSaveConfig" style="-fx-background-color: transparent; -fx-text-fill: #0079bf; -fx-font-weight: bold;" text="Guardar Configuracion" />
-                  <Region HBox.hgrow="ALWAYS" />
-                  <Button fx:id="freezeBtn" onAction="#handleToggleFreeze" styleClass="filter-button" text="Congelar Tablero" />
                </children>
             </HBox>
 

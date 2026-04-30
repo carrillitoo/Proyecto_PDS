@@ -18,8 +18,23 @@ public class GetTableroUseCaseImpl implements GetTableroUseCase {
 	}
 	
 	//comando de orquestacion que devuelve un tablero en modo lectura
-	public Tablero ejecutar(String tableroIdStr) {
-		return tableroRepository.buscarPorId(TableroId.stringToTableroId(tableroIdStr))
+	public Tablero ejecutar(String tableroIdStr, String emailUsuario) {
+		Tablero tablero = tableroRepository.buscarPorId(TableroId.stringToTableroId(tableroIdStr))
                 				.orElseThrow(() -> new TableroNoEncontradoException(tableroIdStr));
+		
+		if (emailUsuario == null) {
+			throw new umu.pds.api.domain.exceptions.AccesoDenegadoException("No tienes acceso a este tablero");
+		}
+		
+		String emailNormalizado = emailUsuario.toLowerCase();
+		boolean esCreador = tablero.getEmailCreador().equalsIgnoreCase(emailNormalizado);
+		boolean esMiembro = tablero.getMiembros().containsKey(emailNormalizado);
+		boolean esInvitado = tablero.getInvitaciones().containsKey(emailNormalizado);
+
+		if (!esCreador && !esMiembro && !esInvitado) {
+			throw new umu.pds.api.domain.exceptions.AccesoDenegadoException("No tienes acceso a este tablero");
+		}
+		
+		return tablero;
     }
 }

@@ -16,8 +16,8 @@ public class ListarTablerosUseCaseImpl implements ListarTablerosUseCase {
 		this.tableroRepository = tableroRepository;
 	}
 	
-	//devuelve todos los tableros creados por un usuario
-	public List<Tablero> ejecutar(String emailCreador) {
-		return tableroRepository.buscarPorEmailCreador(emailCreador);
+	//devuelve todos los tableros en los que participa el usuario
+	public List<Tablero> ejecutar(String email) {
+		return tableroRepository.buscarPorEmailUsuario(email != null ? email.toLowerCase() : null);
     }
 }

@@ -66,7 +66,7 @@ public class GestorEtiquetasController {
         etiquetasListContainer.getChildren().clear();
 
         try {
-            TableroResponseDTO tablero = tableroService.getTableroById(currentBoardId);
+            TableroResponseDTO tablero = tableroService.getTableroById(currentBoardId, GlobalState.getInstance().getUserEmail());
             if (tablero != null && tablero.etiquetas() != null && !tablero.etiquetas().isEmpty()) {
                 emptyLabel.setVisible(false);
                 emptyLabel.setManaged(false);
