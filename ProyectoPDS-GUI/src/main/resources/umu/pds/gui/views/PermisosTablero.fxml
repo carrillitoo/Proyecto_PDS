@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+
+<BorderPane stylesheets="@Styles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="umu.pds.gui.controllers.PermisosController">
+   <center>
+      <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+         <content>
+            <VBox spacing="30.0" style="-fx-padding: 40;">
+               <children>
+                  <VBox spacing="10">
+                     <children>
+                        <HBox alignment="CENTER_LEFT">
+                           <children>
+                              <Text style="-fx-font-size: 26px; -fx-font-weight: 800;" text="Permisos del Tablero" />
+                              <Region HBox.hgrow="ALWAYS" />
+                              <Button fx:id="btnInvitar" styleClass="primary-button" text="+ Invitar Miembro" onAction="#handleInviteUser" />
+                           </children>
+                        </HBox>
+                        <Text style="-fx-fill: #707882; -fx-font-size: 14px;" text="Gestiona quién puede ver y editar este tablero." />
+                     </children>
+                  </VBox>
+
+                  <VBox spacing="20" styleClass="permission-table-container">
+                     <children>
+                        <HBox styleClass="table-header-row">
+                           <children>
+                              <Label prefWidth="300" styleClass="table-header-text" text="Miembro" />
+                              <Label prefWidth="200" styleClass="table-header-text" text="Rol" />
+                              <Region HBox.hgrow="ALWAYS" />
+                           </children>
+                        </HBox>
+
+                        <!-- Contenedor dinámico de miembros -->
+                        <VBox fx:id="membersContainer" spacing="10" />
+
+                     </children>
+                  </VBox>
+
+                  <VBox spacing="10" styleClass="url-share-box" fx:id="urlShareBox" visible="false" managed="false">
+                     <children>
+                        <Label style="-fx-font-weight: bold;" text="Enlace de invitación pública" />
+                        <HBox spacing="15" alignment="CENTER_LEFT">
+                           <children>
+                              <TextField fx:id="urlField" editable="false" prefWidth="400" styleClass="text-field" text="https://tablerellos.com/invite/b/xxx/yyy" />
+                              <Button styleClass="filter-button" text="Copiar Enlace" onAction="#handleCopyUrl" />
+                              <Button style="-fx-background-color: transparent; -fx-text-fill: #707882;" text="Desactivar enlace" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </center>
+</BorderPane>

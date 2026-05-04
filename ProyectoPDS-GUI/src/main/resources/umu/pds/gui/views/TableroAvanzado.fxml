@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane stylesheets="@Styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="umu.pds.gui.controllers.TableroAvanzadoController">
+   
+   <center>
+      <VBox>
+         <children>
+            <VBox spacing="15.0" style="-fx-background-color: white; -fx-padding: 20 30;" stylesheets="@Styles.css">
+               <children>
+                  <HBox alignment="CENTER_LEFT" spacing="15.0">
+                     <children>
+                        <MenuButton fx:id="filterMenuBtn" styleClass="filter-button" text="Filtrar por etiqueta" />
+                        <Separator orientation="VERTICAL" prefHeight="20.0" />
+                        <HBox fx:id="activeFiltersContainer" alignment="CENTER_LEFT" spacing="8.0">
+                           <!-- Los chips de filtro se generan dinámicamente -->
+                        </HBox>
+                        <Button fx:id="clearFiltersBtn" onAction="#handleClearFilters" style="-fx-background-color: transparent; -fx-text-fill: #0079bf; -fx-font-size: 12px; -fx-font-weight: bold;" text="Limpiar todo" visible="false" managed="false" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+
+            <ScrollPane fitToHeight="true" styleClass="scroll-pane" VBox.vgrow="ALWAYS">
+               <content>
+                  <HBox fx:id="listsContainer" spacing="20.0" style="-fx-padding: 30;">
+                     <!-- Listas dinámicas se inyectarán aquí desde el controlador -->
+                     <children>
+                        <VBox onMouseClicked="#handleAddList" alignment="CENTER" prefHeight="50.0" prefWidth="280.0" styleClass="new-board-placeholder">
+                           <children>
+                              <Label text="+ Anadir otra lista" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </content>
+            </ScrollPane>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

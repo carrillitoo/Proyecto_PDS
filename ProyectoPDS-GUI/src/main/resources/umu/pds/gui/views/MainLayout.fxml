@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane prefHeight="760.0" prefWidth="1200.0" stylesheets="@Styles.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="umu.pds.gui.controllers.MainLayoutController">
+   
+   <top>
+      <HBox alignment="CENTER_LEFT" spacing="20.0" styleClass="top-nav">
+         <children>
+            <Text style="-fx-font-weight: 900; -fx-font-size: 22px; -fx-fill: #0079bf; -fx-cursor: hand;" text="Tablerellos" onMouseClicked="#goDashboard" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button styleClass="create-button" text="Crear Tablero" onAction="#handleOpenCreateMenu" />
+            <Button style="-fx-background-color: #e8f0fe; -fx-text-fill: #0079bf; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 8 16;" text="Unirse a Tablero" onAction="#handleOpenJoinDialog" />
+            <HBox alignment="CENTER" spacing="8.0" style="-fx-cursor: hand;" onMouseClicked="#handleOpenProfileDialog">
+               <children>
+                  <Label fx:id="userNameLabel" style="-fx-font-weight: bold; -fx-font-size: 16px;" text="Usuario" />
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+   </top>
+
+   <left>
+      <VBox prefWidth="280.0" spacing="12" styleClass="sidebar">
+         <padding>
+            <Insets top="20" bottom="20" left="15" right="15" />
+         </padding>
+         <children>
+            <Button maxWidth="Infinity" styleClass="nav-link" text="Dashboard" onAction="#goDashboard" />
+            <Button maxWidth="Infinity" styleClass="nav-link" text="Historial" onAction="#goHistory" />
+            <Region VBox.vgrow="ALWAYS" />
+            <Separator />
+            <Button maxWidth="Infinity" style="-fx-text-fill: #ba1a1a;" styleClass="nav-link" text="Cerrar Sesión" onAction="#logout" />
+         </children>
+      </VBox>
+   </left>
+
+   <center>
+      <StackPane fx:id="contentArea" style="-fx-background-color: #f8f9fc;" />
+   </center>
+</BorderPane>

@@ -1,9 +1,9 @@
 package umu.pds.api.domain.ports.in;
 
-import umu.pds.api.application.dto.AnadirEtiquetaCommand;
+import java.util.UUID;
 import umu.pds.api.domain.models.Tarjeta;
 
 //Puerto de entrada para añadir tarjetas
 public interface AnadirEtiquetaPort {
-    Tarjeta ejecutar(AnadirEtiquetaCommand command);
+    Tarjeta ejecutar(UUID tarjetaId, String nombreEtiqueta, String colorHex);
 }

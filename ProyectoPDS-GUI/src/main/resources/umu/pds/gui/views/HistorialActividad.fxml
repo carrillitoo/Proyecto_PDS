@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<ScrollPane fitToWidth="true" styleClass="scroll-pane" stylesheets="@Styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="umu.pds.gui.controllers.ActivityController">
+   <content>
+      <VBox spacing="30.0" style="-fx-padding: 40;">
+         <children>
+            <HBox alignment="BOTTOM_LEFT">
+               <children>
+                  <VBox spacing="5">
+                     <children>
+                        <Label style="-fx-text-fill: #0079bf; -fx-font-weight: bold; -fx-font-size: 12px;" text="LOGS DEL SISTEMA" />
+                        <Text style="-fx-font-size: 32px; -fx-font-weight: 800;" text="Historial de Actividad" />
+                     </children>
+                  </VBox>
+                  <Region HBox.hgrow="ALWAYS" />
+                  <HBox alignment="CENTER" spacing="10.0" style="-fx-background-color: #f2f4f7; -fx-padding: 10; -fx-background-radius: 12;">
+                     <children>
+                        <Label style="-fx-font-weight: bold; -fx-font-size: 12px;" text="Tablero:" />
+                        <ComboBox fx:id="tableroFilterCombo" prefWidth="220.0" promptText="Seleccionar tablero..." styleClass="filter-select" onAction="#handleTableroFilterChange" />
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+
+            <StackPane alignment="TOP_LEFT" VBox.vgrow="ALWAYS">
+               <children>
+                  <Region fx:id="timelineLine" maxWidth="2.0" styleClass="timeline-line">
+                     <StackPane.margin>
+                        <Insets left="24.0" />
+                     </StackPane.margin>
+                  </Region>
+
+                  <VBox fx:id="historialContainer" spacing="25.0">
+                     <!-- Las trazas se cargarán dinámicamente desde el controller -->
+                  </VBox>
+               </children>
+            </StackPane>
+
+            <Label fx:id="emptyLabel" style="-fx-text-fill: #aaa; -fx-font-style: italic; -fx-font-size: 14px;" text="Selecciona un tablero para ver su historial de actividad." />
+
+         </children>
+      </VBox>
+   </content>
+</ScrollPane>

@@ -33,7 +33,7 @@ public class ListaTareasEntity {
     private int limiteTarjetas;
 
     // one2many y cascada (aprendido en los json de tds jej) y el orphan he buscado k sirve para que si lo saco se borre
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "lista_id") //foreign key
     private List<TarjetaEntity> tarjetas = new ArrayList<>();
 
@@ -64,8 +64,18 @@ public class ListaTareasEntity {
     public void setLimiteTarjetas(int limiteTarjetas) { this.limiteTarjetas = limiteTarjetas; }
     
     public List<TarjetaEntity> getTarjetas() { return tarjetas; }
-    public void setTarjetas(List<TarjetaEntity> tarjetas) { this.tarjetas = tarjetas; }
+    public void setTarjetas(List<TarjetaEntity> nuevasTarjetas) {
+        this.tarjetas.clear();
+        if (nuevasTarjetas != null) {
+            this.tarjetas.addAll(nuevasTarjetas);
+        }
+    }
     
     public List<String> getListasPreviasRequeridas() { return listasPreviasRequeridas; }
-    public void setListasPreviasRequeridas(List<String> listasPreviasRequeridas) { this.listasPreviasRequeridas = listasPreviasRequeridas; }
+    public void setListasPreviasRequeridas(List<String> nuevasReglas) {
+        this.listasPreviasRequeridas.clear();
+        if (nuevasReglas != null) {
+            this.listasPreviasRequeridas.addAll(nuevasReglas);
+        }
+    }
 }

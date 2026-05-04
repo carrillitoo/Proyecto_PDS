@@ -38,6 +38,11 @@ public final class TarjetaTarea extends Tarjeta {
         this.tarea = nuevaTarea;
     }
 
+    @Override
+    public TipoTarjeta getTipo() {
+        return TipoTarjeta.TAREA;
+    }
+
 	@Override
 	public void marcarComoCompletada() {
 		if (this.isCompletada()) {

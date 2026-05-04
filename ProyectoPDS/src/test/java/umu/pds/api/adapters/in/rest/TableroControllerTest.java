@@ -11,13 +11,19 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
-import umu.pds.api.application.dto.CompactarTableroRequestDTO;
-import umu.pds.api.application.dto.CrearTableroRequestDTO;
+import umu.pds.api.adapters.dto.CompactarTableroRequestDTO;
+import umu.pds.api.adapters.dto.CrearTableroRequestDTO;
 import umu.pds.api.application.usecases.*;
 import umu.pds.api.domain.exceptions.TableroNoEncontradoException;
 import umu.pds.api.domain.models.EstadoTablero;
 import umu.pds.api.domain.models.Tablero;
 import umu.pds.api.domain.models.TableroId;
+import umu.pds.api.domain.ports.in.ActualizarEtiquetaTableroPort;
+import umu.pds.api.domain.ports.in.CompartirTableroPort;
+import umu.pds.api.domain.ports.in.CrearEtiquetaTableroPort;
+import umu.pds.api.domain.ports.in.EliminarEtiquetaTableroPort;
+import umu.pds.api.domain.ports.in.AceptarInvitacionPort;
+import umu.pds.api.ApiApplication;
 
 import java.util.UUID;
 
@@ -29,7 +35,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(TableroController.class) // Carga TableroController y GlobalExceptionHandler
-@ContextConfiguration(classes = umu.pds.api.ApiApplication.class)
+@ContextConfiguration(classes = ApiApplication.class)
 class TableroControllerTest {
 
     @Autowired
@@ -38,33 +44,52 @@ class TableroControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    //toodo mockeado
-    @MockBean private CrearTableroUseCase crearTableroUseCase;
-    @MockBean private CongelarTableroUseCase congelarTableroUseCase;
-    @MockBean private DescongelarTableroUseCase descongelarTableroUseCase;
-    @MockBean private GetTableroUseCase getTableroUseCase;
-    @MockBean private CompactarTableroUseCase compactarTableroUseCase;
+    // toodo mockeado
+    @MockBean
+    private CrearTableroUseCase crearTableroUseCase;
+    @MockBean
+    private CongelarTableroUseCase congelarTableroUseCase;
+    @MockBean
+    private DescongelarTableroUseCase descongelarTableroUseCase;
+    @MockBean
+    private GetTableroUseCase getTableroUseCase;
+    @MockBean
+    private CompactarTableroUseCase compactarTableroUseCase;
+    @MockBean
+    private ListarTablerosUseCase listarTablerosUseCase;
+    @MockBean
+    private CrearEtiquetaTableroPort crearEtiquetaTableroPort;
+    @MockBean
+    private ActualizarEtiquetaTableroPort actualizarEtiquetaTableroPort;
+    @MockBean
+    private EliminarEtiquetaTableroPort eliminarEtiquetaTableroPort;
+    @MockBean
+    private MoverTarjetaUseCase moverTarjetaUseCase;
+    @MockBean
+    private CompartirTableroPort compartirTableroPort;
+    @MockBean
+    private AceptarInvitacionPort aceptarInvitacionPort;
 
     private Tablero tableroMock;
     private final String ID_TABLERO = UUID.randomUUID().toString();
 
     @BeforeEach
     void setUp() {
-        //un tablero nuevo siempre 
+        // un tablero nuevo siempre
         tableroMock = Mockito.mock(Tablero.class);
         when(tableroMock.getId()).thenReturn(new TableroId(UUID.fromString(ID_TABLERO)));
         when(tableroMock.getNombre()).thenReturn("Tablero de Prueba");
         when(tableroMock.getEmailCreador()).thenReturn("sega@pds.com");
         when(tableroMock.getEstado()).thenReturn(EstadoTablero.ACTIVO);
-        when(tableroMock.getUrl()).thenReturn("http://api/tableros/123");
+        when(tableroMock.getUrl()).thenReturn("http://tablerellos/tableros/123");
     }
 
-    @Test //creamos un tablero y nos devuelve 201
+    @Test // creamos un tablero y nos devuelve 201
     void crearTablero_Return201Created() throws Exception {
         CrearTableroRequestDTO request = new CrearTableroRequestDTO("Mi Tablero", "sega@pds.com");
         when(crearTableroUseCase.ejecutar("Mi Tablero", "sega@pds.com")).thenReturn(tableroMock);
 
-        mockMvc.perform(post("/api/tableros")
+        mockMvc.perform(post("/tablerellos/tableros")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
@@ -76,67 +101,71 @@ class TableroControllerTest {
     void crearTablero_EmailInvalido_Return400BadRequest() throws Exception {
         CrearTableroRequestDTO request = new CrearTableroRequestDTO("Mi Tablero", "");
 
-        mockMvc.perform(post("/api/tableros")
+        mockMvc.perform(post("/tablerellos/tableros")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.error").value("Validation Error"));
     }
-    
+
     @Test // crear tablero sin nombre devuelve 400 BR
     void crearTablero_NombreVacio_Return400BadRequest() throws Exception {
         CrearTableroRequestDTO request = new CrearTableroRequestDTO("", "sega@pds.com");
 
-        mockMvc.perform(post("/api/tableros")
+        mockMvc.perform(post("/tablerellos/tableros")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.error").value("Validation Error"));
     }
 
-    @Test //get un tablero que existe y devuelve 200 OK
+    @Test // get un tablero que existe y devuelve 200 OK
     void getTablero_Return200OK() throws Exception {
-        when(getTableroUseCase.ejecutar(ID_TABLERO)).thenReturn(tableroMock);
+        String testEmail = "test@pds.com";
+        when(getTableroUseCase.ejecutar(ID_TABLERO, testEmail)).thenReturn(tableroMock);
 
-        mockMvc.perform(get("/api/tableros/" + ID_TABLERO))
+        mockMvc.perform(get("/tablerellos/tableros/" + ID_TABLERO)
+                .param("usuario", testEmail))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(ID_TABLERO))
                 .andExpect(jsonPath("$.estado").value("ACTIVO"));
     }
 
-    @Test //get un tablero que no devuelve un 404 NF
+    @Test // get un tablero que no devuelve un 404 NF
     void getTablero_NoExiste_Return404NotFound() throws Exception {
+        String testEmail = "test@pds.com";
         // Simulamos que el UseCase lanza la excepción
-        when(getTableroUseCase.ejecutar("inexistente"))
+        when(getTableroUseCase.ejecutar("inexistente", testEmail))
                 .thenThrow(new TableroNoEncontradoException("inexistente"));
 
-        mockMvc.perform(get("/api/tableros/inexistente"))
+        mockMvc.perform(get("/tablerellos/tableros/inexistente")
+                .param("usuario", testEmail))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.error").value("Not Found")); // Verifica el GlobalExceptionHandler
     }
 
-    @Test //congelar un rablero 200 OK
+    @Test // congelar un rablero 200 OK
     void congelarTablero_Return200OK() throws Exception {
         doNothing().when(congelarTableroUseCase).ejecutar(ID_TABLERO);
 
-        mockMvc.perform(put("/api/tableros/" + ID_TABLERO + "/congelar"))
+        mockMvc.perform(put("/tablerellos/tableros/" + ID_TABLERO + "/congelar"))
                 .andExpect(status().isOk());
     }
 
-    @Test //descongelar un rablero 200 OK
+    @Test // descongelar un rablero 200 OK
     void descongelarTablero_Return200OK() throws Exception {
         doNothing().when(descongelarTableroUseCase).ejecutar(ID_TABLERO);
 
-        mockMvc.perform(put("/api/tableros/" + ID_TABLERO + "/descongelar"))
+        mockMvc.perform(put("/tablerellos/tableros/" + ID_TABLERO + "/descongelar"))
                 .andExpect(status().isOk());
     }
 
-    @Test //compactar un tablero que existe 200 OK
+    @Test // compactar un tablero que existe 200 OK
     void compactarTablero_Return200OK() throws Exception {
         CompactarTableroRequestDTO request = new CompactarTableroRequestDTO(5);
         doNothing().when(compactarTableroUseCase).ejecutar(anyString(), anyInt());
 
-        mockMvc.perform(post("/api/tableros/" + ID_TABLERO + "/compactar")
+        mockMvc.perform(post("/tablerellos/tableros/" + ID_TABLERO + "/compactar")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk());

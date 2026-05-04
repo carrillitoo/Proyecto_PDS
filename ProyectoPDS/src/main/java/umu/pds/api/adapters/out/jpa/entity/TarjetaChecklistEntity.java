@@ -14,7 +14,7 @@ import java.util.UUID;
 @DiscriminatorValue("CHECKLIST")
 public class TarjetaChecklistEntity extends TarjetaEntity {
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = jakarta.persistence.FetchType.EAGER)
     @JoinColumn(name = "tarjeta_id") // Avoids intermediate join table
     private List<ChecklistEntity> items;
 

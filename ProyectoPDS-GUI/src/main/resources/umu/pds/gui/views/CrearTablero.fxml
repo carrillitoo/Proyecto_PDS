@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox prefWidth="500.0" spacing="0.0" styleClass="create-board-modal" stylesheets="@Styles.css" xmlns="http://javafx.scene.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="umu.pds.gui.controllers.CreateBoardController">
+   <children>
+      
+      <HBox alignment="CENTER_LEFT" prefHeight="70.0" style="-fx-border-color: transparent transparent #eceef1 transparent; -fx-border-width: 1;">
+         <padding>
+            <Insets left="30.0" right="20.0" />
+         </padding>
+         <children>
+            <Text style="-fx-font-size: 20px; -fx-font-weight: 800; -fx-font-family: 'Manrope';" text="Crear tablero" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button onAction="#handleClose" styleClass="btn-close-modal" text="X" />
+         </children>
+      </HBox>
+
+      <VBox spacing="25.0" style="-fx-padding: 30 30 40 30;">
+         <children>
+            
+            <VBox spacing="8.0">
+               <children>
+                  <Label styleClass="input-label" text="NOMBRE DEL TABLERO" />
+                  <TextField fx:id="boardNameField" prefHeight="45.0" promptText="Ej. Mi Proyecto PDS" styleClass="text-field" />
+               </children>
+            </VBox>
+
+            <Separator style="-fx-padding: 10 0;" />
+
+            <VBox spacing="15.0">
+               <children>
+                  <Button fx:id="createButton" maxWidth="Infinity" onAction="#handleCreate" prefHeight="50.0" styleClass="primary-button" text="Crear Tablero" />
+                  <Text style="-fx-fill: #707882; -fx-font-size: 11px; -fx-text-alignment: center;" text="Al crear un tablero, se aplicara la configuracion de privacidad por defecto del espacio de trabajo." wrappingWidth="440.0" />
+               </children>
+            </VBox>
+
+         </children>
+      </VBox>
+   </children>
+</VBox>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<ScrollPane fitToWidth="true" styleClass="scroll-pane" stylesheets="@Styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="umu.pds.gui.controllers.CompactionController">
+   <content>
+      <VBox spacing="40.0" style="-fx-padding: 50 80;">
+         <children>
+            
+            <VBox spacing="10.0">
+               <children>
+                  <Text style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-fill: #0079bf;" text="AUTOMATIZACIÓN" />
+                  <Text style="-fx-font-size: 36px; -fx-font-weight: 800; -fx-font-family: 'Manrope';" text="Compactación" />
+                  <Text style="-fx-font-size: 16px; -fx-fill: #707882;" text="Archiva las tarjetas inactivas del tablero de forma automática." />
+               </children>
+            </VBox>
+
+            <HBox spacing="25.0" styleClass="compaction-strategy-card">
+               <children>
+                  <VBox spacing="15.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label styleClass="strategy-title" text="Compactar por Antigüedad" />
+                        <Label styleClass="strategy-description" text="Archiva tarjetas cuya fecha de creación supere el periodo de tiempo seleccionado, moviéndolas automáticamente a la lista de Archivadas." wrapText="true" />
+                        <HBox alignment="CENTER_LEFT" spacing="15.0">
+                           <children>
+                              <Button fx:id="compactarBtn" onAction="#handleCompact" styleClass="btn-activate-compaction" text="Compactar" />
+                              <Label style="-fx-font-weight: bold; -fx-font-size: 13px; -fx-padding: 0 0 0 20;" text="Tiempo de antigüedad:" />
+                              <ComboBox fx:id="antiguedadCombo" prefWidth="150.0" promptText="1 semana" styleClass="filter-select" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+
+         </children>
+      </VBox>
+   </content>
+</ScrollPane>

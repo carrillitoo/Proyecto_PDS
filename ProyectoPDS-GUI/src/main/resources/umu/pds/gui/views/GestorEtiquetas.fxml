@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<ScrollPane fitToWidth="true" styleClass="scroll-pane" stylesheets="@Styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="umu.pds.gui.controllers.GestorEtiquetasController">
+   <content>
+      <VBox spacing="30.0" style="-fx-padding: 40;">
+         <children>
+            <!-- Header -->
+            <HBox alignment="BOTTOM_LEFT">
+               <children>
+                  <VBox spacing="5">
+                     <children>
+                        <Label style="-fx-text-fill: #0079bf; -fx-font-weight: bold; -fx-font-size: 12px;" text="CONFIGURACIÓN" />
+                        <Text style="-fx-font-size: 32px; -fx-font-weight: 800;" text="Gestor de Etiquetas" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+
+            <!-- Advertencia si no hay tablero -->
+            <VBox fx:id="noBoardWarningBox" alignment="CENTER" managed="false" spacing="15.0" style="-fx-background-color: #fce8e8; -fx-padding: 20; -fx-background-radius: 8;" visible="false">
+               <children>
+                  <Label style="-fx-text-fill: #d32f2f; -fx-font-weight: bold; -fx-font-size: 14px;" text="Debes seleccionar o entrar a un tablero para gestionar sus etiquetas." />
+               </children>
+            </VBox>
+
+            <VBox fx:id="mainContentBox" spacing="25.0">
+               <children>
+                  <!-- Formulario Alta / Edición -->
+                  <VBox spacing="15.0" style="-fx-background-color: white; -fx-padding: 25; -fx-background-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 10, 0, 0, 2);">
+                     <children>
+                        <Label fx:id="formTitleLabel" styleClass="input-label" text="AÑADIR NUEVA ETIQUETA" />
+                        <HBox alignment="CENTER_LEFT" spacing="15.0">
+                           <children>
+                              <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Label text="Nombre:" />
+                                    <TextField fx:id="nombreField" promptText="Ej: Bug, Frontend..." styleClass="text-field" />
+                                 </children>
+                              </VBox>
+                              <VBox spacing="5.0">
+                                 <children>
+                                    <Label text="Color:" />
+                                    <ColorPicker fx:id="colorPicker" prefHeight="40.0" />
+                                 </children>
+                              </VBox>
+                              <VBox alignment="BOTTOM_CENTER" prefHeight="65.0">
+                                 <children>
+                                    <Button fx:id="saveBtn" onAction="#handleSaveEtiqueta" prefHeight="40.0" styleClass="primary-button" text="Guardar Etiqueta" />
+                                 </children>
+                              </VBox>
+                              <VBox alignment="BOTTOM_CENTER" prefHeight="65.0">
+                                 <children>
+                                    <Button fx:id="cancelBtn" managed="false" onAction="#handleCancelEdit" prefHeight="40.0" style="-fx-background-color: #f4f5f7; -fx-text-fill: #172b4d; -fx-font-weight: bold; -fx-background-radius: 6;" text="Cancelar" visible="false" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+
+                  <!-- Lista de Etiquetas -->
+                  <VBox spacing="15.0">
+                     <children>
+                        <Label styleClass="input-label" text="ETIQUETAS DEL TABLERO" />
+                        <VBox fx:id="etiquetasListContainer" spacing="10.0">
+                           <!-- Las etiquetas se inyectan aquí -->
+                        </VBox>
+                        <Label fx:id="emptyLabel" style="-fx-text-fill: #aaa; -fx-font-style: italic;" text="No hay etiquetas en este tablero." />
+                     </children>
+                  </VBox>
+
+               </children>
+            </VBox>
+
+         </children>
+      </VBox>
+   </content>
+</ScrollPane>

@@ -1,6 +1,5 @@
 package umu.pds.api.models;
 
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import umu.pds.api.domain.models.Checklist;
@@ -21,10 +20,10 @@ class ChecklistTest {
     @Test // Alterna correctamente el estado del item
     void alternarEstadoChecklist() {
         Checklist item = new Checklist("Revisar SonarQube");
-        
+
         item.alternarEstado();
         assertTrue(item.isCompletado()); // Pasa a true
-        
+
         item.alternarEstado();
         assertFalse(item.isCompletado()); // Vuelve a false
     }

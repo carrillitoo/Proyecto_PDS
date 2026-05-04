@@ -94,7 +94,10 @@ public abstract class TarjetaEntity {
         return etiquetas;
     }
 
-    public void setEtiquetas(Set<EtiquetaEmbeddable> etiquetas) {
-        this.etiquetas = etiquetas;
+    public void setEtiquetas(Set<EtiquetaEmbeddable> nuevasEtiquetas) {
+        this.etiquetas.clear();
+        if (nuevasEtiquetas != null) {
+            this.etiquetas.addAll(nuevasEtiquetas);
+        }
     }
 }

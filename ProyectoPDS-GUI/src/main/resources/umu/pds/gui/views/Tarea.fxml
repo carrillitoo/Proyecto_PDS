@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane styleClass="modal-container" stylesheets="@Styles.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="umu.pds.gui.controllers.TaskDetailController">
+   
+   <top>
+      <HBox alignment="CENTER_RIGHT" prefHeight="50.0">
+         <children>
+            <Button onAction="#handleClose" style="-fx-background-color: transparent; -fx-font-size: 18px; -fx-font-weight: bold;" text="X" />
+         </children>
+         <padding>
+            <Insets right="15.0" top="10.0" />
+         </padding>
+      </HBox>
+   </top>
+
+   <center>
+      <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+         <content>
+            <VBox spacing="30.0">
+               <children>
+                  
+                  <VBox spacing="5.0">
+                     <children>
+                        <TextField fx:id="titleField" editable="false" style="-fx-background-color: transparent; -fx-font-size: 26px; -fx-font-weight: bold; -fx-padding: 0;" text="Refactor Navigation Shell" />
+                        <Text fx:id="listNameText" style="-fx-fill: #404751; -fx-font-size: 13px;" text="en la lista In Progress" />
+                     </children>
+                  </VBox>
+
+                  <VBox spacing="10.0">
+                     <children>
+                        <Label styleClass="input-label" text="ETIQUETAS" />
+                        <HBox fx:id="labelsBox" spacing="5.0">
+                           <children>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+
+                  <VBox spacing="15.0">
+                     <children>
+                        <Text style="-fx-font-weight: bold; -fx-font-size: 18px;" text="Descripción" />
+                        <TextArea fx:id="descriptionArea" editable="false" prefHeight="120.0" promptText="Añade una descripción más detallada..." styleClass="description-area" wrapText="true" />
+                        
+                        <VBox fx:id="contentContainer" spacing="10.0">
+                           <!-- Aquí irá el texto de la tarea o la lista de checklist -->
+                        </VBox>
+
+                        <HBox alignment="CENTER_RIGHT">
+                           <children>
+                              <Button fx:id="deleteBtn" onAction="#handleDelete" style="-fx-text-fill: #ba1a1a; -fx-background-color: #fce8e8; -fx-font-weight: bold; -fx-padding: 8 20;" styleClass="action-button" text="Eliminar" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+
+               </children>
+            </VBox>
+         </content>
+         <padding>
+            <Insets bottom="30.0" left="30.0" right="30.0" top="10.0" />
+         </padding>
+      </ScrollPane>
+   </center>
+   
+   <bottom>
+      <HBox style="-fx-background-color: #e6e8eb; -fx-padding: 10 30;">
+         <children>
+            <Text fx:id="createdDateText" style="-fx-font-size: 10px; -fx-font-weight: bold; -fx-fill: #707882;" text="CREADO EL 24 DE OCTUBRE, 2023" />
+         </children>
+      </HBox>
+   </bottom>
+</BorderPane>
