@@ -30,16 +30,7 @@
             <Insets top="20" bottom="20" left="15" right="15" />
          </padding>
          <children>
-            <VBox spacing="5">
-               <children>
-                  <Label style="-fx-font-weight: bold; -fx-font-size: 18px;" text="PDS Architect" />
-                  <Label style="-fx-font-size: 10px; -fx-text-fill: #707882; -fx-font-weight: bold;" text="WORKSPACE" />
-               </children>
-               <padding><Insets bottom="15" /></padding>
-            </VBox>
-            <Separator />
             <Button maxWidth="Infinity" styleClass="nav-link" text="Dashboard" onAction="#goDashboard" />
-            <Button maxWidth="Infinity" styleClass="nav-link" text="Tableros" onAction="#goBoard" />
             <Button maxWidth="Infinity" styleClass="nav-link" text="Historial" onAction="#goHistory" />
             <Region VBox.vgrow="ALWAYS" />
             <Separator />

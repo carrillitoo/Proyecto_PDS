@@ -53,6 +53,7 @@ public class CreateListController {
                 TableroResponseDTO board = tableroService.getBoard(currentBoardId, GlobalState.getInstance().getUserEmail());
                 List<String> listNames = board.listas().stream()
                         .map(ListaTareasResponseDTO::nombreLista)
+                        .filter(name -> !name.equalsIgnoreCase("Completadas") && !name.equalsIgnoreCase("Archivadas"))
                         .collect(Collectors.toList());
                 
                 sourceRestrictionCombo.setItems(FXCollections.observableArrayList(listNames));
