@@ -1,7 +1,7 @@
 package umu.pds.api.adapters.out.jpa.entity;
 
 import jakarta.persistence.*;
-import umu.pds.api.domain.models.TipoAccion; // Asegúrate de que el import coincida con tu dominio
+import umu.pds.api.domain.models.TipoAccion;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

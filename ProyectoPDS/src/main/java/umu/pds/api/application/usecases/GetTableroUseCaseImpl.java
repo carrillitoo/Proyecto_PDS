@@ -23,7 +23,7 @@ public class GetTableroUseCaseImpl implements GetTableroUseCase {
                 				.orElseThrow(() -> new TableroNoEncontradoException(tableroIdStr));
 		
 		if (emailUsuario == null) {
-			throw new umu.pds.api.domain.exceptions.AccesoDenegadoException("No tienes acceso a este tablero");
+			throw new AccesoDenegadoException("No tienes acceso a este tablero");
 		}
 		
 		String emailNormalizado = emailUsuario.toLowerCase();
@@ -32,7 +32,7 @@ public class GetTableroUseCaseImpl implements GetTableroUseCase {
 		boolean esInvitado = tablero.getInvitaciones().containsKey(emailNormalizado);
 
 		if (!esCreador && !esMiembro && !esInvitado) {
-			throw new umu.pds.api.domain.exceptions.AccesoDenegadoException("No tienes acceso a este tablero");
+			throw new AccesoDenegadoException("No tienes acceso a este tablero");
 		}
 		
 		return tablero;

@@ -39,8 +39,8 @@ public class TableroMapper {
         entity.setEtiquetas(tablero.getEtiquetas().stream()
                 .map(e -> new EtiquetaEmbeddable(e.nombre(), e.color().hexCode()))
                 .collect(Collectors.toList()));
-        entity.setMiembros(new java.util.HashMap<>(tablero.getMiembros()));
-        entity.setInvitaciones(new java.util.HashMap<>(tablero.getInvitaciones()));
+        entity.setMiembros(new HashMap<>(tablero.getMiembros()));
+        entity.setInvitaciones(new HashMap<>(tablero.getInvitaciones()));
         return entity;
     }
 
@@ -130,8 +130,8 @@ public class TableroMapper {
                 listas,
                 historial,
                 etiquetas,
-                new java.util.HashMap<>(entity.getMiembros()),
-                new java.util.HashMap<>(entity.getInvitaciones()));
+                new HashMap<>(entity.getMiembros()),
+                new HashMap<>(entity.getInvitaciones()));
     }
 
     public ListaTareas toDomain(ListaTareasEntity entity) {
@@ -218,12 +218,12 @@ public class TableroMapper {
                 etiquetasDto,
                 tablero.getMiembros().entrySet().stream()
                         .collect(Collectors.toMap(
-                                java.util.Map.Entry::getKey,
+                                Map.Entry::getKey,
                                 e -> e.getValue().name()
                         )),
                 tablero.getInvitaciones().entrySet().stream()
                         .collect(Collectors.toMap(
-                                java.util.Map.Entry::getKey,
+                                Map.Entry::getKey,
                                 e -> e.getValue().name()
                         ))
         );

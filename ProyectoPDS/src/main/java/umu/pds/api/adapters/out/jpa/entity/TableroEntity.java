@@ -48,23 +48,23 @@ public class TableroEntity {
     @JoinColumn(name = "tablero_id")
     private List<TrazaAccionEntity> historial = new ArrayList<>();
     
-    @jakarta.persistence.ElementCollection(fetch = FetchType.EAGER)
-    @jakarta.persistence.CollectionTable(name = "tablero_etiquetas", joinColumns = @JoinColumn(name = "tablero_id"))
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "tablero_etiquetas", joinColumns = @JoinColumn(name = "tablero_id"))
     private List<EtiquetaEmbeddable> etiquetas = new ArrayList<>();
     
-    @jakarta.persistence.ElementCollection(fetch = FetchType.EAGER)
-    @jakarta.persistence.CollectionTable(name = "tablero_miembros", joinColumns = @JoinColumn(name = "tablero_id"))
-    @jakarta.persistence.MapKeyColumn(name = "email")
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "tablero_miembros", joinColumns = @JoinColumn(name = "tablero_id"))
+    @MapKeyColumn(name = "email")
     @Column(name = "rol")
     @Enumerated(EnumType.STRING)
-    private java.util.Map<String, umu.pds.api.domain.models.Rol> miembros = new java.util.HashMap<>();
+    private Map<String, Rol> miembros = new HashMap<>();
 
-    @jakarta.persistence.ElementCollection(fetch = FetchType.EAGER)
-    @jakarta.persistence.CollectionTable(name = "tablero_invitaciones", joinColumns = @JoinColumn(name = "tablero_id"))
-    @jakarta.persistence.MapKeyColumn(name = "email")
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "tablero_invitaciones", joinColumns = @JoinColumn(name = "tablero_id"))
+    @MapKeyColumn(name = "email")
     @Column(name = "rol")
     @Enumerated(EnumType.STRING)
-    private java.util.Map<String, umu.pds.api.domain.models.Rol> invitaciones = new java.util.HashMap<>();
+    private Map<String, Rol> invitaciones = new HashMap<>();
     
 
     //---------------------------BUILDERS---------------------------
@@ -119,16 +119,16 @@ public class TableroEntity {
         }
     }
 
-    public java.util.Map<String, umu.pds.api.domain.models.Rol> getMiembros() { return miembros; }
-    public void setMiembros(java.util.Map<String, umu.pds.api.domain.models.Rol> nuevosMiembros) {
+    public Map<String, Rol> getMiembros() { return miembros; }
+    public void setMiembros(Map<String, Rol> nuevosMiembros) {
         this.miembros.clear();
         if (nuevosMiembros != null) {
             this.miembros.putAll(nuevosMiembros);
         }
     }
 
-    public java.util.Map<String, umu.pds.api.domain.models.Rol> getInvitaciones() { return invitaciones; }
-    public void setInvitaciones(java.util.Map<String, umu.pds.api.domain.models.Rol> nuevasInvitaciones) {
+    public Map<String, Rol> getInvitaciones() { return invitaciones; }
+    public void setInvitaciones(Map<String, Rol> nuevasInvitaciones) {
         this.invitaciones.clear();
         if (nuevasInvitaciones != null) {
             this.invitaciones.putAll(nuevasInvitaciones);

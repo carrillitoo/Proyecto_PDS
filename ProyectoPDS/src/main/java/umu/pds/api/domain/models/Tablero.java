@@ -46,8 +46,8 @@ public class Tablero {
 	private final String emailCreador;					//email del usuario que crea el tablero (obligatorio)
 	private String url;									//url para acceder al tablero y/O compartirla xra que accendasn
 	private final List<Etiqueta> etiquetas;				//catálogo de etiquetas del tablero
-	private final java.util.Map<String, Rol> miembros;	//mapa de emails y roles de los miembros del tablero
-	private final java.util.Map<String, Rol> invitaciones; // mapa de invitaciones pendientes
+	private final Map<String, Rol> miembros;	//mapa de emails y roles de los miembros del tablero
+	private final Map<String, Rol> invitaciones; // mapa de invitaciones pendientes
 	
 	
 	//---------------------------------BUIDER---------------------------------
@@ -70,13 +70,13 @@ public class Tablero {
         this.emailCreador = email;
         this.url = PREFIJO_URL + id.toString() ;
         this.etiquetas = new ArrayList<>();
-        this.miembros = new java.util.HashMap<>();
+        this.miembros = new HashMap<>();
         this.miembros.put(email.toLowerCase(), Rol.PROPIETARIO);
-        this.invitaciones = new java.util.HashMap<>();
+        this.invitaciones = new HashMap<>();
     }
 	
 	// para la capa JPA como el resto
-    public static Tablero reconstituir(TableroId id, String nombre, String emailCreador, EstadoTablero estado, String url, List<ListaTareas> listas, List<TrazaAccion> historial, List<Etiqueta> etiquetas, java.util.Map<String, Rol> miembros, java.util.Map<String, Rol> invitaciones) {
+    public static Tablero reconstituir(TableroId id, String nombre, String emailCreador, EstadoTablero estado, String url, List<ListaTareas> listas, List<TrazaAccion> historial, List<Etiqueta> etiquetas, Map<String, Rol> miembros, Map<String, Rol> invitaciones) {
         Tablero tablero = new Tablero(id, nombre, emailCreador);
         
         tablero.estado = estado;
@@ -123,8 +123,8 @@ public class Tablero {
 	public String getEmailCreador() {return emailCreador;}
 	public String getUrl() {return url;}
 	public List<Etiqueta> getEtiquetas() {return Collections.unmodifiableList(this.etiquetas);}
-	public java.util.Map<String, Rol> getMiembros() {return Collections.unmodifiableMap(this.miembros);}
-	public java.util.Map<String, Rol> getInvitaciones() {return Collections.unmodifiableMap(this.invitaciones);}
+	public Map<String, Rol> getMiembros() {return Collections.unmodifiableMap(this.miembros);}
+	public Map<String, Rol> getInvitaciones() {return Collections.unmodifiableMap(this.invitaciones);}
 	
 	
 	//---------------------------------OPERACIONES DEL TABLERO---------------------------------

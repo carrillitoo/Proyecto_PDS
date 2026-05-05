@@ -36,20 +36,20 @@ public class TableroRepositoryAdapterImpl implements TableroRepositoryPort {
             entity.setUrl(tablero.getUrl());
 
             // Sincronizar colecciones sin romper referencias
-            List<umu.pds.api.adapters.out.jpa.entity.ListaTareasEntity> nuevasListas = tablero.getListas().stream()
+            List<ListaTareasEntity> nuevasListas = tablero.getListas().stream()
                     .map(mapper::toEntity)
                     .toList();
             entity.getListas().clear();
             entity.getListas().addAll(nuevasListas);
 
-            List<umu.pds.api.adapters.out.jpa.entity.TrazaAccionEntity> nuevoHistorial = tablero.getHistorial().stream()
+            List<TrazaAccionEntity> nuevoHistorial = tablero.getHistorial().stream()
                     .map(mapper::toEntity)
                     .toList();
             entity.getHistorial().clear();
             entity.getHistorial().addAll(nuevoHistorial);
 
-            List<umu.pds.api.adapters.out.jpa.entity.EtiquetaEmbeddable> nuevasEtiquetas = tablero.getEtiquetas().stream()
-                    .map(e -> new umu.pds.api.adapters.out.jpa.entity.EtiquetaEmbeddable(e.nombre(), e.color().hexCode()))
+            List<EtiquetaEmbeddable> nuevasEtiquetas = tablero.getEtiquetas().stream()
+                    .map(e -> new EtiquetaEmbeddable(e.nombre(), e.color().hexCode()))
                     .toList();
             entity.getEtiquetas().clear();
             entity.getEtiquetas().addAll(nuevasEtiquetas);
