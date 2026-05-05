@@ -7,20 +7,22 @@ La practica la hemos realizado:
 - Javier Peñalver Gómez - Grupo 2.3 - 54633073T
 - Jaime Cegarra Martínez - Grupo 2.3 - 49335068E
 
+Para más información sobre el reparto de trabajo, se puede consultar el [CREDITOS.md](documentacion/CREDITOS.md)
+
 ## Estructura Documentación
 La documentación la hemos dividido en los siguientes documentos:
 
 Para manuales, hemos creado:
-    - Un [Manual de Usuario](documentacion/manual-usuario.md)
-    - Un [Manual de Desarrollador](documentacion/manual-dev.md)
+- Un [Manual de Usuario](documentacion/manual-usuario.md)
+- Un [Manual de Desarrollador](documentacion/manual-dev.md)
 
 Para la estructura interna hemos creado dos ficheros principales:
-    - Una explicación de los [modelos](documentacion/modelo.md), donde se muestra la estructura de la capa de dominio, y la relación entre clases
-    - Una reflexión sobre las diferentes [decisiones de diseño](documentacion/decisiones-de-diseño.md) que hemos tomado, en relación a la arquitectura hexagonal, DDD, etc.
+- Una explicación de los [modelos](documentacion/modelo.md), donde se muestra la estructura de la capa de dominio, y la relación entre clases
+- Una reflexión sobre las diferentes [decisiones de diseño](documentacion/decisiones-de-diseño.md) que hemos tomado, en relación a la arquitectura hexagonal, DDD, etc.
 
 Finalmente, hemos añadido, dos ficheros mostrando otras perspectivas:
-    - Una representación de las [pantallas](documentacion/pantallas.md) de la aplicación donde se describe de manera gráfica las diferentes vistas, perspectivas
-    - Una representación de las [historias de usuario](documentacion/historias-usuario.md) donde se representan algunas historias de usuario extraídas de las prácticas de la asignatura de Gestión de Proyectos de Desarrollo Software (GPDS)
+- Una representación de las [pantallas](documentacion/pantallas.md) de la aplicación donde se describe de manera gráfica las diferentes vistas, perspectivas
+- Una representación de las [historias de usuario](documentacion/historias-usuario.md) donde se representan algunas historias de usuario extraídas de las prácticas de la asignatura de Gestión de Proyectos de Desarrollo Software (GPDS)
 
 ## Lanzamiento y Despliegue
 Para poder lanzar la aplicación hay que hacer lo siguiente:
