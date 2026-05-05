@@ -10,6 +10,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import umu.pds.gui.services.GlobalState;
+import umu.pds.gui.services.api.TableroService;
 import umu.pds.gui.services.api.TarjetaService;
 
 public class EtiquetasController {
@@ -35,13 +36,14 @@ public class EtiquetasController {
 
     private void loadCardLabels() {
         String cardId = GlobalState.getInstance().getCurrentCardId();
-        if (cardId == null) return;
+        if (cardId == null)
+            return;
 
         java.util.Set<String> cardLabelNames = new java.util.HashSet<>();
 
         try {
             umu.pds.dto.TarjetaResponseDTO card = GlobalState.getInstance().getCurrentCard();
-            
+
             if (card != null && card.etiquetas() != null) {
                 etiquetasContainer.getChildren().clear();
                 for (umu.pds.dto.EtiquetaDTO et : card.etiquetas()) {
@@ -64,7 +66,8 @@ public class EtiquetasController {
 
     private void loadAvailableLabels(java.util.Set<String> cardLabelNames) {
         String boardId = GlobalState.getInstance().getCurrentBoardId();
-        if (boardId == null) return;
+        if (boardId == null)
+            return;
 
         if (etiquetasDisponiblesContainer != null) {
             etiquetasDisponiblesContainer.getChildren().clear();
@@ -72,11 +75,12 @@ public class EtiquetasController {
 
         try {
             umu.pds.gui.services.api.TableroService tableroService = new umu.pds.gui.services.api.TableroService();
-            umu.pds.dto.TableroResponseDTO tablero = tableroService.getTableroById(boardId, GlobalState.getInstance().getUserEmail());
+            umu.pds.dto.TableroResponseDTO tablero = tableroService.getTableroById(boardId,
+                    GlobalState.getInstance().getUserEmail());
 
             if (tablero != null) {
                 java.util.Map<String, String> uniqueLabels = new java.util.HashMap<>();
-                
+
                 if (tablero.etiquetas() != null) {
                     for (umu.pds.dto.EtiquetaDTO et : tablero.etiquetas()) {
                         if (!cardLabelNames.contains(et.nombre())) {
@@ -84,7 +88,7 @@ public class EtiquetasController {
                         }
                     }
                 }
-                
+
                 if (tablero.listas() != null) {
                     for (umu.pds.dto.ListaTareasResponseDTO listData : tablero.listas()) {
                         if (listData.tarjetas() != null) {
@@ -126,7 +130,7 @@ public class EtiquetasController {
         HBox tagBox = new HBox(chip, addBtn);
         tagBox.setStyle("-fx-background-color: " + hexColor
                 + "; -fx-background-radius: 12; -fx-padding: 2 8; -fx-alignment: center; -fx-cursor: hand;");
-        
+
         tagBox.setOnMouseClicked(e -> {
             handleAddExistingEtiqueta(nombre, hexColor);
         });
@@ -138,14 +142,15 @@ public class EtiquetasController {
 
     private void handleAddExistingEtiqueta(String nombre, String hexColor) {
         String cardId = GlobalState.getInstance().getCurrentCardId();
-        if (cardId == null) return;
+        if (cardId == null)
+            return;
 
         try {
             TarjetaService tarjetaService = new TarjetaService();
             umu.pds.dto.TarjetaResponseDTO updatedCard = tarjetaService.addLabelToCard(cardId, nombre, hexColor);
             if (updatedCard != null) {
                 GlobalState.getInstance().setCurrentCard(updatedCard);
-                loadCardLabels(); 
+                loadCardLabels();
             } else {
                 showAlert("Error API", "La API falló al añadir la etiqueta existente.");
             }
@@ -166,7 +171,7 @@ public class EtiquetasController {
         HBox tagBox = new HBox(chip, removeBtn);
         tagBox.setStyle("-fx-background-color: " + hexColor
                 + "; -fx-background-radius: 12; -fx-padding: 2 8; -fx-alignment: center;");
-        
+
         removeBtn.setOnAction(e -> {
             // Aquí se debería llamar a la API para borrar
             etiquetasContainer.getChildren().remove(tagBox);
@@ -198,6 +203,16 @@ public class EtiquetasController {
         if (cardId == null) {
             showAlert("Error de Contexto", "No hay una tarjeta seleccionada para añadir la etiqueta.");
             return;
+        }
+
+        String boardId = GlobalState.getInstance().getCurrentBoardId();
+        if (boardId != null) {
+            try {
+                TableroService tableroService = new TableroService();
+                tableroService.createEtiqueta(boardId, nombre, hexColor);
+            } catch (Exception ignored) {
+                System.out.println("Aviso: No se pudo añadir la etiqueta al tablero global (puede que ya exista).");
+            }
         }
 
         try {
@@ -237,7 +252,7 @@ public class EtiquetasController {
 
         // Limpiar campos
         nombreEtiquetaField.clear();
-        
+
         // Recargar para que desaparezca de las disponibles si es necesario
         loadCardLabels();
     }
