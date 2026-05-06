@@ -3,7 +3,9 @@ package umu.pds.api.domain.models;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import umu.pds.api.domain.exceptions.LimiteListaExcedidoException;
@@ -40,8 +42,8 @@ public class Tablero {
 	private String nombre; 								//nombre, classic
 	private EstadoTablero estado; 						//estado como enum
 	private final List<ListaTareas> listas; 			//lista de listas de tareas (como si fuera una matriz 2D)
-	private final ListaTareas listaCompletadas; 		//lista especial de completadas
-	private final ListaTareas listaArchivadas;			//lista compactada de tareas archivadas
+	private ListaTareas listaCompletadas; 				//lista especial de completadas
+	private ListaTareas listaArchivadas;					//lista compactada de tareas archivadas
 	private final List<TrazaAccion> historial;			//historial de trazas de acciones
 	private final String emailCreador;					//email del usuario que crea el tablero (obligatorio)
 	private String url;									//url para acceder al tablero y/O compartirla xra que accendasn
@@ -84,6 +86,15 @@ public class Tablero {
         
         tablero.listas.clear();
         tablero.listas.addAll(listas);
+        
+        // Reasignar las listas especiales a las instancias reales de la BD
+        for (ListaTareas l : listas) {
+            if ("Completadas".equalsIgnoreCase(l.getNombre())) {
+                tablero.listaCompletadas = l;
+            } else if ("Archivadas".equalsIgnoreCase(l.getNombre())) {
+                tablero.listaArchivadas = l;
+            }
+        }
         
         tablero.historial.clear();
         tablero.historial.addAll(historial);

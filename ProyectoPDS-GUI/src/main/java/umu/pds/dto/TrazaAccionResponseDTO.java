@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public record TrazaAccionResponseDTO(
         String accion,
         String tarjetaId,
-        String listaOrigen, // Puede ser null (ej. al AÑADIR)
-        String listaDestino, // Puede ser null (ej. al ELIMINAR)
+        String listaOrigen, // puede ser null
+        String listaDestino, // tambien puede serlo
         LocalDateTime fecha) {
 }

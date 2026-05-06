@@ -8,6 +8,8 @@ import umu.pds.gui.services.api.TableroService;
 import umu.pds.dto.TableroResponseDTO;
 import umu.pds.gui.services.GlobalState;
 
+import java.util.Map;
+
 public class BoardWorkspaceController {
 
     @FXML
@@ -56,7 +58,7 @@ public class BoardWorkspaceController {
                 if (isPropietario) {
                     role = "PROPIETARIO";
                 } else if (board.miembros() != null) {
-                    for (java.util.Map.Entry<String, String> entry : board.miembros().entrySet()) {
+                    for (Map.Entry<String, String> entry : board.miembros().entrySet()) {
                         if (entry.getKey().toLowerCase().equals(currentUserEmail)) {
                             role = entry.getValue() != null ? entry.getValue().toUpperCase() : "LECTOR";
                             break;
@@ -130,7 +132,7 @@ public class BoardWorkspaceController {
                 tableroService.descongelarTablero(boardId);
                 System.out.println("Tablero descongelado.");
             }
-            updateHeader(); // Refrescar el estado y recargar la vista
+            updateHeader(); // refrescar estado y recargar vista
             loadKanban();
         } catch (Exception e) {
             System.err.println("Error al alternar estado del tablero: " + e.getMessage());

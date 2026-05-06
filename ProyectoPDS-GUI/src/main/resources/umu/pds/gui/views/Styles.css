@@ -791,11 +791,7 @@
 	    -fx-background-radius: 8;
 	    -fx-cursor: hand;
 	}
-	.avatar-circle-placeholder {
-	    -fx-fill: #bfd2fd;
-	    -fx-stroke: white;
-	    -fx-stroke-width: 2;
-	}
+
 
 /* --- Badges de Roles --- */
 .role-badge {

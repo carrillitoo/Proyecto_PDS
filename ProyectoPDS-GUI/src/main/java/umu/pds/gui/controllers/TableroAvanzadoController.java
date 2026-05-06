@@ -3,7 +3,9 @@ package umu.pds.gui.controllers;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
@@ -15,7 +17,12 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
+import umu.pds.dto.EtiquetaDTO;
 import umu.pds.dto.ListaTareasResponseDTO;
 import umu.pds.dto.TableroResponseDTO;
 import umu.pds.dto.TarjetaResponseDTO;
@@ -39,7 +46,7 @@ public class TableroAvanzadoController {
     private TableroService tableroService = new TableroService();
     private TarjetaService tarjetaService = new TarjetaService();
     private TableroResponseDTO currentBoard;
-    private java.util.Set<String> activeFilters = new java.util.HashSet<>();
+    private Set<String> activeFilters = new HashSet<>();
 
     @FXML
     public void initialize() {
@@ -78,10 +85,10 @@ public class TableroAvanzadoController {
         if (filterMenuBtn == null) return;
         filterMenuBtn.getItems().clear();
         
-        java.util.Set<String> uniqueLabels = new java.util.HashSet<>();
+        Set<String> uniqueLabels = new HashSet<>();
         
         if (tablero.etiquetas() != null) {
-            for (umu.pds.dto.EtiquetaDTO et : tablero.etiquetas()) {
+            for (EtiquetaDTO et : tablero.etiquetas()) {
                 uniqueLabels.add(et.nombre());
             }
         }
@@ -91,7 +98,7 @@ public class TableroAvanzadoController {
                 if (listData.tarjetas() != null) {
                     for (TarjetaResponseDTO card : listData.tarjetas()) {
                         if (card.etiquetas() != null) {
-                            for (umu.pds.dto.EtiquetaDTO et : card.etiquetas()) {
+                            for (EtiquetaDTO et : card.etiquetas()) {
                                 uniqueLabels.add(et.nombre());
                             }
                         }
@@ -102,7 +109,7 @@ public class TableroAvanzadoController {
         
         if (!uniqueLabels.isEmpty()) {
             for (String labelName : uniqueLabels) {
-                javafx.scene.control.CheckMenuItem item = new javafx.scene.control.CheckMenuItem(labelName);
+                CheckMenuItem item = new CheckMenuItem(labelName);
                 item.setSelected(activeFilters.contains(labelName));
                 item.setOnAction(e -> {
                     if (item.isSelected()) {
@@ -115,7 +122,7 @@ public class TableroAvanzadoController {
                 filterMenuBtn.getItems().add(item);
             }
         } else {
-            javafx.scene.control.MenuItem emptyItem = new javafx.scene.control.MenuItem("Sin etiquetas disponibles");
+            MenuItem emptyItem = new MenuItem("Sin etiquetas disponibles");
             emptyItem.setDisable(true);
             filterMenuBtn.getItems().add(emptyItem);
         }
@@ -148,7 +155,6 @@ public class TableroAvanzadoController {
 
         listsContainer.getChildren().clear();
 
-        // El placeholder de nueva lista (Leftmost)
         String role = GlobalState.getInstance().getCurrentUserRole();
         boolean hasElevatedPermissions = "PROPIETARIO".equals(role) || "ESCRITOR".equals(role);
         boolean canAddOrDelete = hasElevatedPermissions && !isBoardCongelado;
@@ -168,10 +174,10 @@ public class TableroAvanzadoController {
             listsContainer.getChildren().add(addListPlaceholder);
         }
 
-        // Separar las listas para ordenarlas
+        // separamos listas para ordenarlas
         ListaTareasResponseDTO completadasList = null;
         ListaTareasResponseDTO archivadasList = null;
-        java.util.List<ListaTareasResponseDTO> normalLists = new java.util.ArrayList<>();
+        List<ListaTareasResponseDTO> normalLists = new ArrayList<>();
 
         if (tablero.listas() != null) {
             for (ListaTareasResponseDTO listData : tablero.listas()) {
@@ -191,7 +197,7 @@ public class TableroAvanzadoController {
             listsContainer.getChildren().add(listColumn);
         }
 
-        // Completadas y Archivadas al final
+        // Completadas y Archivadas las ultimas
         if (completadasList != null) {
             VBox listColumn = createListColumn(completadasList);
             listsContainer.getChildren().add(listColumn);
@@ -229,10 +235,10 @@ public class TableroAvanzadoController {
         }
         header.getChildren().addAll(titleLabel, spacer, optionsBtn);
 
-        // Contenedor de Tarjetas (el drop target de DnD principal)
+        // contenedor de tarjetas 
         VBox cardsContainer = new VBox();
         cardsContainer.setSpacing(10.0);
-        cardsContainer.setMinHeight(50); // Para poder dropear si está vacía
+        cardsContainer.setMinHeight(50); 
         VBox.setVgrow(cardsContainer, Priority.ALWAYS);
 
         if (listData.tarjetas() != null) {
@@ -245,7 +251,7 @@ public class TableroAvanzadoController {
         }
 
         if (canMoveCards) {
-            // Configuración de Drag & Drop para esta columna (Usamos el nombre de la lista como ID de lista)
+
             setupDropTarget(cardsContainer, listData.nombreLista());
         }
 
@@ -275,7 +281,7 @@ public class TableroAvanzadoController {
         labelsRow.setAlignment(Pos.CENTER_LEFT);
         
         if (cardData.etiquetas() != null) {
-            for (umu.pds.dto.EtiquetaDTO et : cardData.etiquetas()) {
+            for (EtiquetaDTO et : cardData.etiquetas()) {
                 Label etLabel = new Label();
                 etLabel.getStyleClass().add("card-label-bar");
                 etLabel.setStyle("-fx-background-color: " + et.colorHex() + ";");
@@ -313,15 +319,13 @@ public class TableroAvanzadoController {
 
         cardNode.getChildren().add(titleRow);
 
-        // Click handler (abre el modal de detalle)
         cardNode.setOnMouseClicked(e -> handleOpenCard(cardData, sourceListName));
         
         if (canMoveCards) {
-            // Configuración de DRAG source
             cardNode.setOnDragDetected((MouseEvent event) -> {
                 Dragboard db = cardNode.startDragAndDrop(TransferMode.MOVE);
                 ClipboardContent content = new ClipboardContent();
-                content.putString(cardData.id() + "|" + sourceListName); // ID + SourceListName
+                content.putString(cardData.id() + "|" + sourceListName); 
                 db.setContent(content);
                 cardNode.getStyleClass().add("dragging-card");
                 event.consume();
@@ -402,13 +406,13 @@ public class TableroAvanzadoController {
     private boolean matchesFilters(TarjetaResponseDTO card) {
         if (activeFilters.isEmpty()) return true;
         if (card.etiquetas() == null) return false;
-        for (umu.pds.dto.EtiquetaDTO et : card.etiquetas()) {
+        for (EtiquetaDTO et : card.etiquetas()) {
             if (activeFilters.contains(et.nombre())) return true;
         }
         return false;
     }
 
-    // -- Manejo de Botones y Handlers (ya existentes, listos para la app real) --
+    // -- Manejo de botones y handlers--
 
     @FXML
     private void handleInvite() {

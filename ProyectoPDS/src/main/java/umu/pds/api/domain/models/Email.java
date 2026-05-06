@@ -10,7 +10,7 @@ public class Email {
     
     public Email(String direccion) {
     	
-    	//-------------------------------Para comprobar si el email esta en un formato correcto-------------------------
+    	//para comprobar que el email esta en un formato correcto
         if (direccion == null || !PATTERN.matcher(direccion).matches()) {
             throw new IllegalArgumentException("Formato de email no válido");
         }

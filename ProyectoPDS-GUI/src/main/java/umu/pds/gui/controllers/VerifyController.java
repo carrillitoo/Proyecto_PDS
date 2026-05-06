@@ -33,13 +33,13 @@ public class VerifyController {
         if (current == null) return;
         
         current.textProperty().addListener((observable, oldValue, newValue) -> {
-            // Asegurarnos de que sólo se introduzcan números
+            // Asegurarnos de que solo se introduzcan números
             if (newValue != null && !newValue.matches("\\d*")) {
                 current.setText(newValue.replaceAll("[^\\d]", ""));
                 return;
             }
             
-            // Limitar la longitud a 1 carácter y avanzar
+            // Limitar la longitud a 1 caracter para no tener que estar tabulando
             if (newValue != null && newValue.length() > 0) {
                 if (newValue.length() > 1) {
                     current.setText(newValue.substring(0, 1));
@@ -47,7 +47,7 @@ public class VerifyController {
                 if (next != null) {
                     next.requestFocus();
                 } else if (current == digit6) {
-                    // Si es el último dígito, verificar si todos están llenos
+                    // Si es el último digito, verificar si todos están llenos
                     checkAndSubmit();
                 }
             }

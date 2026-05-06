@@ -21,7 +21,7 @@ public class LoginController {
             return;
         }
 
-        // Validación de Regex básica
+        // validacion expresion
         if (!email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
             showAlert("Email Inválido", "El formato del correo electrónico no es válido.");
             return;
@@ -30,7 +30,7 @@ public class LoginController {
         final String finalEmail = email;
         System.out.println("Solicitando código para email: " + finalEmail + "...");
         
-        // Llamada asíncrona para no bloquear el hilo de la UI
+        // llamada asincrona para no bloquear el hilo
         new Thread(() -> {
             try {
                 boolean exito = authService.solicitarCodigo(finalEmail);

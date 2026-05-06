@@ -20,7 +20,7 @@ A continuación se exponen las áreas de responsabilidad de cada miembro.
 ## Víctor Carrillo Gil (carrillitoo)
 **Rol principal:** Infraestructura, CI/CD, modelado de dominio de tarjetas,etiquetas y adaptadores.
 
-Victor se encargó de la integración continua mediante flujos de automatizados con SonarQube y GitHub Actions. En cuanto al código, se encargó del modelado de elementos del dominio, en particular de las tarjetas y las etiquetas, y también de la capa de adaptadores para separar correctamente la infraestructura.
+Se ha encargado de la integración continua mediante flujos de automatizados con SonarQube y GitHub Actions. En cuanto al código, se encargó del modelado de elementos del dominio, en particular de las tarjetas y las etiquetas, y también de la capa de adaptadores para separar correctamente la infraestructura.
 
 **Commits destacados**
 - `0f36415` y `20dc280` - *Añadida configuración de SonarQube en pom.xml y en application properties*: Configuración de las herramientas de análisis de código estático y CI/CD.
@@ -33,16 +33,18 @@ Victor se encargó de la integración continua mediante flujos de automatizados 
 
 ---
 
-## Javier Peñalver Gómez
+## Javier Peñalver Gómez (javierpenalvergomez) 
 **Rol principal:** Dominio de Identidad, Frontend (GUI), Integración de Servicios (Email) y Documentación.
 
-Javier se enfocó intensamente en el módulo frontend (`ProyectoPDS-GUI`), desarrollando las vistas iniciales, controladores de interfaz y estilos. En el backend, diseñó el modelo de dominio relacionado con los Usuarios y Roles, así como la implementación de adaptadores de salida específicos como el envío de emails. Finalmente, realizó grandes aportes a la refactorización y documentación del proyecto.
+Se ha encargado del módulo frontend, el proyecto ProyectoPDS-GUI, desarrollando las vistas iniciales, controladores de interfaz y estilos. En la parte del backend el diseño de dominio relacionado con los Usuarios y Roles y ademñas la implementación de adaptadores de salida específicos como el envío de emails. Finalmente, realizó grandes aportes a la refactorización y documentación del proyecto.
 
 **Commits destacados**
-- `d64f27c` - *dominio usuarios, usuario, email y rol*: Modelado del Bounded Context de Identidad y Acceso.
-- `9ce315d` a `e82f036` - *primeras implementaciones front*, *front*, *interfaz*: Construcción inicial de la interfaz gráfica en JavaFX.
-- `a489f4b` y `82396a3` - *UsuarioController*, *ConsoleEmailAdapter*: Exposición de la API de usuarios y creación del adaptador para la simulación/envío de correos.
-- `4f3216f` y `9b41969` - *quitar mocks, mover dtos y otros cambios*, *pulir detalles interfaz*: Refactorización profunda, limpieza de datos simulados y organización de los DTOs en el frontend.
+- `d64f27c` - *dominio usuarios, usuario, email y rol*: creacion del modelo de identidad y acceso.
+- `1cdccf2` - *modificacion en la clase usuario*: amplicación en email y usuario y creación del UsuarioRepositoryPort.
+- `e0f49ff` - *dtos y usecases*: implementación de los DTOs, casos de uso y puertos de entrada y salida para la lógica de compartir tablero y verificación por email.
+- `9ce315d` a `e82f036` - *primeras implementaciones front*, *front*, *interfaz*: Implementaciones iniciales de la interfaz gráfica.
+- `a489f4b` y `82396a3` - *UsuarioController*, *ConsoleEmailAdapter*: implementación de la API de usuarios y del adaptador para el envío de correos.
+- `4f3216f` y `9b41969` - *quitar mocks, mover dtos y otros cambios*, *pulir detalles interfaz*: Quitar datos simulados, orgnizar los DTOs en el frontend y refactorizaciones.
 - `81f6191` y `a12ef37` - *documentación*: Contribuciones finales a los manuales y ficheros markdown del proyecto.
 
 ---

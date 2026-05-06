@@ -34,7 +34,7 @@ public class SolicitarCodigoUseCaseImpl implements SolicitarCodigoPort {
         // Generamos un código aleatorio de 6 dígitos
         String codigo = String.format("%06d", random.nextInt(1000000));
 
-        // Se actualiza el código en el objeto Usuario
+        // Se actualiza el codigo en el objeto Usuario
         usuario.generarCodigoAcceso(codigo);
 
         // guardamos y enviamos

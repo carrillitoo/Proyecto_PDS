@@ -13,7 +13,7 @@ public record CrearListaRequestDTO(
 		List<String> reglas,
 		Integer limite
 		) {
-	//esto lo pongo porque si se manda un null del front ya que es opcional reventaria el programa asinnnque pues eso tendríamos 
+	//esto lo pongo porque si se manda un null del front ya que es opcional reventaria el programa 
 	public CrearListaRequestDTO {
         if (reglas == null)
             reglas = Collections.emptyList();

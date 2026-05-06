@@ -2,9 +2,11 @@ package umu.pds.gui.services.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.UUID;
 
@@ -31,7 +33,7 @@ public class TarjetaService {
         AddTarjetaRequestDTO requestDto = new AddTarjetaRequestDTO(titulo, descripcion, tipo, contenidoTarea);
         String json = objectMapper.writeValueAsString(requestDto);
 
-        String url = "http://localhost:8080/tablerellos/tableros/" + tableroId + "/listas/" + listaDestino + "/tarjetas";
+        String url = "http://localhost:8080/tablerellos/tableros/" + tableroId + "/listas/" + URLEncoder.encode(listaDestino, StandardCharsets.UTF_8).replace("+", "%20") + "/tarjetas";
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
@@ -84,7 +86,7 @@ public class TarjetaService {
     }
 
     public boolean deleteCard(String tableroId, String nombreLista, String tarjetaId) throws Exception {
-        String url = "http://localhost:8080/tablerellos/tableros/" + tableroId + "/listas/" + nombreLista + "/tarjetas/" + tarjetaId;
+        String url = "http://localhost:8080/tablerellos/tableros/" + tableroId + "/listas/" + URLEncoder.encode(nombreLista, StandardCharsets.UTF_8).replace("+", "%20") + "/tarjetas/" + tarjetaId;
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
@@ -96,7 +98,7 @@ public class TarjetaService {
     }
 
     public boolean toggleChecklistItem(String tableroId, String nombreLista, String tarjetaId, String itemId) throws Exception {
-        String url = "http://localhost:8080/tablerellos/tableros/" + tableroId + "/listas/" + nombreLista + "/tarjetas/" + tarjetaId + "/checklist/" + itemId + "/toggle";
+        String url = "http://localhost:8080/tablerellos/tableros/" + tableroId + "/listas/" + URLEncoder.encode(nombreLista, StandardCharsets.UTF_8).replace("+", "%20") + "/tarjetas/" + tarjetaId + "/checklist/" + itemId + "/toggle";
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))

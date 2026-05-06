@@ -1,6 +1,7 @@
 package umu.pds.api.adapters.dto;
 
 import java.util.List;
+import java.util.Map;
 
 public record TableroResponseDTO(
 		String id,
@@ -11,6 +12,6 @@ public record TableroResponseDTO(
 		List<ListaTareasResponseDTO> listas,
 		List<TrazaAccionResponseDTO> historial,
 		List<EtiquetaDTO> etiquetas,
-		java.util.Map<String, String> miembros,
-		java.util.Map<String, String> invitaciones) {
+		Map<String, String> miembros,
+		Map<String, String> invitaciones) {
 }

@@ -26,9 +26,6 @@ public class UsuarioEntity {
     private String email;
     private String nombre;
     
-    @Column(name = "url_foto")
-    private String urlFoto;
-    
     @Column(name = "codigo_acceso")
     private String codigoAcceso;
 
@@ -45,10 +42,9 @@ public class UsuarioEntity {
     public UsuarioEntity() {
     }
     
-    public UsuarioEntity(String email, String nombre, String urlFoto, String codigoAcceso, Map<String, Rol> accesos) {
+    public UsuarioEntity(String email, String nombre, String codigoAcceso, Map<String, Rol> accesos) {
         this.email = email;
         this.nombre = nombre;
-        this.urlFoto = urlFoto;
         this.codigoAcceso = codigoAcceso;
         this.accesosTableros = (accesos != null) ? new HashMap<>(accesos) : new HashMap<>();
     }
@@ -85,13 +81,5 @@ public class UsuarioEntity {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public String getUrlFoto() {
-        return urlFoto;
-    }
-
-    public void setUrlFoto(String urlFoto) {
-        this.urlFoto = urlFoto;
     }
 }

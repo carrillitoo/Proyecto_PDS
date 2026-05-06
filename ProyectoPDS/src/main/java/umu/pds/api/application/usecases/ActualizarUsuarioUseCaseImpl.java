@@ -17,17 +17,13 @@ public class ActualizarUsuarioUseCaseImpl implements ActualizarUsuarioPort {
     }
 
     @Override
-    public Usuario ejecutar(String emailStr, String nombre, String urlFoto) {
+    public Usuario ejecutar(String emailStr, String nombre) {
         Email email = new Email(emailStr);
         Usuario usuario = usuarioRepository.buscarPorEmail(email)
             .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
              
         if (nombre != null && !nombre.trim().isEmpty()) {
             usuario.setNombre(nombre);
-        }
- 
-        if (urlFoto != null && !urlFoto.trim().isEmpty()) {
-            usuario.setUrlFoto(urlFoto);
         }
          
         usuarioRepository.guardar(usuario);

@@ -20,7 +20,7 @@ public class MainLayoutController {
     @FXML
     public void initialize() {
         instance = this;
-        // Actualizar nombre de usuario si está disponible
+        // actualizar nombre de usuario si está disponible
         String userName = GlobalState.getInstance().getUserName();
         if (userName != null && !userName.isBlank()) {
             userNameLabel.setText(userName);
@@ -48,7 +48,7 @@ public class MainLayoutController {
         }
     }
 
-    // --- ACCIONES DEL MENÚ LATERAL ---
+    // --- ACCIONES MENU LATERAL ---
     @FXML
     private void goDashboard() {
         GlobalState.getInstance().setShowActivityInDashboard(true);

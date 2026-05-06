@@ -9,6 +9,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.VBox;
+import umu.pds.dto.TableroResponseDTO;
+import umu.pds.dto.UsuarioResponseDTO;
 import umu.pds.gui.services.GlobalState;
 import umu.pds.gui.services.api.TableroService;
 import umu.pds.gui.services.api.UsuarioService;
@@ -56,9 +58,9 @@ public class InvitarMiembroController {
 
     private void loadUsers() {
         try {
-            List<umu.pds.dto.UsuarioResponseDTO> usuarios = usuarioService.getAllUsuarios();
+            List<UsuarioResponseDTO> usuarios = usuarioService.getAllUsuarios();
             allEmails = FXCollections.observableArrayList();
-            for (umu.pds.dto.UsuarioResponseDTO u : usuarios) {
+            for (UsuarioResponseDTO u : usuarios) {
                 allEmails.add(u.email());
             }
             emailCombo.setItems(allEmails);
@@ -86,9 +88,9 @@ public class InvitarMiembroController {
         try {
             boolean ok = tableroService.shareBoard(boardId, email, rol);
             if (ok) {
-                // Obtener url
+                // obtener url
                 String userEmail = GlobalState.getInstance().getUserEmail();
-                umu.pds.dto.TableroResponseDTO tablero = tableroService.getTableroById(boardId, userEmail);
+                TableroResponseDTO tablero = tableroService.getTableroById(boardId, userEmail);
                 
                 linkContainer.setVisible(true);
                 linkContainer.setManaged(true);

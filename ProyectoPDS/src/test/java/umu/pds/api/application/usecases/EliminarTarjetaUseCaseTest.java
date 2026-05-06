@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import umu.pds.api.domain.models.Tablero;
 import umu.pds.api.domain.ports.out.TableroRepositoryPort;
+import umu.pds.api.domain.ports.out.TarjetaRepositoryPort;
 
 @ExtendWith(MockitoExtension.class)
 public class EliminarTarjetaUseCaseTest {
@@ -21,7 +22,7 @@ public class EliminarTarjetaUseCaseTest {
     private TableroRepositoryPort tableroRepositoryPort;
 
     @Mock
-    private umu.pds.api.domain.ports.out.TarjetaRepositoryPort tarjetaRepository;
+    private TarjetaRepositoryPort tarjetaRepository;
 
     private EliminarTarjetaUseCaseImpl useCase;
 

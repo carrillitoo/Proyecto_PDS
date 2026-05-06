@@ -12,6 +12,7 @@ import javafx.scene.text.Text;
 import java.time.format.DateTimeFormatter;
 import umu.pds.dto.TarjetaResponseDTO;
 import umu.pds.dto.ChecklistItemDTO;
+import umu.pds.dto.EtiquetaDTO;
 import umu.pds.gui.services.GlobalState;
 import umu.pds.gui.services.api.TarjetaService;
 
@@ -46,12 +47,12 @@ public class TaskDetailController {
                 createdDateText.setText("CREADO EL " + card.fechaCreacion().format(formatter).toUpperCase());
             }
 
-            // Limpiar mocks visuales de FXML
+            // limpiaer mocks 
             labelsBox.getChildren().clear(); 
             
-            // Renderizar etiquetas reales si existen
+            // renderizar etiquetas reales si existen
             if (card.etiquetas() != null) {
-                for (umu.pds.dto.EtiquetaDTO etiqueta : card.etiquetas()) {
+                for (EtiquetaDTO etiqueta : card.etiquetas()) {
                     javafx.scene.control.Label label = new javafx.scene.control.Label(etiqueta.nombre());
                     label.getStyleClass().add("badge-label");
                     label.setStyle("-fx-background-color: " + etiqueta.colorHex() + ";");
@@ -59,13 +60,13 @@ public class TaskDetailController {
                 }
             }
 
-            // Añadir botón de "+" para gestionar etiquetas
+            // añadir boton de + para gestionar etiquetas
             Button addLabelBtn = new Button("+");
             addLabelBtn.getStyleClass().add("add-label-badge");
             addLabelBtn.setOnAction(e -> handleOpenLabels());
             labelsBox.getChildren().add(addLabelBtn);
 
-            // Renderizar contenido dinámico (Tarea o Checklist)
+            // Renderizar contenido dinámico 
             contentContainer.getChildren().clear();
             
             if ("TAREA".equals(card.tipo())) {

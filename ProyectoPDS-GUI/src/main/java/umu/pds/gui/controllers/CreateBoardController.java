@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import umu.pds.dto.TableroResponseDTO;
 import umu.pds.gui.services.api.TableroService;
 import umu.pds.gui.services.GlobalState;
 
@@ -33,13 +34,13 @@ public class CreateBoardController {
                 return;
             }
 
-            // Llama a base de datos real
-            umu.pds.dto.TableroResponseDTO createdBoard = tableroService.createBoard(boardName, currentUserEmail);
+            // llama a base de datos real
+            TableroResponseDTO createdBoard = tableroService.createBoard(boardName, currentUserEmail);
 
             System.out.println("Tablero creado exitosamente en API con ID: " + createdBoard.id());
-            // Guardar el ID del tablero recien creado en GlobalState
+            // guardamos ID del tablero recien creado 
             GlobalState.getInstance().setCurrentBoardId(createdBoard.id());
-            // Tras crear, volver al Dashboard
+            // despues de crear volver al dashboard
             MainLayoutController.getInstance().loadCenterView("Dashboard");
 
         } catch (Exception e) {

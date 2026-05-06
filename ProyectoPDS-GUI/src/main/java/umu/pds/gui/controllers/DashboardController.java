@@ -72,7 +72,6 @@ public class DashboardController {
             // No bloqueamos la interfaz si falla la API
         }
 
-        // Placeholder para crear nuevo tablero
         VBox newBoardPlaceholder = new VBox();
         newBoardPlaceholder.setAlignment(Pos.CENTER);
         newBoardPlaceholder.setPrefWidth(200);
@@ -101,7 +100,7 @@ public class DashboardController {
 
         activityContainer.getChildren().clear();
 
-        // 1. Agregamos todas las trazas de todos los tableros
+        // agregamos todas las trazas de todos los tableros
         List<GlobalTraza> allTrazas = new ArrayList<>();
         for (TableroResponseDTO board : myBoards) {
             if (board.historial() != null) {
@@ -111,7 +110,7 @@ public class DashboardController {
             }
         }
 
-        // 2. Ordenamos por fecha (mas reciente primero) y tomamos 5
+        // ordenamos ytomamos 5
         List<GlobalTraza> top5 = allTrazas.stream()
                 .sorted(Comparator.comparing((GlobalTraza gt) -> gt.traza.fecha()).reversed())
                 .limit(5)

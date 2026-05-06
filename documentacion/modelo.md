@@ -27,7 +27,6 @@ classDiagram
     class Usuario {
         <<Aggregate Root>>
         -String nombre
-        -String urlFoto
         -String codigoAcceso
         -Map~String, Rol~ accesosTableros
         +concederAccesoATablero(String tableroId, Rol rol)

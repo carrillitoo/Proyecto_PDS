@@ -14,6 +14,8 @@ import umu.pds.dto.TrazaAccionResponseDTO;
 import umu.pds.gui.services.GlobalState;
 import umu.pds.gui.services.api.TableroService;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ActivityController {
@@ -94,10 +96,9 @@ public class ActivityController {
         emptyLabel.setVisible(false);
         emptyLabel.setManaged(false);
 
-        // Creamos una copia mutable y le damos la vuelta para que lo mas reciente
-        // aparezca arriba
-        java.util.List<TrazaAccionResponseDTO> reversible = new java.util.ArrayList<>(historial);
-        java.util.Collections.reverse(reversible);
+        // creamos  copia mutable y le damos la vuelta para que lo mas reciente aprezca arriba
+        List<TrazaAccionResponseDTO> reversible = new ArrayList<>(historial);
+        Collections.reverse(reversible);
 
         for (TrazaAccionResponseDTO traza : reversible) {
             HBox item = createHistoryItem(traza);

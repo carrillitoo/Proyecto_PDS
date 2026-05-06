@@ -7,24 +7,22 @@ import java.util.Map;
 public class Usuario {
     private final Email email;
     private String nombre;
-    private String urlFoto;
     private String codigoAcceso;
     
-    // Relación directa Tablero -> Rol 
+    // mapa de tableros del usuario con el rol en cada uno
     private final Map<String, Rol> accesosTableros;
 
-    public Usuario(Email email, String nombre, String urlFoto) {
+    public Usuario(Email email, String nombre) {
         this.email = email;
         this.nombre = nombre;
-        this.urlFoto = urlFoto != null ? urlFoto : "/images/usuarios/default.png";
         this.accesosTableros = new HashMap<>();
     }
 
     public Usuario(Email email) {
-        this(email, email.getDireccion().contains("@") ? email.getDireccion().substring(0, email.getDireccion().indexOf("@")) : email.getDireccion(), null);
+        this(email, email.getDireccion().contains("@") ? email.getDireccion().substring(0, email.getDireccion().indexOf("@")) : email.getDireccion());
     }
 
-    // Lógica de Negocio: Gestion de Accesos
+    // gestion de Accesos
     public void concederAccesoATablero(String tableroId, Rol rol) {
         this.accesosTableros.put(tableroId, rol);
     }
@@ -33,7 +31,7 @@ public class Usuario {
         this.accesosTableros.remove(tableroId);
     }
 
-    // Lógica de Negocio: Autenticacion
+    // autenticacion
     public void generarCodigoAcceso(String nuevoCodigo) {
         this.codigoAcceso = nuevoCodigo;
     }
@@ -61,13 +59,5 @@ public class Usuario {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public String getUrlFoto() {
-        return urlFoto;
-    }
-
-    public void setUrlFoto(String urlFoto) {
-        this.urlFoto = urlFoto;
     }
 }

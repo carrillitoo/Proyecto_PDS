@@ -79,7 +79,7 @@ public class CreateListController {
                 return;
             }
 
-            // Si el checkbox esta marcado, el limite es null (infinito en backend)
+            // si se marca checkbox limite infinito 
             Integer limite = (unlimitedCheckbox != null && unlimitedCheckbox.isSelected()) ? null : (int) capacitySlider.getValue();
 
             // Reglas de origen

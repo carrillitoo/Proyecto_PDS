@@ -9,6 +9,16 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import umu.pds.dto.EtiquetaDTO;
+import umu.pds.dto.ListaTareasResponseDTO;
+import umu.pds.dto.TableroResponseDTO;
+import umu.pds.dto.TarjetaResponseDTO;
 import umu.pds.gui.services.GlobalState;
 import umu.pds.gui.services.api.TableroService;
 import umu.pds.gui.services.api.TarjetaService;
@@ -39,14 +49,14 @@ public class EtiquetasController {
         if (cardId == null)
             return;
 
-        java.util.Set<String> cardLabelNames = new java.util.HashSet<>();
+        Set<String> cardLabelNames = new HashSet<>();
 
         try {
-            umu.pds.dto.TarjetaResponseDTO card = GlobalState.getInstance().getCurrentCard();
+            TarjetaResponseDTO card = GlobalState.getInstance().getCurrentCard();
 
             if (card != null && card.etiquetas() != null) {
                 etiquetasContainer.getChildren().clear();
-                for (umu.pds.dto.EtiquetaDTO et : card.etiquetas()) {
+                for (EtiquetaDTO et : card.etiquetas()) {
                     addTagToView(et.nombre(), et.colorHex());
                     cardLabelNames.add(et.nombre());
                 }
@@ -56,7 +66,7 @@ public class EtiquetasController {
                 emptyLabel.setVisible(true);
             }
 
-            // Cargar etiquetas disponibles
+            // cargar etiquetas disponibles
             loadAvailableLabels(cardLabelNames);
 
         } catch (Exception e) {
@@ -64,7 +74,7 @@ public class EtiquetasController {
         }
     }
 
-    private void loadAvailableLabels(java.util.Set<String> cardLabelNames) {
+    private void loadAvailableLabels(Set<String> cardLabelNames) {
         String boardId = GlobalState.getInstance().getCurrentBoardId();
         if (boardId == null)
             return;
@@ -74,15 +84,15 @@ public class EtiquetasController {
         }
 
         try {
-            umu.pds.gui.services.api.TableroService tableroService = new umu.pds.gui.services.api.TableroService();
-            umu.pds.dto.TableroResponseDTO tablero = tableroService.getTableroById(boardId,
+            TableroService tableroService = new TableroService();
+            TableroResponseDTO tablero = tableroService.getTableroById(boardId,
                     GlobalState.getInstance().getUserEmail());
 
             if (tablero != null) {
-                java.util.Map<String, String> uniqueLabels = new java.util.HashMap<>();
+                Map<String, String> uniqueLabels = new HashMap<>();
 
                 if (tablero.etiquetas() != null) {
-                    for (umu.pds.dto.EtiquetaDTO et : tablero.etiquetas()) {
+                    for (EtiquetaDTO et : tablero.etiquetas()) {
                         if (!cardLabelNames.contains(et.nombre())) {
                             uniqueLabels.put(et.nombre(), et.colorHex());
                         }
@@ -90,11 +100,11 @@ public class EtiquetasController {
                 }
 
                 if (tablero.listas() != null) {
-                    for (umu.pds.dto.ListaTareasResponseDTO listData : tablero.listas()) {
+                    for (ListaTareasResponseDTO listData : tablero.listas()) {
                         if (listData.tarjetas() != null) {
-                            for (umu.pds.dto.TarjetaResponseDTO t : listData.tarjetas()) {
+                            for (TarjetaResponseDTO t : listData.tarjetas()) {
                                 if (t.etiquetas() != null) {
-                                    for (umu.pds.dto.EtiquetaDTO et : t.etiquetas()) {
+                                    for (EtiquetaDTO et : t.etiquetas()) {
                                         if (!cardLabelNames.contains(et.nombre())) {
                                             uniqueLabels.put(et.nombre(), et.colorHex());
                                         }
@@ -105,7 +115,7 @@ public class EtiquetasController {
                     }
                 }
 
-                for (java.util.Map.Entry<String, String> entry : uniqueLabels.entrySet()) {
+                for (Map.Entry<String, String> entry : uniqueLabels.entrySet()) {
                     addAvailableTagToView(entry.getKey(), entry.getValue());
                 }
 
@@ -147,7 +157,7 @@ public class EtiquetasController {
 
         try {
             TarjetaService tarjetaService = new TarjetaService();
-            umu.pds.dto.TarjetaResponseDTO updatedCard = tarjetaService.addLabelToCard(cardId, nombre, hexColor);
+            TarjetaResponseDTO updatedCard = tarjetaService.addLabelToCard(cardId, nombre, hexColor);
             if (updatedCard != null) {
                 GlobalState.getInstance().setCurrentCard(updatedCard);
                 loadCardLabels();
@@ -173,7 +183,6 @@ public class EtiquetasController {
                 + "; -fx-background-radius: 12; -fx-padding: 2 8; -fx-alignment: center;");
 
         removeBtn.setOnAction(e -> {
-            // Aquí se debería llamar a la API para borrar
             etiquetasContainer.getChildren().remove(tagBox);
             if (etiquetasContainer.getChildren().isEmpty())
                 emptyLabel.setVisible(true);
@@ -217,7 +226,7 @@ public class EtiquetasController {
 
         try {
             TarjetaService tarjetaService = new TarjetaService();
-            umu.pds.dto.TarjetaResponseDTO updatedCard = tarjetaService.addLabelToCard(cardId, nombre, hexColor);
+            TarjetaResponseDTO updatedCard = tarjetaService.addLabelToCard(cardId, nombre, hexColor);
             if (updatedCard != null) {
                 GlobalState.getInstance().setCurrentCard(updatedCard);
             } else {
@@ -229,7 +238,6 @@ public class EtiquetasController {
             return; // don't render visually if API failed
         }
 
-        // Crear chip visual
         Label chip = new Label(nombre);
         chip.setStyle("-fx-background-color: " + hexColor
                 + "; -fx-padding: 4 12; -fx-background-radius: 12; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 11px;");
@@ -250,10 +258,10 @@ public class EtiquetasController {
         etiquetasContainer.getChildren().add(tagBox);
         emptyLabel.setVisible(false);
 
-        // Limpiar campos
+        // limpiar campos
         nombreEtiquetaField.clear();
 
-        // Recargar para que desaparezca de las disponibles si es necesario
+        // recargar para que desaparezca de las disponibles si es necesario
         loadCardLabels();
     }
 

@@ -3,6 +3,7 @@ package umu.pds.gui.controllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import umu.pds.dto.TableroResponseDTO;
 import umu.pds.gui.services.GlobalState;
 import umu.pds.gui.services.api.TableroService;
 
@@ -25,8 +26,7 @@ public class UnirseTableroController {
             return;
         }
 
-        // Extraer el ID del tablero del enlace.
-        // Asumimos formato: http://trello-pds.com/board/UUID
+        // extraer el ID del tablero del enlace.
         String boardId = extractBoardId(link.trim());
         if (boardId == null) {
             showAlert("Enlace inválido", "No se pudo reconocer el identificador del tablero en el enlace.");
@@ -36,19 +36,18 @@ public class UnirseTableroController {
         try {
             String currentUserEmail = GlobalState.getInstance().getUserEmail();
             
-            // Intentar unirse al tablero (aceptar invitación)
+            // Intentar unirse al tablero 
             try {
                 tableroService.acceptInvitation(boardId, currentUserEmail);
             } catch (Exception e) {
-                // Si falla puede ser porque ya es miembro o porque no está invitado.
-                // Intentamos obtener el tablero de todos modos para ver si ya tiene acceso.
+                // si falla puede ser porque ya es miembro o porque no esta invitado.
+                // Intentamos obtener el tablero igual ver si ya tiene acceso.
                 System.out.println("Aviso al unirse: " + e.getMessage());
             }
 
-            // Verificar si el usuario tiene acceso al tablero llamando al endpoint de detalle
-            umu.pds.dto.TableroResponseDTO tablero = tableroService.getTableroById(boardId, currentUserEmail);
+            // verificar si el usuario tiene acceso al tablero llamando al endpoint de detalle
+            TableroResponseDTO tablero = tableroService.getTableroById(boardId, currentUserEmail);
             if (tablero != null) {
-                // Hay acceso. Lo abrimos.
                 GlobalState.getInstance().setCurrentBoardId(boardId);
                 MainLayoutController.getInstance().loadCenterView("BoardWorkspace");
             }
@@ -67,14 +66,13 @@ public class UnirseTableroController {
     private String extractBoardId(String link) {
         String[] parts = link.split("/");
         if (parts.length > 0) {
-            return parts[parts.length - 1]; // Devuelve el ultimo fragmento (que asuminos es el UUID)
+            return parts[parts.length - 1]; 
         }
         return null;
     }
 
     @FXML
     private void handleClose() {
-        // Volvemos a la vista anterior, normalmente el dashboard
         MainLayoutController.getInstance().loadCenterView("Dashboard");
     }
 

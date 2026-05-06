@@ -5,8 +5,10 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import umu.pds.dto.TableroResponseDTO;
+import umu.pds.dto.UsuarioResponseDTO;
 import umu.pds.gui.services.GlobalState;
 import umu.pds.gui.services.api.TableroService;
+import umu.pds.gui.services.api.UsuarioService;
 
 public class PermisosController {
 
@@ -87,15 +89,13 @@ public class PermisosController {
 
         VBox textStack = new VBox();
 
-        // Fetch User profile to get name
         String nombreMostrar = email.split("@")[0];
         try {
-            umu.pds.dto.UsuarioResponseDTO perfil = new umu.pds.gui.services.api.UsuarioService().getPerfil(email);
+            UsuarioResponseDTO perfil = new UsuarioService().getPerfil(email);
             if (perfil != null && perfil.nombre() != null && !perfil.nombre().trim().isEmpty()) {
                 nombreMostrar = perfil.nombre();
             }
         } catch (Exception e) {
-            // Default to email prefix
         }
 
         Label nameLabel = new Label(nombreMostrar);
@@ -108,14 +108,13 @@ public class PermisosController {
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
-        // Role
         String rolText = isCreator ? "Administrador"
                 : (role != null ? role.substring(0, 1).toUpperCase() + role.substring(1).toLowerCase() : "Lector");
         Label roleBadge = new Label(rolText);
         roleBadge.setMinWidth(100);
         roleBadge.setAlignment(Pos.CENTER);
 
-        // Estilo basado en el rol
+        // estilo basado en el rol
         roleBadge.getStyleClass().add("role-badge");
 
         if (rolText.equals("Administrador")) {

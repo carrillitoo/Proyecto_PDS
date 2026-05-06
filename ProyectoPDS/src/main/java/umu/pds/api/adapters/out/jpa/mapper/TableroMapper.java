@@ -7,7 +7,9 @@ import umu.pds.api.adapters.out.jpa.entity.*;
 import umu.pds.api.domain.models.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 

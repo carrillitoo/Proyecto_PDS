@@ -39,7 +39,7 @@ public class GestorEtiquetasController {
     private TableroService tableroService;
     private String currentBoardId;
 
-    // Estado de edicion
+    // estado de edicion
     private boolean isEditing = false;
     private String editingEtiquetaName = null;
 

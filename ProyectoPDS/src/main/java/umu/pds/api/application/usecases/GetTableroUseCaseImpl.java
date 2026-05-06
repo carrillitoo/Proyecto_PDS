@@ -1,6 +1,7 @@
 package umu.pds.api.application.usecases;
 
 
+import umu.pds.api.domain.exceptions.AccesoDenegadoException;
 import umu.pds.api.domain.exceptions.TableroNoEncontradoException;
 import umu.pds.api.domain.models.Tablero;
 import umu.pds.api.domain.models.TableroId;

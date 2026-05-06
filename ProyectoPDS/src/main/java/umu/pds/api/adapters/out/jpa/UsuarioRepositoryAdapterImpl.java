@@ -27,7 +27,6 @@ public class UsuarioRepositoryAdapterImpl implements UsuarioRepositoryPort {
         if (existing.isPresent()) {
             entity = existing.get();
             entity.setNombre(usuario.getNombre());
-            entity.setUrlFoto(usuario.getUrlFoto());
             entity.setCodigoAcceso(usuario.getCodigoAcceso());
             
             // Sincronizar accesos sin romper la referencia del mapa gestionado por JPA
@@ -39,7 +38,6 @@ public class UsuarioRepositoryAdapterImpl implements UsuarioRepositoryPort {
             entity = new UsuarioEntity(
                 usuario.getEmail().getDireccion(),
                 usuario.getNombre(),
-                usuario.getUrlFoto(),
                 usuario.getCodigoAcceso(),
                 usuario.getAccesosTableros());
         }
@@ -67,7 +65,7 @@ public class UsuarioRepositoryAdapterImpl implements UsuarioRepositoryPort {
 
     // metodo para convertit de entidad a dominio
     private Usuario mapToDomain(UsuarioEntity entity) {
-        Usuario usuario = new Usuario(new Email(entity.getEmail()), entity.getNombre(), entity.getUrlFoto());
+        Usuario usuario = new Usuario(new Email(entity.getEmail()), entity.getNombre());
         usuario.generarCodigoAcceso(entity.getCodigoAcceso() != null ? entity.getCodigoAcceso().trim() : null);
 
         if (entity.getAccesosTableros() != null) {

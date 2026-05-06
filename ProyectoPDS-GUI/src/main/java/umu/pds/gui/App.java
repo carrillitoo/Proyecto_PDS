@@ -10,7 +10,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        // Arrancamos directamente en el Login
+        // arrancamos directamente en el Login
         FXMLLoader loader = new FXMLLoader(App.class.getResource("/umu/pds/gui/views/Login.fxml"));
         scene = new Scene(loader.load(), 1200, 760);
         stage.setTitle("Tablerellos - Prototipo");

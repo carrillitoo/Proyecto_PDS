@@ -3,6 +3,8 @@ package umu.pds.api.application.usecases;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
@@ -11,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import umu.pds.api.domain.models.Rol;
 import umu.pds.api.domain.models.Tablero;
 import umu.pds.api.domain.ports.out.TableroRepositoryPort;
 
@@ -27,8 +30,8 @@ public class GetTableroUseCaseTest {
     void deberiaDevolverTablero() {
         Tablero mockTablero = mock(Tablero.class);
         String testEmail = "test@pds.com";
-        java.util.Map<String, umu.pds.api.domain.models.Rol> miembros = new java.util.HashMap<>();
-        miembros.put(testEmail, umu.pds.api.domain.models.Rol.LECTOR);
+        Map<String, Rol> miembros = new HashMap<>();
+        miembros.put(testEmail, Rol.LECTOR);
         when(mockTablero.getMiembros()).thenReturn(miembros);
         when(mockTablero.getEmailCreador()).thenReturn("creador@pds.com");
         when(tableroRepositoryPort.buscarPorId(any())).thenReturn(Optional.of(mockTablero));

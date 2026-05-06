@@ -3,6 +3,7 @@ package umu.pds.gui.controllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import umu.pds.dto.UsuarioResponseDTO;
 import umu.pds.gui.services.GlobalState;
 import umu.pds.gui.services.api.UsuarioService;
 
@@ -16,7 +17,6 @@ public class EditarPerfilController {
     public void initialize() {
         usuarioService = new UsuarioService();
         
-        // Cargar datos actuales
         String nombre = GlobalState.getInstance().getUserName();
         if (nombre != null) {
             nombreField.setText(nombre);
@@ -31,16 +31,13 @@ public class EditarPerfilController {
         if (email == null) return;
 
         try {
-            // Guardar nombre
             if (nuevoNombre != null && !nuevoNombre.trim().isEmpty() && !nuevoNombre.equals(GlobalState.getInstance().getUserName())) {
-                umu.pds.dto.UsuarioResponseDTO actualizado = usuarioService.updatePerfil(email, nuevoNombre.trim());
+                UsuarioResponseDTO actualizado = usuarioService.updatePerfil(email, nuevoNombre.trim());
                 GlobalState.getInstance().setUserName(actualizado.nombre());
             }
 
-            // Recargar UI principal
             MainLayoutController.getInstance().initialize(); // refresca navbar
 
-            // Volver
             handleClose();
         } catch (Exception e) {
             e.printStackTrace();

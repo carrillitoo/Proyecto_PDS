@@ -1,7 +1,7 @@
 package umu.pds.dto;
 
 
-// Recoge los datos necesarios para crear una tarjeta.
+// recogemos los datos necesarios para crear las tarjetas
  
 public record CrearTarjetaCommandDTO(
         String titulo,

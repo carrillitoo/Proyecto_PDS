@@ -48,7 +48,7 @@ public class UsuarioRepositoryAdapterImplTest {
     @Test
     void testBuscarPorEmail() {
         Email email = new Email("test@test.com");
-        UsuarioEntity entity = new UsuarioEntity(email.getDireccion(), "Test User", "http://foto.com", "123456", new HashMap<>());
+        UsuarioEntity entity = new UsuarioEntity(email.getDireccion(), "Test User", "123456", new HashMap<>());
 
         when(jpaRepository.findById(email.getDireccion())).thenReturn(Optional.of(entity));
 

@@ -1,7 +1,10 @@
 package umu.pds.api.adapters.out.jpa;
 
 import org.springframework.stereotype.Component;
+import umu.pds.api.adapters.out.jpa.entity.EtiquetaEmbeddable;
+import umu.pds.api.adapters.out.jpa.entity.ListaTareasEntity;
 import umu.pds.api.adapters.out.jpa.entity.TableroEntity;
+import umu.pds.api.adapters.out.jpa.entity.TrazaAccionEntity;
 import umu.pds.api.adapters.out.jpa.mapper.TableroMapper;
 import umu.pds.api.adapters.out.jpa.repository.TableroJpaRepository;
 import umu.pds.api.domain.models.Tablero;

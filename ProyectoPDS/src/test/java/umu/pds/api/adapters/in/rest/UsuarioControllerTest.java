@@ -21,7 +21,6 @@ import umu.pds.api.adapters.dto.SolicitarCodigoCommandDTO;
 import umu.pds.api.adapters.dto.ValidarCodigoCommandDTO;
 import umu.pds.api.domain.ports.in.ObtenerUsuarioPort;
 import umu.pds.api.domain.ports.in.ActualizarUsuarioPort;
-import umu.pds.api.domain.ports.in.SubirFotoPerfilPort;
 import umu.pds.api.domain.ports.in.ListarUsuariosPort;
 
 @WebMvcTest(UsuarioController.class)
@@ -41,9 +40,6 @@ public class UsuarioControllerTest {
 
     @MockBean
     private ActualizarUsuarioPort actualizarUsuarioPort;
-
-    @MockBean
-    private SubirFotoPerfilPort subirFotoPerfilPort;
 
     @MockBean
     private ListarUsuariosPort listarUsuariosPort;
