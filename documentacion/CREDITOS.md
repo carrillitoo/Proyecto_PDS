@@ -15,18 +15,21 @@ A continuación se exponen las áreas de responsabilidad de cada miembro.
 - `d7e6779` - *repository adapter + debug postman + todo funcionando bien :D*: Integración exitosa de los adaptadores de repositorios.
 - `4327f77` y `d0f4ac0` - *Interfaz avanzada para conectar con DTOs*, *Todos los detalles de interfaz solucionados*: Trabajo en la conexión fluida entre el frontend JavaFX y el backend REST.
 
+---
 
-## Victor Carrillo Gil (carrillito)
-**Rol principal:** Infraestructura, CI/CD, Modelado de Dominio (Tarjetas y Etiquetas) y Adaptadores.
+## Víctor Carrillo Gil (carrillitoo)
+**Rol principal:** Infraestructura, CI/CD, modelado de dominio de tarjetas,etiquetas y adaptadores.
 
-Victor lideró la integración continua, configurando flujos automatizados con SonarQube y GitHub Actions. En el código, su participación se centró fuertemente en el modelado de elementos base del dominio (como las tarjetas y las etiquetas) y en consolidar la capa de adaptadores para separar correctamente la infraestructura.
+Victor se encargó de la integración continua mediante flujos de automatizados con SonarQube y GitHub Actions. En cuanto al código, se encargó del modelado de elementos del dominio, en particular de las tarjetas y las etiquetas, y también de la capa de adaptadores para separar correctamente la infraestructura.
 
-**Evidencias destacadas (Commits):**
-- `0f36415` y `20dc280` - *Añadida configuración de SonarQube en pom.xml y workflow*: Configuración de herramientas de análisis de código estático y CI/CD.
-- `07291cb` - *feat: estructurar modelo base de dominio para Tarjetas y Etiquetas*: Diseño e implementación de las entidades de dominio secundarias.
-- `bbccb2f` y `742410f` - *Capa de Adaptadores/Infraestructura terminada*, *Nuevas clases para la capa de Adaptadores*: Creación de los adaptadores secundarios y aislamiento de la infraestructura.
+**Commits destacados**
+- `0f36415` y `20dc280` - *Añadida configuración de SonarQube en pom.xml y en application properties*: Configuración de las herramientas de análisis de código estático y CI/CD.
+- `07291cb` - *estructurar modelo base de dominio para Tarjetas y Etiquetas*: Diseño e implementación de las entidades de dominio de tarjetas y etiquetas.
+- `bbccb2f` y `742410f` - *Capa de Adaptadores/Infraestructura terminada*: Creación de los adaptadores de la capa de infraestructura.
 - `f84769e` - *Tests primeras clases dominio*: Inicio y estructuración del testing en las clases bases del modelo.
 - Múltiples merges (`051dd1e`, `53514e3`, etc.) y pruebas (`d9c9992` - *Prueba Postman realizada existosamente*): Gestión de ramas y validación de integraciones.
+- `c4e58a2` - *workflows: añadido pipeline para SonarQube y tests*: Creación y automatización del workflow principal en `.github/workflows/sonar.yml`.
+- `8b2a1f0` - *JPA Adapters*: Implementación de `TarjetaPersistenceAdapterImpl` y repositorios JPA para aislar la persistencia de datos.
 
 ---
 
@@ -35,9 +38,27 @@ Victor lideró la integración continua, configurando flujos automatizados con S
 
 Javier se enfocó intensamente en el módulo frontend (`ProyectoPDS-GUI`), desarrollando las vistas iniciales, controladores de interfaz y estilos. En el backend, diseñó el modelo de dominio relacionado con los Usuarios y Roles, así como la implementación de adaptadores de salida específicos como el envío de emails. Finalmente, realizó grandes aportes a la refactorización y documentación del proyecto.
 
-**Evidencias destacadas (Commits):**
+**Commits destacados**
 - `d64f27c` - *dominio usuarios, usuario, email y rol*: Modelado del Bounded Context de Identidad y Acceso.
 - `9ce315d` a `e82f036` - *primeras implementaciones front*, *front*, *interfaz*: Construcción inicial de la interfaz gráfica en JavaFX.
 - `a489f4b` y `82396a3` - *UsuarioController*, *ConsoleEmailAdapter*: Exposición de la API de usuarios y creación del adaptador para la simulación/envío de correos.
 - `4f3216f` y `9b41969` - *quitar mocks, mover dtos y otros cambios*, *pulir detalles interfaz*: Refactorización profunda, limpieza de datos simulados y organización de los DTOs en el frontend.
 - `81f6191` y `a12ef37` - *documentación*: Contribuciones finales a los manuales y ficheros markdown del proyecto.
+
+---
+
+## Flujo de Trabajo y Pull Requests
+
+El desarrollo del proyecto se ha gestionado mediante un flujo de trabajo basado en ramas, lo cual permite una clara división de tareas y una integración controlada:
+
+- **Rama Principal (`main`):** Representa la línea base donde se consolida el proyecto.
+- **Ramas de Dominio (`rama-sega` y `rama-carry`):** Se trabajaron en paralelo partiendo de `main`, desarrollando las clases y modelos del dominio de forma independiente para evitar conflictos.
+- **Integración Base:** Posteriormente, el trabajo de ambas ramas se fusionó de nuevo en la rama principal (`main`), juntando así las funcionalidades base del dominio.
+- **Rama de Funcionalidades (`rama-vico`):** Una vez integrados los modelos, la `rama-vico` hizo *pull* del repositorio consolidado (`main`) para trabajar sobre una base que ya tenía las clases resueltas y proceder a rematar las funcionalidades restantes.
+- **Rama de Interfaz (`rama-interfaz`):** Finalmente, para no comprometer la estabilidad del desarrollo principal, se extrajo la `rama-interfaz` a partir de la rama de vico. El propósito de esta rama ha sido aislar el "debugging" y la integración de la interfaz gráfica sin afectar al proyecto general.
+
+**Pull Requests más importantes:**
+- **PR #1:** *Configuración inicial CI/CD y estructura base* - Establecimiento del esqueleto del proyecto, configuración de Maven y despliegue del pipeline de integración continua con GitHub Actions.
+- **PR #6:** *Modelado de Dominio: Tarjetas y Etiquetas* - Integración de la lógica central para la gestión de tarjetas, etiquetas y listas, junto con sus respectivos tests unitarios.
+- **PR #7:** *Implementación de la Capa de Adaptadores (Salida)* - Desarrollo completo de la persistencia de datos mediante JPA y los adaptadores de salida para mantener el dominio limpio e independiente.
+- **PR #8:** *Refactorización e Integración con SonarQube* - Configuración de perfiles de análisis, solución de *code smells*, aumento de la cobertura de tests y validación final de la calidad del código del proyecto.
