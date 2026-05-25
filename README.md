@@ -3,9 +3,9 @@ Proyecto de la asignatura de Procesos de Desarrollo de Software, un organizador 
 
 ## Integrantes
 La practica la hemos realizado:
-- Victor Carrillo Gil - Grupo 2.3 - 49196913M
-- Javier Peñalver Gómez - Grupo 2.3 - 54633073T
-- Jaime Cegarra Martínez - Grupo 2.3 - 49335068E
+- Victor Carrillo Gil
+- Javier Peñalver Gómez 
+- Jaime Cegarra Martínez 
 
 Para más información sobre el reparto de trabajo, se puede consultar el [CREDITOS.md](documentacion/CREDITOS.md)
 
